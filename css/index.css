@@ -225,7 +225,7 @@ nav {
 
 .grid-item-image {
     height: 200px;
-    background: linear-gradient(45deg, #007bff, #0056b3);
+    background: linear-gradient(45deg, white, white);  /* change #007bff, #0056b3 to chnage colors in grids*/
     display: flex;
     align-items: center;
     justify-content: center;
