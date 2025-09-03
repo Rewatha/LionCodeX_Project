@@ -23,15 +23,3 @@ function animateCounters() {
         }, 20);
     });
 }
-
-// Trigger counter animation when in viewport
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateCounters();
-            observer.disconnect();
-        }
-    });
-});
-
-observer.observe(document.querySelector('.team-stats'));

@@ -30,3 +30,15 @@ window.addEventListener('scroll', () => {
         nav.style.background = 'rgba(255, 255, 255, 0.95)';
     }
 });
+
+// Trigger counter animation when in viewport
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateCounters();
+            observer.disconnect();
+        }
+    });
+});
+
+observer.observe(document.querySelector('.project-stats'));
