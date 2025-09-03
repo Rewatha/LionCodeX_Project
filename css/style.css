@@ -53,7 +53,8 @@ nav {
     position: relative;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
     color: #007bff;
 }
 
