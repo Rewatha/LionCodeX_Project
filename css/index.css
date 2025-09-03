@@ -235,6 +235,11 @@ nav {
     overflow: hidden;
 }
 
+.grid-item-image img {
+        width: auto%;
+        height: 100%;
+}
+
 .grid-item-image::before {
     content: '';
     position: absolute;
