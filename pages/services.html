@@ -1,69 +1,384 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services | Sealtech Engineering</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Our Services - SealTech Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/services.css" rel="stylesheet">
 </head>
+
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="logo">
-            <img src="images/logo.png" alt="Company Logo">
+            <img src="../images/logo.png" alt="Company Logo">
+            SealTech Engineering
         </div>
-
-        <div class="nav-description">
-            <h1> Our Services</h1>
-            <p>Discover the range of professional waterproofing services we offer</p>
-        </div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#" class="active">Services</a></li>
+            <li><a href="about.html">About Us</a></li>
             <li><a href="projects.html">Projects</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
-
-
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 
-    <section id="services" class="service-grid">
-        <div class="service-item">
-            <img src="images/roof.jpg" alt="Roof Waterproofing">
-            <h3>Roof Waterproofing</h3>
-            <p>We provide roof waterproofing solutions to protect against leaks and weather damage.</p>
-            <ul>
-                <template>Durable and weather-resistant coatings
-                Prevents mold and structural damage
-                10-year service warranty</template>
-            </ul>
-            <button>Learn More</button>
-        </div>
-        <div class="service-item">
-            <img src="images/wall.jpg" alt="Wall Waterproofing">
-            <h3>Wall Waterproofing</h3>
-            <p>Protect your walls from moisture and weather impacts.</p>
-            <ul>
-                <template>Interior and exterior wall solutions
-                Eco-friendly and non-toxic materials
-                Customizable to match wall finishes</template>
-            </ul>
-            <button>Learn More</button>
-        </div>
-        <div class="service-item">
-            <img src="images/foundation.jpg" alt="Foundation Waterproofing">
-            <h3>Foundation Waterproofing</h3>
-            <p>Ensure the structural integrity of your foundation with our expert waterproofing services.</p>
-            <ul>
-                <template>Deep-seal protection
-                Suitable for new and old structures
-                Comprehensive inspection included</template></ul>
-
-            
-            <button>Learn More</button>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1>Our Waterproofing Services</h1>
+            <p>Comprehensive waterproofing solutions for residential and commercial properties</p>
         </div>
     </section>
 
-    
-        
+    <!-- Services Overview -->
+    <section class="services-overview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Professional Waterproofing Solutions</h2>
+                <p>We provide comprehensive waterproofing services using the latest techniques and premium materials</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Roof Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Roof Waterproofing</h3>
+                        <p>Protect your roof from water damage with our advanced waterproofing solutions. We use premium
+                            materials and proven techniques to ensure long-lasting protection.</p>
+                        <ul class="service-features">
+                            <li>Durable weather-resistant coatings</li>
+                            <li>Prevents mold and structural damage</li>
+                            <li>10-year service warranty</li>
+                            <li>Suitable for all roof types</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+
+                <!-- Wall Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Wall Waterproofing</h3>
+                        <p>Comprehensive wall protection solutions for both interior and exterior walls, preventing
+                            moisture damage and maintaining structural integrity.</p>
+                        <ul class="service-features">
+                            <li>Interior and exterior solutions</li>
+                            <li>Eco-friendly materials</li>
+                            <li>Custom color matching</li>
+                            <li>Breathable waterproof systems</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+
+                <!-- Foundation Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Foundation Waterproofing</h3>
+                        <p>Ensure your building's foundation remains strong and dry with our specialized foundation
+                            waterproofing services and deep-seal protection.</p>
+                        <ul class="service-features">
+                            <li>Deep-seal protection technology</li>
+                            <li>New and existing structures</li>
+                            <li>Comprehensive inspection included</li>
+                            <li>Prevents basement flooding</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+
+                <!-- Bathroom Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-bath"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Bathroom Waterproofing</h3>
+                        <p>Specialized bathroom waterproofing to prevent water damage, mold growth, and structural
+                            issues in wet areas.</p>
+                        <ul class="service-features">
+                            <li>Complete wet area protection</li>
+                            <li>Mold and mildew prevention</li>
+                            <li>Tile-friendly applications</li>
+                            <li>Long-term durability</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+
+                <!-- Basement Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Basement Waterproofing</h3>
+                        <p>Keep your basement dry and protected from groundwater intrusion with our comprehensive
+                            basement waterproofing solutions.</p>
+                        <ul class="service-features">
+                            <li>Interior and exterior options</li>
+                            <li>Drainage system integration</li>
+                            <li>Humidity control solutions</li>
+                            <li>Structural protection</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+
+                <!-- Commercial Waterproofing -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Commercial Waterproofing</h3>
+                        <p>Large-scale waterproofing solutions for commercial buildings, warehouses, and industrial
+                            facilities with specialized requirements.</p>
+                        <ul class="service-features">
+                            <li>Large-scale project management</li>
+                            <li>Minimal business disruption</li>
+                            <li>Industrial-grade materials</li>
+                            <li>Compliance with building codes</li>
+                        </ul>
+                        <a href="contact.html" class="service-btn">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Process -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Service Process</h2>
+                <p>We follow a systematic approach to ensure the best results for every project</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Inspection & Assessment</h3>
+                    <p>Thorough inspection of your property to identify problem areas and determine the best
+                        waterproofing solution.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Custom Solution Design</h3>
+                    <p>We create a customized waterproofing plan tailored to your specific needs and budget
+                        requirements.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Professional Installation</h3>
+                    <p>Our certified technicians execute the waterproofing work using premium materials and proven
+                        techniques.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Quality Assurance & Warranty</h3>
+                    <p>Final inspection and testing, followed by comprehensive warranty coverage for your peace of mind.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Services -->
+    <section class="additional-services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Additional Services</h2>
+                <p>Comprehensive support services to complement our waterproofing solutions</p>
+            </div>
+            <div class="additional-grid">
+                <div class="additional-card">
+                    <h3><i class="fas fa-search"></i>Water Damage Assessment</h3>
+                    <p>Professional evaluation of existing water damage and recommendations for repair and prevention
+                        strategies.</p>
+                </div>
+                <div class="additional-card">
+                    <h3><i class="fas fa-tools"></i>Maintenance Programs</h3>
+                    <p>Regular maintenance schedules to ensure your waterproofing systems continue to perform at their
+                        best.</p>
+                </div>
+                <div class="additional-card">
+                    <h3><i class="fas fa-phone-alt"></i>Emergency Repairs</h3>
+                    <p>24/7 emergency response services for urgent waterproofing issues and water intrusion problems.
+                    </p>
+                </div>
+                <div class="additional-card">
+                    <h3><i class="fas fa-certificate"></i>Warranty Services</h3>
+                    <p>Comprehensive warranty support and post-installation services to maintain your investment.</p>
+                </div>
+                <div class="additional-card">
+                    <h3><i class="fas fa-clipboard-check"></i>Building Inspections</h3>
+                    <p>Pre-purchase building inspections focusing on waterproofing and moisture-related issues.</p>
+                </div>
+                <div class="additional-card">
+                    <h3><i class="fas fa-graduation-cap"></i>Consultation Services</h3>
+                    <p>Expert advice and consultation for architects, builders, and property developers on waterproofing
+                        solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Our Services -->
+    <section class="why-choose-services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Our Services?</h2>
+                <p>The advantages that make us your best choice for waterproofing solutions</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Premium Materials</h3>
+                        <p>We use only the highest quality, internationally approved waterproofing materials that offer
+                            superior performance and longevity.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Expert Technicians</h3>
+                        <p>Our team consists of certified professionals with years of experience in various
+                            waterproofing techniques and applications.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Comprehensive Warranty</h3>
+                        <p>All our waterproofing work comes with extensive warranty coverage, giving you complete peace
+                            of mind and protection.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Timely Completion</h3>
+                        <p>We respect your schedule and complete projects on time without compromising on quality or
+                            attention to detail.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Competitive Pricing</h3>
+                        <p>Fair, transparent pricing with detailed quotations and no hidden costs. Best value for
+                            professional waterproofing services.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Ongoing Support</h3>
+                        <p>Dedicated customer support team available to address any questions or concerns even after
+                            project completion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Protect Your Property?</h2>
+                <p>Contact us today for a free consultation and detailed quote for your waterproofing needs</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn-primary">Get Free Quote</a>
+                    <a href="projects.html" class="btn-secondary">View Our Projects</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SealTech Engineering</h3>
+                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
+                    with quality and reliability.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="../pages/services.html">Roof Waterproofing</a></li>
+                    <li><a href="../pages/services.html">Wall Waterproofing</a></li>
+                    <li><a href="../pages/services.html">Foundation Waterproofing</a></li>
+                    <li><a href="../pages/services.html">Bathroom Waterproofing</a></li>
+                    <li><a href="../pages/services.html">Building Restoration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../pages/about.html">About Us</a></li>
+                    <li><a href="#services" class="active">Services</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="../index.html">Get Quote</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/services.js"></script>
+
 </body>
+
 </html>

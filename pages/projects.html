@@ -1,55 +1,346 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Projects | Sealtech Engineering</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Our Projects - SealTech Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/projects.css" rel="stylesheet">
 </head>
+
 <body>
+    <!-- Navigation -->
     <nav>
         <div class="logo">
-            <img src="images/logo.png" alt="Company Logo">
+            <img src="../images/logo.png" alt="Company Logo">
+            SealTech Engineering
         </div>
-        <div class="nav-description">
-            <h1> Our Projects</h1>
-            <p>Explore our completed projects and see our expertise in action.</p>
-        </div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
             <li><a href="services.html">Services</a></li>
-            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="#" class="active">Projects</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 
-
-
-    <section id="projects" class="gallery-grid">
-        <div class="gallery-item">
-            <img src="images/project1.jpg" alt="Project 1">
-            <img src="images/project1b.jpg" alt="Project 1 Extra" />
-            <p>Waterproofing work at Ariyana Resort Apartments, Aturugiriya.</p>
-        </div>
-        <div class="gallery-item">
-            <img src="images/project2.jpg" alt="Project 2">
-            <img src="images/project2b.jpg" alt="Project 2 Extra" />
-            <p>Waterproofing at Bingiriya BOI project with a 45,000 sqft roof slab.</p>
-        </div>
-        <div class="gallery-item">
-            <img src="images/project3.png" alt="Project 3">
-            <img src="images/project3b.jpg" alt="Project 3 Extra" />
-            <p>Waterproofing work at MAS Active Building in Trade Zone, Biyagama.</p>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1>Our Projects Portfolio</h1>
+            <p>Showcasing our expertise through successful waterproofing projects across Sri Lanka</p>
         </div>
     </section>
 
-    <section id="completed-projects">
-        <h2> Projects that completed succesfully</h2>
-        <div class="project-item">
-
-            <img src="images/completed1.jpg" alt="Completed Project 1" />
-            
+    <!-- Project Stats -->
+    <section class="project-stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Completed Projects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Commercial Projects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Residential Projects</div>
+            </div>
         </div>
     </section>
+
+    <!-- Featured Projects -->
+    <section class="featured-projects">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Projects</h2>
+                <p>Highlighting some of our most significant waterproofing achievements</p>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <i class="fas fa-building"></i>
+                            <div class="view-text">View Project Details</div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Ariyana Resort Apartments</h3>
+                        <div class="project-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Aturugiriya, Sri Lanka
+                        </div>
+                        <p class="project-description">
+                            Complete waterproofing solution for a luxury residential complex including roof, basement,
+                            and common area waterproofing systems.
+                        </p>
+                        <div class="project-details">
+                            <div class="project-type">Residential Complex</div>
+                            <div class="project-status">
+                                <i class="fas fa-check-circle"></i>
+                                Completed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Gallery -->
+    <section class="project-gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Project Gallery</h2>
+                <p>Browse our comprehensive portfolio of waterproofing projects</p>
+            </div>
+
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="residential">Residential</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+                <button class="filter-btn" data-filter="industrial">Industrial</button>
+                <button class="filter-btn" data-filter="roof">Roof Work</button>
+                <button class="filter-btn" data-filter="foundation">Foundation</button>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="residential roof">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Luxury Villa Roof Waterproofing</h3>
+                        <p>Premium roof waterproofing system with 15-year warranty for a luxury residential property in
+                            Colombo.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="commercial foundation">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Office Complex Foundation</h3>
+                        <p>Deep foundation waterproofing for a 10-story commercial building with advanced drainage
+                            systems.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="industrial roof">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Warehouse Roof Coating</h3>
+                        <p>Industrial-grade roof waterproofing for a large warehouse facility with heat-resistant
+                            coating.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="residential">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Apartment Block Restoration</h3>
+                        <p>Complete building restoration including wall waterproofing and facade protection systems.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="commercial">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Shopping Mall Waterproofing</h3>
+                        <p>Comprehensive waterproofing solution for a major shopping complex including parking areas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="industrial foundation">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Factory Foundation Seal</h3>
+                        <p>Heavy-duty foundation waterproofing for manufacturing facility with chemical-resistant
+                            systems.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="residential roof">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Residential Roof Repair</h3>
+                        <p>Emergency roof waterproofing repair and complete system upgrade for storm damage restoration.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="commercial">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Hotel Waterproofing</h3>
+                        <p>Luxury hotel comprehensive waterproofing including pools, bathrooms, and roof terraces.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="industrial">
+                    <div class="gallery-image"></div>
+                    <div class="gallery-content">
+                        <h3>Power Plant Protection</h3>
+                        <p>Specialized waterproofing for critical infrastructure with extreme weather resistance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Client Testimonials</h2>
+                <p>What our satisfied clients say about our waterproofing services</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "SealTech Engineering provided exceptional service for our apartment complex. Their professional
+                        approach and quality workmanship exceeded our expectations. The waterproofing has held up
+                        perfectly even during heavy monsoon seasons."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Mr. Rajesh Patel</h4>
+                            <p>Property Developer - Ariyana Resort</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "We chose SealTech for our industrial facility and they delivered outstanding results. The
+                        45,000 sqft roof waterproofing was completed on time and within budget. Highly recommended for
+                        large-scale projects."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Ms. Priya Fernando</h4>
+                            <p>Project Manager - Bingiriya BOI</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "Professional, reliable, and efficient. SealTech's team handled our commercial building
+                        waterproofing with great expertise. Their after-service support and warranty coverage gives us
+                        complete peace of mind."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Mr. Kamal Silva</h4>
+                            <p>Facilities Manager - MAS Holdings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Project?</h2>
+                <p>Join our growing list of satisfied clients and protect your property with professional waterproofing
+                </p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn-primary">Get Free Quote</a>
+                    <a href="services.html" class="btn-secondary">View Our Services</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SealTech Engineering</h3>
+                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
+                    with quality and reliability.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="services.html">Roof Waterproofing</a></li>
+                    <li><a href="services.html">Wall Waterproofing</a></li>
+                    <li><a href="services.html">Foundation Waterproofing</a></li>
+                    <li><a href="services.html">Bathroom Waterproofing</a></li>
+                    <li><a href="services.html">Building Restoration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#" class="active">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="../index.html">Get Quote</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/projects.js"></script>
+
 </body>
+
 </html>
