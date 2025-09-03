@@ -1,117 +1,186 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sealtech Engineering</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Sealtech Engineering - Waterproofing Specialists</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="css/index.css">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <nav>
         <div class="logo">
-            <img src="images/logo.png" alt="Company Logo">
+            <i class="fas fa-shield-alt"></i>
+            SealTech Engineering
         </div>
-        <i class='bx bx-menu' id="menu-icon"></i>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#About Us">About Us</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
-            <h1>Waterproofing Specialists</h1>
-            <p>Expert waterproofing solutions for your home or business.</p>
-            <a href="#contact" class="cta-button">Get a Free Quote</a>
-        </div>
-    </header>
-
-    <!-- Grid Section -->
-    <section class="grid-section">
-        <div class="grid-item">
-            <img src="images/wall.jpg" alt="Services">
-            <a href="#services" class="grid-link">Services</a>
-        </div>
-        <div class="grid-item">
-            <img src="images/aboutus.jpg" alt="About Us">
-            <a href="#about" class="grid-link">About Us</a>
-        </div>
-        <div class="grid-item">
-            <img src="images/project1b.jpg" alt="Portfolio">
-            <a href="#projects" class="grid-link">Projects</a>
-        </div>
-        <div class="grid-item">
-            <img src="images/Roof.jpg" alt="Contact Us">
-            <a href="#contact" class="grid-link">Contact Us</a>
+            <h1>Professional Waterproofing Solutions</h1>
+            <p>Protecting your property with expert waterproofing services for homes and businesses across Sri Lanka</p>
+            <a href="#contact" class="cta-button">Get Your Free Quote</a>
         </div>
     </section>
 
+    <!-- Grid Section -->
+    <section class="grid-section">
+        <div class="section-title">
+            <h2>Our Expertise</h2>
+            <p>Discover our comprehensive range of waterproofing services and solutions</p>
+        </div>
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="grid-item-image">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="grid-item-content">
+                    <h3>Our Services</h3>
+                    <p>Professional waterproofing solutions for roofs, walls, foundations, and more</p>
+                    <a href="services.html" class="grid-link">View Services</a>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-item-image">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="grid-item-content">
+                    <h3>About Us</h3>
+                    <p>Learn about our company, mission, and commitment to quality waterproofing</p>
+                    <a href="about.html" class="grid-link">Learn More</a>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-item-image">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="grid-item-content">
+                    <h3>Our Projects</h3>
+                    <p>Explore our portfolio of successful waterproofing projects and client testimonials</p>
+                    <a href="projects.html" class="grid-link">View Portfolio</a>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-item-image">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="grid-item-content">
+                    <h3>Contact Us</h3>
+                    <p>Get in touch for consultations, quotes, and professional waterproofing advice</p>
+                    <a href="#contact" class="grid-link">Contact Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Mission & Vision Section -->
+    <section class="mission-vision">
+        <div class="section-title">
+            <h2>Our Mission & Vision</h2>
+            <p>Committed to excellence in waterproofing solutions</p>
+        </div>
+        <div class="mission-vision-container">
+            <div class="mission-card">
+                <h3>Our Mission</h3>
+                <p>To provide superior waterproofing solutions that protect properties and enhance durability through
+                    innovative techniques, quality materials, and exceptional service that exceeds client expectations.
+                </p>
+            </div>
+            <div class="vision-card">
+                <h3>Our Vision</h3>
+                <p>To be Sri Lanka's leading waterproofing company, recognized for our commitment to quality,
+                    innovation, and customer satisfaction while building lasting relationships with our clients.</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Contact Section -->
     <section id="contact">
-        <h2>Contact Us</h2>
-        <form action="submit_form.php" method="POST" class="contact-form">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Log In</button>
-        </form>
+        <div class="contact-container">
+            <h2>Get Your Free Quote</h2>
+            <p class="subtitle">Ready to protect your property? Contact us for a professional consultation</p>
+
+            <form class="contact-form" action="submit_form.php" method="POST">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Your Full Name" required>
+                    <input type="email" name="email" placeholder="Your Email Address" required>
+                </div>
+                <div class="form-row">
+                    <input type="tel" name="phone" placeholder="Phone Number">
+                    <input type="text" name="location" placeholder="Project Location">
+                </div>
+                <textarea name="message" placeholder="Tell us about your waterproofing needs..." required></textarea>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">
-
+            <div class="footer-section">
+                <h3>SealTech Engineering</h3>
+                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
+                    with quality and reliability.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
             <div class="footer-section">
-                <h3>Services</h3>
+                <h3>Our Services</h3>
                 <ul>
-                    <li><a href="#services">Waterproofing</a></li>
-                    <li><a href="#services">Building Restoration</a></li>
-                    <li><a href="#services">Air & Vapor Barriers</a></li>
-                    <li><a href="#services">Plaza Systems</a></li>
+                    <li><a href="services.html">Roof Waterproofing</a></li>
+                    <li><a href="services.html">Wall Waterproofing</a></li>
+                    <li><a href="services.html">Foundation Waterproofing</a></li>
+                    <li><a href="services.html">Bathroom Waterproofing</a></li>
+                    <li><a href="services.html">Building Restoration</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Links</h3>
+                <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#projects">Portfolio</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home">Get Quote</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Contact Us</h3>
+                <h3>Contact Info</h3>
                 <ul>
-                    <li><a href="tel:0776336464">0776336464</a></li>
-                    <li><a href="sealtechengineering@gmail.com">info@sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Sealtech Engineering. All Rights Reserved.</p>
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
         </div>
     </footer>
 
-    <script src="script.js"></script> <!-- JavaScript File -->
-    <script>
-        const menuIcon = document.querySelector('#menu-icon');
-        const navLinks = document.querySelector('nav ul');
-
-        menuIcon.addEventListener('click', () => {
-            navLinks.classList.toggle('active'); // Toggle the 'active' class to show/hide the menu
-        });
-    </script>
-    
-
 </body>
+
 </html>
