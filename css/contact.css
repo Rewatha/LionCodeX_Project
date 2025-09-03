@@ -256,7 +256,7 @@
     transform: translate(30px, -30px);
 }
 
-.contact-info-sidebar h3 {
+.h3 {
     font-size: 1.8rem;
     margin-bottom: 30px;
     position: relative;
