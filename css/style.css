@@ -39,6 +39,10 @@ nav {
     font-size: 2rem;
 }
 
+.logo img {
+    margin-right: 10px;
+    width: 50px;
+}
 .nav-links {
     display: flex;
     list-style: none;
