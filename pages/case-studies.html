@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Case Studies - SealTech Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/case-studies.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../images/logo.png" alt="Company Logo">
+            SealTech Engineering
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#" class="active">Case Studies</a></li>
+        </ul>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1>Detailed Project Case Studies</h1>
+            <p>In-depth analysis of our most challenging and successful waterproofing projects</p>
+        </div>
+    </section>
+
+    <!-- Case Study Filters -->
+    <section class="case-study-filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Case Studies</button>
+                <button class="filter-tab" data-filter="residential">Residential</button>
+                <button class="filter-tab" data-filter="commercial">Commercial</button>
+                <button class="filter-tab" data-filter="industrial">Industrial</button>
+                <button class="filter-tab" data-filter="emergency">Emergency Projects</button>
+            </div>
+            
+            <div class="filter-options">
+                <select id="serviceFilter">
+                    <option value="all">All Services</option>
+                    <option value="roof">Roof Waterproofing</option>
+                    <option value="foundation">Foundation Work</option>
+                    <option value="commercial">Commercial Projects</option>
+                    <option value="restoration">Building Restoration</option>
+                </select>
+                
+                <select id="complexityFilter">
+                    <option value="all">All Complexity</option>
+                    <option value="standard">Standard</option>
+                    <option value="complex">Complex</option>
+                    <option value="highly-complex">Highly Complex</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Case Study -->
+    <section class="featured-case-study">
+        <div class="container">
+            <div class="featured-content">
+                <div class="featured-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="project-badge">Featured Project</div>
+                </div>
+                
+                <div class="featured-details">
+                    <div class="project-category">Commercial Waterproofing</div>
+                    <h2>Ariyana Resort Complex Waterproofing</h2>
+                    <p class="project-summary">Complete waterproofing solution for a 15-story luxury residential complex facing severe water infiltration issues during monsoon season.</p>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-value">45,000</div>
+                            <div class="metric-label">sq ft treated</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6</div>
+                            <div class="metric-label">months duration</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">100%</div>
+                            <div class="metric-label">leak-free result</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">200+</div>
+                            <div class="metric-label">residents protected</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="viewCaseStudy('ariyana-resort')">
+                        <i class="fas fa-book-open"></i>
+                        Read Full Case Study
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Grid -->
+    <section class="case-studies-grid">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Project Case Studies</h2>
+                <p>Explore detailed analyses of our most significant waterproofing projects</p>
+            </div>
+            
+            <div class="studies-grid" id="studiesGrid">
+                <!-- Case studies will be loaded here -->
+            </div>
+            
+            <div class="load-more-section">
+                <button class="btn-secondary" id="loadMoreBtn">Load More Case Studies</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study Detail Modal -->
+    <div class="modal" id="caseStudyModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modalTitle">Case Study Details</h2>
+                <button class="modal-close" onclick="closeCaseStudy()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="case-study-content" id="caseStudyContent">
+                    <!-- Detailed case study content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Stories Section -->
+    <section class="success-stories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Success Stories & Outcomes</h2>
+                <p>Real results from our waterproofing projects</p>
+            </div>
+            
+            <div class="success-grid">
+                <div class="success-card">
+                    <div class="success-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>99.8% Success Rate</h3>
+                    <p>Over 150 completed projects with exceptional success rate</p>
+                </div>
+                
+                <div class="success-card">
+                    <div class="success-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>On-Time Delivery</h3>
+                    <p>95% of projects completed within scheduled timeframe</p>
+                </div>
+                
+                <div class="success-card">
+                    <div class="success-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>15-Year Warranty</h3>
+                    <p>Extended warranty coverage on all waterproofing work</p>
+                </div>
+                
+                <div class="success-card">
+                    <div class="success-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>200+ Happy Clients</h3>
+                    <p>Satisfied customers across residential and commercial sectors</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section class="detailed-testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Clients Say</h2>
+                <p>Detailed feedback from project stakeholders</p>
+            </div>
+            
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "SealTech Engineering transformed our problematic building into a completely waterproof structure. Their systematic approach, from initial assessment to final testing, was exemplary. The team's expertise in handling complex foundation issues was evident throughout the project."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="author-details">
+                                <h4>Mr. Rajesh Patel</h4>
+                                <p>Property Developer</p>
+                                <p class="project-name">Ariyana Resort Complex</p>
+                                <div class="author-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-text">5.0/5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "The industrial waterproofing project at our Bingiriya facility was completed with minimal disruption to our operations. SealTech's project management and technical execution exceeded our expectations. The 45,000 sq ft roof has been completely leak-free for over two years."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-details">
+                                <h4>Ms. Priya Fernando</h4>
+                                <p>Facilities Manager</p>
+                                <p class="project-name">BOI Industrial Complex</p>
+                                <div class="author-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-text">5.0/5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-slide">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "Emergency waterproofing after flood damage was handled with urgency and professionalism. SealTech mobilized their team within hours and prevented further structural damage. Their 24/7 support during the crisis was invaluable."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-details">
+                                <h4>Mr. Kamal Silva</h4>
+                                <p>Building Owner</p>
+                                <p class="project-name">Emergency Flood Response</p>
+                                <div class="author-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-text">5.0/5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-controls">
+                <button class="testimonial-btn prev" onclick="changeTestimonial(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="testimonial-dots" id="testimonialDots">
+                    <span class="dot active" onclick="currentTestimonial(1)"></span>
+                    <span class="dot" onclick="currentTestimonial(2)"></span>
+                    <span class="dot" onclick="currentTestimonial(3)"></span>
+                </div>
+                <button class="testimonial-btn next" onclick="changeTestimonial(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology & Methods -->
+    <section class="technology-methods">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technology & Methods</h2>
+                <p>Advanced techniques and materials used in our projects</p>
+            </div>
+            
+            <div class="technology-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3>Advanced Diagnostics</h3>
+                    <p>Thermal imaging and moisture detection to identify problem areas with precision</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>Multi-Layer Systems</h3>
+                    <p>Premium waterproofing membranes with integrated drainage solutions</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Eco-Friendly Materials</h3>
+                    <p>Environmentally responsible waterproofing solutions without compromising performance</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Performance Monitoring</h3>
+                    <p>Long-term monitoring systems to ensure waterproofing effectiveness</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="case-study-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Start Your Success Story</h2>
+                <p>Ready to solve your waterproofing challenges? Let us create a custom solution for your project.</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn-primary">
+                        <i class="fas fa-comments"></i>
+                        Discuss Your Project
+                    </a>
+                    <a href="services.html" class="btn-secondary">
+                        <i class="fas fa-tools"></i>
+                        View Our Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SealTech Engineering</h3>
+                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
+                    with quality and reliability.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="services.html">Roof Waterproofing</a></li>
+                    <li><a href="services.html">Wall Waterproofing</a></li>
+                    <li><a href="services.html">Foundation Waterproofing</a></li>
+                    <li><a href="services.html">Bathroom Waterproofing</a></li>
+                    <li><a href="services.html">Building Restoration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="../index.html">Get Quote</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/case-studies.js"></script>
+
+</body>
+
+</html>

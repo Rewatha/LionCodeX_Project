@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - SealTech Engineering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/orders.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../images/logo.png" alt="Company Logo">
+            SealTech Engineering
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#" class="active">Orders</a></li>
+        </ul>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1>Order Management</h1>
+            <p>Track and manage your waterproofing service orders</p>
+        </div>
+    </section>
+
+    <!-- Order Status Overview -->
+    <section class="order-overview">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingOrdersCount">5</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon confirmed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="confirmedOrdersCount">12</h3>
+                        <p>Confirmed Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon progress">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="inProgressOrdersCount">8</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="completedOrdersCount">45</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Filters and Search -->
+    <section class="order-filters">
+        <div class="container">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter">
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="serviceFilter">Filter by Service:</label>
+                    <select id="serviceFilter">
+                        <option value="all">All Services</option>
+                        <option value="roof">Roof Waterproofing</option>
+                        <option value="wall">Wall Waterproofing</option>
+                        <option value="foundation">Foundation Waterproofing</option>
+                        <option value="bathroom">Bathroom Waterproofing</option>
+                        <option value="basement">Basement Waterproofing</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="dateRange">Date Range:</label>
+                    <select id="dateRange">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                    </select>
+                </div>
+                
+                <div class="search-group">
+                    <input type="text" id="orderSearch" placeholder="Search by Order ID or Customer Name">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Orders List -->
+    <section class="orders-list">
+        <div class="container">
+            <div class="section-header">
+                <h2>Recent Orders</h2>
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="exportOrders()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="btn-primary" onclick="showCreateOrder()">
+                        <i class="fas fa-plus"></i> New Order
+                    </button>
+                </div>
+            </div>
+
+            <div class="orders-table-container">
+                <table class="orders-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Location</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Orders will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination-container">
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be generated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Order Details</h2>
+                <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details" id="orderDetails">
+                    <!-- Order details will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Order Modal -->
+    <div class="modal" id="createOrderModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="orderFormTitle">Create New Order</h2>
+                <button class="modal-close" onclick="closeCreateOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="order-form" id="orderForm">
+                    <div class="form-section">
+                        <h3>Customer Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Customer Name</label>
+                                <input type="text" id="customerName" name="customerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerEmail">Email</label>
+                                <input type="email" id="customerEmail" name="customerEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerPhone">Phone</label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerAddress">Address</label>
+                                <input type="text" id="customerAddress" name="customerAddress" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Service Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="serviceType">Service Type</label>
+                                <select id="serviceType" name="serviceType" required>
+                                    <option value="">Select Service</option>
+                                    <option value="roof">Roof Waterproofing</option>
+                                    <option value="wall">Wall Waterproofing</option>
+                                    <option value="foundation">Foundation Waterproofing</option>
+                                    <option value="bathroom">Bathroom Waterproofing</option>
+                                    <option value="basement">Basement Waterproofing</option>
+                                    <option value="commercial">Commercial Waterproofing</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectArea">Project Area (sq ft)</label>
+                                <input type="number" id="projectArea" name="projectArea" min="1">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="scheduledDate">Scheduled Date</label>
+                                <input type="date" id="scheduledDate" name="scheduledDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="priority">Priority</label>
+                                <select id="priority" name="priority" required>
+                                    <option value="normal">Normal</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceDescription">Service Description</label>
+                            <textarea id="serviceDescription" name="serviceDescription" rows="3" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Pricing</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="basePrice">Base Price (LKR)</label>
+                                <input type="number" id="basePrice" name="basePrice" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="additionalCharges">Additional Charges (LKR)</label>
+                                <input type="number" id="additionalCharges" name="additionalCharges" min="0" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="discount">Discount (%)</label>
+                                <input type="number" id="discount" name="discount" min="0" max="100" step="0.01" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="totalAmount">Total Amount (LKR)</label>
+                                <input type="number" id="totalAmount" name="totalAmount" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Additional Information</h3>
+                        <div class="form-group">
+                            <label for="orderNotes">Order Notes</label>
+                            <textarea id="orderNotes" name="orderNotes" rows="3"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignedTechnician">Assigned Technician</label>
+                                <select id="assignedTechnician" name="assignedTechnician">
+                                    <option value="">Select Technician</option>
+                                    <option value="tech1">Sunil Perera</option>
+                                    <option value="tech2">Kamal Silva</option>
+                                    <option value="tech3">Nimal Fernando</option>
+                                    <option value="tech4">Ravi Kumar</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="estimatedDuration">Estimated Duration (days)</label>
+                                <input type="number" id="estimatedDuration" name="estimatedDuration" min="1" value="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeCreateOrderModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Status Update Modal -->
+    <div class="modal" id="statusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Order Status</h2>
+                <button class="modal-close" onclick="closeStatusModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="statusForm">
+                    <input type="hidden" id="statusOrderId" name="orderId">
+                    
+                    <div class="form-group">
+                        <label for="newStatus">New Status</label>
+                        <select id="newStatus" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="statusNotes">Status Update Notes</label>
+                        <textarea id="statusNotes" name="statusNotes" rows="4" placeholder="Add any notes about this status update..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyCustomer" name="notifyCustomer" checked>
+                            Send notification to customer
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeStatusModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="alert" id="alertMessage"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SealTech Engineering</h3>
+                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
+                    with quality and reliability.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="services.html">Roof Waterproofing</a></li>
+                    <li><a href="services.html">Wall Waterproofing</a></li>
+                    <li><a href="services.html">Foundation Waterproofing</a></li>
+                    <li><a href="services.html">Bathroom Waterproofing</a></li>
+                    <li><a href="services.html">Building Restoration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="../index.html">Get Quote</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/orders.js"></script>
+
+</body>
+
+</html>
