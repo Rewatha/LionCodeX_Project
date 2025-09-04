@@ -13,10 +13,11 @@ body {
 /* Body-specific overrides for user dashboard */
 body.user-dashboard {
     margin: 0 !important;
-    padding-top: 70px !important;
+    padding: 0 !important;
     background: #f8f9fa !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     overflow-x: hidden !important;
+    position: relative !important;
 }
 
 /* Navigation override */
@@ -26,38 +27,51 @@ body.user-dashboard nav {
     left: 0 !important;
     right: 0 !important;
     z-index: 1000 !important;
-    margin: 0 !important;
+    height: 70px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     padding: 15px 5% !important;
-    height: auto !important;
-    min-height: 70px !important;
+    margin: 0 !important;
 }
 
 /* Dashboard container override */
 body.user-dashboard .dashboard-container {
     display: flex !important;
+    margin-top: 70px !important;
     min-height: calc(100vh - 70px) !important;
-    margin: 0 !important;
+    width: 100% !important;
     padding: 0 !important;
+    position: relative !important;
 }
 
 /* Sidebar override */
 body.user-dashboard .dashboard-sidebar {
     width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
     background: white !important;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
     display: flex !important;
     flex-direction: column !important;
-    position: static !important;
+    position: relative !important;
     z-index: 100 !important;
+    height: calc(100vh - 70px) !important;
+    overflow-y: auto !important;
 }
 
 /* Sidebar navigation override */
 body.user-dashboard .sidebar-nav {
     flex: 1 !important;
-    padding: 20px 0 !important;
-    margin: 0 !important;
+    padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
+    margin: 0 !important;
+    list-style: none !important;
+    background: white !important;
 }
 
 /* Navigation items override */
@@ -71,15 +85,21 @@ body.user-dashboard .nav-item {
     transition: all 0.3s ease !important;
     position: relative !important;
     margin: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
     border: none !important;
+    border-left: 3px solid transparent !important;
+    background: none !important;
     cursor: pointer !important;
+    width: 100% !important;
+    text-align: left !important;
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
 }
 
 body.user-dashboard .nav-item:hover {
     background: #f8f9fa !important;
     color: #007bff !important;
+    transform: none !important;
 }
 
 body.user-dashboard .nav-item.active {
@@ -94,6 +114,29 @@ body.user-dashboard .nav-item i {
     text-align: center !important;
     margin: 0 !important;
     padding: 0 !important;
+    color: inherit !important;
+    flex-shrink: 0 !important;
+}
+
+body.user-dashboard .nav-item span {
+    flex: 1 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+}
+
+body.user-dashboard .nav-item span:not(.badge) {
+    flex: 1 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Main content area override */
@@ -101,27 +144,35 @@ body.user-dashboard .dashboard-main {
     flex: 1 !important;
     padding: 30px !important;
     overflow-y: auto !important;
-    margin: 0 !important;
+    background: #f8f9fa !important;
+    min-height: calc(100vh - 70px) !important;
+    width: calc(100% - 280px) !important;
+    position: relative !important;
 }
 
 /* Section override */
 body.user-dashboard .dashboard-section {
     display: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 body.user-dashboard .dashboard-section.active {
     display: block !important;
+    animation: fadeIn 0.5s ease !important;
 }
 
 /* Section header override */
 body.user-dashboard .section-header {
-    margin-bottom: 30px !important;
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: flex-start !important;
     flex-wrap: wrap !important;
     gap: 20px !important;
-    padding: 0 !important;
+    width: 100% !important;
 }
 
 body.user-dashboard .section-header h1 {
@@ -129,15 +180,28 @@ body.user-dashboard .section-header h1 {
     color: #333 !important;
     margin: 0 0 10px 0 !important;
     padding: 0 !important;
+    line-height: 1.2 !important;
+}
+
+body.user-dashboard .section-header p {
+    color: #666 !important;
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Stats grid override */
 body.user-dashboard .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    background: white !important;
+    border-radius: 15px !important;
+    padding: 25px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
     gap: 20px !important;
-    margin: 0 0 30px 0 !important;
-    padding: 0 !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
 /* Content grid override */
@@ -146,11 +210,13 @@ body.user-dashboard .content-grid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
     gap: 30px !important;
     margin: 0 0 30px 0 !important;
+    padding: 0 !important;
 }
 
 /* Remove any inherited margins/padding that might interfere */
+body.user-dashboard,
 body.user-dashboard * {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 
 /* Override any global nav styles that might conflict */
@@ -158,57 +224,97 @@ body.user-dashboard .nav-links {
     display: flex !important;
     list-style: none !important;
     gap: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+}
+
+body.user-dashboard .nav-links li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.user-dashboard .nav-links a {
+    text-decoration: none !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+    transition: color 0.3s ease !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+}
+
+body.user-dashboard .nav-links a:hover {
+    color: #007bff !important;
+    background: rgba(0, 123, 255, 0.1) !important;
 }
 
 /* Fix sidebar header */
 body.user-dashboard .sidebar-header {
-    padding: 30px 20px !important;
-    text-align: center !important;
+    padding: 20px !important;
+    text-align: left !important;
     border-bottom: 1px solid #f0f0f0 !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
+    background: white !important;
+    color: #333 !important;
+    flex-shrink: 0 !important;
 }
 
 /* Fix sidebar footer */
 body.user-dashboard .sidebar-footer {
     padding: 20px !important;
     border-top: 1px solid #f0f0f0 !important;
+    flex-shrink: 0 !important;
+    background: white !important;
 }
 
 /* Mobile responsiveness override */
 @media (max-width: 768px) {
     body.user-dashboard .dashboard-container {
         flex-direction: column !important;
+        margin-top: 70px !important;
     }
-    
+
+    body.user-dashboard .sidebar-header {
+        padding: 15px !important;
+    }
+
     body.user-dashboard .dashboard-sidebar {
         width: 100% !important;
-        position: relative !important;
+        height: auto !important;
     }
-    
+
+    body.user-dashboard .sidebar-nav {
+        padding: 10px 0 !important;
+    }
+
+    body.user-dashboard .nav-item {
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+    }
+
     body.user-dashboard .dashboard-main {
+        width: 100% !important;
         padding: 20px !important;
     }
 }
 
 /* User Menu in Navigation */
-.user-menu {
-    position: relative;
+body.user-dashboard .user-menu {
+    position: relative !important;
 }
 
-.user-trigger {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 15px;
-    border-radius: 25px;
-    background: rgba(0, 123, 255, 0.1);
+body.user-dashboard .user-trigger {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 15px !important;
+    border-radius: 25px !important;
+    background: rgba(0, 123, 255, 0.1) !important;
     color: #007bff !important;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
 }
 
-.user-trigger:hover {
+body.user-dashboard .user-trigger:hover {
     background: rgba(0, 123, 255, 0.2);
 }
 
@@ -254,57 +360,74 @@ body.user-dashboard .sidebar-footer {
 }
 
 /* Sidebar */
-.user-avatar {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 15px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    background: rgba(255, 255, 255, 0.2);
-    border: 3px solid rgba(255, 255, 255, 0.3);
+body.user-dashboard .user-avatar {
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0 0 15px 0 !important;
+    /* Left align instead of center */
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.5rem !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: white !important;
 }
 
-.user-info h3 {
-    margin-bottom: 5px;
-    font-size: 1.2rem;
+body.user-dashboard .user-info {
+    text-align: left !important;
 }
 
-.user-info p {
-    opacity: 0.9;
-    font-size: 0.9rem;
+body.user-dashboard .user-info h3 {
+    margin-bottom: 5px !important;
+    font-size: 1.1rem !important;
+    color: #333 !important;
+    font-weight: 600 !important;
 }
 
-.badge {
-    margin-left: auto;
-    background: #007bff;
-    color: white;
-    font-size: 0.75rem;
-    padding: 2px 8px;
-    border-radius: 10px;
-    min-width: 18px;
-    text-align: center;
+body.user-dashboard .user-info p {
+    opacity: 0.7 !important;
+    font-size: 0.85rem !important;
+    color: #666 !important;
+    margin: 0 !important;
 }
 
-.new-booking-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: linear-gradient(45deg, #007bff, #0056b3);
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
+body.user-dashboard .new-booking-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    background: #007bff !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    text-align: center !important;
 }
 
-.new-booking-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
+body.user-dashboard .new-booking-btn:hover {
+    background: #0056b3 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3) !important;
+}
+
+/* Badge styling */
+body.user-dashboard .badge {
+    margin-left: auto !important;
+    background: #dc3545 !important;
+    /* Red like admin dashboard */
+    color: white !important;
+    font-size: 0.75rem !important;
+    padding: 2px 8px !important;
+    border-radius: 10px !important;
+    min-width: 18px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
 }
 
 /* Main Content */
@@ -328,6 +451,7 @@ body.user-dashboard .sidebar-footer {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -437,11 +561,11 @@ body.user-dashboard .sidebar-footer {
     margin-bottom: 30px;
 }
 
-.card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+body.user-dashboard .card {
+    background: white !important;
+    border-radius: 15px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden !important;
 }
 
 .card-header {
@@ -631,11 +755,25 @@ body.user-dashboard .sidebar-footer {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
-.booking-card.pending { border-left-color: #ffc107; }
-.booking-card.confirmed { border-left-color: #17a2b8; }
-.booking-card.in-progress { border-left-color: #007bff; }
-.booking-card.completed { border-left-color: #28a745; }
-.booking-card.cancelled { border-left-color: #dc3545; }
+.booking-card.pending {
+    border-left-color: #ffc107;
+}
+
+.booking-card.confirmed {
+    border-left-color: #17a2b8;
+}
+
+.booking-card.in-progress {
+    border-left-color: #007bff;
+}
+
+.booking-card.completed {
+    border-left-color: #28a745;
+}
+
+.booking-card.cancelled {
+    border-left-color: #dc3545;
+}
 
 .booking-header {
     display: flex;
@@ -667,11 +805,30 @@ body.user-dashboard .sidebar-footer {
     text-transform: uppercase;
 }
 
-.status-pending { background: #fff3cd; color: #856404; }
-.status-confirmed { background: #d1ecf1; color: #0c5460; }
-.status-in-progress { background: #cce5ff; color: #004085; }
-.status-completed { background: #d4edda; color: #155724; }
-.status-cancelled { background: #f8d7da; color: #721c24; }
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-in-progress {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
 
 .booking-details {
     display: grid;
@@ -792,11 +949,11 @@ body.user-dashboard .sidebar-footer {
     background: transparent;
 }
 
-.form-group input:focus + label,
-.form-group textarea:focus + label,
-.form-group select:focus + label,
-.form-group input:not(:placeholder-shown) + label,
-.form-group textarea:not(:placeholder-shown) + label {
+.form-group input:focus+label,
+.form-group textarea:focus+label,
+.form-group select:focus+label,
+.form-group input:not(:placeholder-shown)+label,
+.form-group textarea:not(:placeholder-shown)+label {
     top: -10px;
     left: 15px;
     font-size: 0.85rem;
@@ -1035,8 +1192,13 @@ body.user-dashboard .sidebar-footer {
 }
 
 @keyframes modalFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
@@ -1059,6 +1221,7 @@ body.user-dashboard .sidebar-footer {
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -1172,8 +1335,9 @@ body.user-dashboard .sidebar-footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
+    body.user-dashboard .dashboard-container {
+        flex-direction: column !important;
+        margin-top: 70px !important;
     }
 
     .sidebar-nav {
@@ -1256,5 +1420,17 @@ body.user-dashboard .sidebar-footer {
 
     .quick-actions {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    body.user-dashboard .nav-item {
+        font-size: 0.9rem !important;
+        padding: 12px 15px !important;
+    }
+
+    body.user-dashboard .nav-item i {
+        width: 16px !important;
+        font-size: 0.9rem !important;
     }
 }
