@@ -10,6 +10,187 @@ body {
     min-height: calc(100vh - 70px);
 }
 
+/* Body-specific overrides for user dashboard */
+body.user-dashboard {
+    margin: 0 !important;
+    padding-top: 70px !important;
+    background: #f8f9fa !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    overflow-x: hidden !important;
+}
+
+/* Navigation override */
+body.user-dashboard nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    margin: 0 !important;
+    padding: 15px 5% !important;
+    height: auto !important;
+    min-height: 70px !important;
+}
+
+/* Dashboard container override */
+body.user-dashboard .dashboard-container {
+    display: flex !important;
+    min-height: calc(100vh - 70px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Sidebar override */
+body.user-dashboard .dashboard-sidebar {
+    width: 280px !important;
+    background: white !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: static !important;
+    z-index: 100 !important;
+}
+
+/* Sidebar navigation override */
+body.user-dashboard .sidebar-nav {
+    flex: 1 !important;
+    padding: 20px 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Navigation items override */
+body.user-dashboard .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 15px 25px !important;
+    color: #666 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+body.user-dashboard .nav-item:hover {
+    background: #f8f9fa !important;
+    color: #007bff !important;
+}
+
+body.user-dashboard .nav-item.active {
+    background: rgba(0, 123, 255, 0.1) !important;
+    color: #007bff !important;
+    border-right: 3px solid #007bff !important;
+}
+
+body.user-dashboard .nav-item i {
+    width: 20px !important;
+    font-size: 1.1rem !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Main content area override */
+body.user-dashboard .dashboard-main {
+    flex: 1 !important;
+    padding: 30px !important;
+    overflow-y: auto !important;
+    margin: 0 !important;
+}
+
+/* Section override */
+body.user-dashboard .dashboard-section {
+    display: none !important;
+}
+
+body.user-dashboard .dashboard-section.active {
+    display: block !important;
+}
+
+/* Section header override */
+body.user-dashboard .section-header {
+    margin-bottom: 30px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    padding: 0 !important;
+}
+
+body.user-dashboard .section-header h1 {
+    font-size: 2.2rem !important;
+    color: #333 !important;
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+}
+
+/* Stats grid override */
+body.user-dashboard .stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    gap: 20px !important;
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
+}
+
+/* Content grid override */
+body.user-dashboard .content-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
+    gap: 30px !important;
+    margin: 0 0 30px 0 !important;
+}
+
+/* Remove any inherited margins/padding that might interfere */
+body.user-dashboard * {
+    box-sizing: border-box;
+}
+
+/* Override any global nav styles that might conflict */
+body.user-dashboard .nav-links {
+    display: flex !important;
+    list-style: none !important;
+    gap: 30px !important;
+}
+
+/* Fix sidebar header */
+body.user-dashboard .sidebar-header {
+    padding: 30px 20px !important;
+    text-align: center !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+}
+
+/* Fix sidebar footer */
+body.user-dashboard .sidebar-footer {
+    padding: 20px !important;
+    border-top: 1px solid #f0f0f0 !important;
+}
+
+/* Mobile responsiveness override */
+@media (max-width: 768px) {
+    body.user-dashboard .dashboard-container {
+        flex-direction: column !important;
+    }
+    
+    body.user-dashboard .dashboard-sidebar {
+        width: 100% !important;
+        position: relative !important;
+    }
+    
+    body.user-dashboard .dashboard-main {
+        padding: 20px !important;
+    }
+}
+
 /* User Menu in Navigation */
 .user-menu {
     position: relative;

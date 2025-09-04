@@ -10,7 +10,7 @@
     <link href="../css/admin-dashboard.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="admin-dashboard">
     <!-- Top Navigation -->
     <nav class="admin-nav">
         <div class="nav-left">
@@ -306,24 +306,6 @@
 
                 <div class="staff-container" id="staffContainer">
                     <!-- Staff members will be loaded here -->
-                    <div class="staff-card">
-                        <div class="staff-avatar">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <div class="staff-info">
-                            <h3>Admin User</h3>
-                            <p class="staff-role">Administrator</p>
-                            <div class="staff-permissions">
-                                <span class="permission-tag">All Access</span>
-                                <span class="permission-tag">User Management</span>
-                                <span class="permission-tag">System Settings</span>
-                            </div>
-                            <div class="staff-actions">
-                                <button class="btn-small btn-secondary">Edit</button>
-                                <button class="btn-small btn-danger">Remove</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -497,107 +479,6 @@
         </main>
     </div>
 
-    <!-- Modals -->
-    <!-- Booking Details Modal -->
-    <div class="modal" id="bookingDetailsModal">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h2>Booking Details</h2>
-                <button class="modal-close" onclick="closeModal('bookingDetailsModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="bookingDetailsContent">
-                    <!-- Booking details will be loaded here -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('bookingDetailsModal')">Close</button>
-                <button class="btn-primary" onclick="updateBookingStatusModal(currentBookingId)">Update Status</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Status Update Modal -->
-    <div class="modal" id="statusUpdateModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Update Booking Status</h2>
-                <button class="modal-close" onclick="closeModal('statusUpdateModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="statusUpdateForm">
-                    <div class="form-group">
-                        <label for="newStatus">New Status</label>
-                        <select id="newStatus" required>
-                            <option value="">Select status</option>
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="statusNotes">Notes (Optional)</label>
-                        <textarea id="statusNotes" placeholder="Add notes about this status update..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('statusUpdateModal')">Cancel</button>
-                <button class="btn-primary" onclick="saveStatusUpdate()">Update Status</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Staff Modal -->
-    <div class="modal" id="addStaffModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Add Staff Member</h2>
-                <button class="modal-close" onclick="closeModal('addStaffModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="addStaffForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="staffFirstName">First Name</label>
-                            <input type="text" id="staffFirstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="staffLastName">Last Name</label>
-                            <input type="text" id="staffLastName" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="staffEmail">Email Address</label>
-                        <input type="email" id="staffEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="staffRole">Role</label>
-                        <select id="staffRole" required>
-                            <option value="">Select role</option>
-                            <option value="staff">Staff Member</option>
-                            <option value="admin">Administrator</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="staffPassword">Temporary Password</label>
-                        <input type="password" id="staffPassword" value="password123">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('addStaffModal')">Cancel</button>
-                <button class="btn-primary" onclick="saveNewStaff()">Add Staff Member</button>
-            </div>
-        </div>
     </div>
 
     <!-- Footer -->
@@ -649,8 +530,44 @@
         </div>
     </footer>
 
+    <!-- Load JavaScript Files -->
     <script src="../js/script.js"></script>
-    <!-- <script src="../js/admin-dashboard.js"></script> -->
+    <script src="../js/admin-dashboard.js"></script>
+
+    <!-- Utility Functions for Settings (temporary placeholders) -->
+    <script>
+        // Additional functions that weren't in the original admin-dashboard.js
+        function createNewQuote() {
+            showNotification('Create new quote functionality would be implemented here', 'info');
+        }
+
+        function addNewStaff() {
+            showNotification('Add staff functionality would be implemented here', 'info');
+        }
+
+        function updateAnalytics() {
+            showNotification('Analytics updated for selected time range', 'info');
+        }
+
+        function refreshPendingActions() {
+            loadPendingActions();
+            showNotification('Pending actions refreshed!', 'info');
+        }
+
+        function changeAdminPassword() {
+            showNotification('Password change functionality would be implemented here', 'info');
+        }
+
+        function backupData() {
+            showNotification('Data backup functionality would be implemented here', 'info');
+        }
+
+        function systemReset() {
+            if (confirm('Are you sure you want to reset the system? This action cannot be undone.')) {
+                showNotification('System reset functionality would be implemented here', 'warning');
+            }
+        }
+    </script>
 
 </body>
 

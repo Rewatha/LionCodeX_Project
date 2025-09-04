@@ -1,3 +1,236 @@
+/* CSS Reset/Override for Admin Dashboard - OVERRIDES FIRST */
+
+/* Body-specific overrides for admin dashboard */
+body.admin-dashboard {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background: #f5f5f5 !important;
+}
+
+/* Navigation override */
+body.admin-dashboard .admin-nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    margin: 0 !important;
+    padding: 0 30px !important;
+    height: 70px !important;
+}
+
+/* Sidebar container override */
+body.admin-dashboard .admin-sidebar {
+    width: 280px !important;
+    background: white !important;
+    border-right: 1px solid #e9ecef !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+    position: static !important;
+    display: block !important;
+    height: auto !important;
+}
+
+/* Sidebar navigation override */
+body.admin-dashboard .sidebar-nav {
+    padding: 30px 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    flex-direction: column !important;
+}
+
+/* Navigation items override */
+body.admin-dashboard .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 15px 30px !important;
+    color: #666 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    border-left: 3px solid transparent !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+}
+
+body.admin-dashboard .nav-item:hover {
+    background: #f8f9fa !important;
+    color: #007bff !important;
+}
+
+body.admin-dashboard .nav-item.active {
+    background: rgba(0, 123, 255, 0.1) !important;
+    color: #007bff !important;
+    border-left-color: #007bff !important;
+}
+
+/* Navigation item icons */
+body.admin-dashboard .nav-item i {
+    width: 20px !important;
+    font-size: 1.1rem !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Navigation item text */
+body.admin-dashboard .nav-item span {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+}
+
+/* Navigation badges */
+body.admin-dashboard .nav-item .badge {
+    margin-left: auto !important;
+    background: #dc3545 !important;
+    color: white !important;
+    font-size: 0.75rem !important;
+    padding: 2px 8px !important;
+    border-radius: 10px !important;
+    min-width: 18px !important;
+    text-align: center !important;
+}
+
+/* Fix any link styling conflicts */
+body.admin-dashboard .sidebar-nav a {
+    color: inherit !important;
+    text-decoration: none !important;
+    display: flex !important;
+    position: static !important;
+}
+
+body.admin-dashboard .sidebar-nav a:hover,
+body.admin-dashboard .sidebar-nav a:focus,
+body.admin-dashboard .sidebar-nav a:active {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+/* Ensure proper container positioning */
+body.admin-dashboard .admin-container {
+    display: flex !important;
+    flex-direction: row !important;
+    margin-top: 70px !important;
+    min-height: calc(100vh - 70px) !important;
+}
+
+/* Reset any global navigation styles that might interfere */
+body.admin-dashboard .sidebar-nav ul,
+body.admin-dashboard .sidebar-nav li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Mobile responsiveness for sidebar */
+@media (max-width: 768px) {
+    body.admin-dashboard .admin-container {
+        flex-direction: column !important;
+    }
+    
+    body.admin-dashboard .admin-sidebar {
+        width: 100% !important;
+        order: 2 !important;
+    }
+    
+    body.admin-dashboard .admin-main {
+        order: 1 !important;
+    }
+    
+    body.admin-dashboard .sidebar-nav {
+        padding: 20px 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        gap: 10px !important;
+    }
+    
+    body.admin-dashboard .nav-item {
+        white-space: nowrap !important;
+        padding: 10px 20px !important;
+        border-left: none !important;
+        border-bottom: 3px solid transparent !important;
+    }
+    
+    body.admin-dashboard .nav-item.active {
+        border-left: none !important;
+        border-bottom-color: #007bff !important;
+    }
+}
+
+/* Container positioning override */
+body.admin-dashboard .admin-container {
+    margin-top: 70px !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-height: calc(100vh - 70px) !important;
+}
+
+/* Main content area override */
+body.admin-dashboard .admin-main {
+    padding: 20px 30px 30px 30px !important;
+    margin: 0 !important;
+}
+
+/* Section header override */
+body.admin-dashboard .section-header {
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
+}
+
+body.admin-dashboard .section-header h1 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Stats grid override */
+body.admin-dashboard .stats-grid {
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove any inherited margins/padding that might interfere */
+body.admin-dashboard * {
+    box-sizing: border-box;
+}
+
+/* Override any global nav styles that might conflict */
+body.admin-dashboard nav {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+body.admin-dashboard nav.admin-nav {
+    position: fixed !important;
+    background: white !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    padding: 0 30px !important;
+}
+
+/* Ensure footer doesn't interfere */
+body.admin-dashboard footer {
+    position: relative !important;
+    margin-top: 50px !important;
+}
+
+/* ================================================ */
+/* ADMIN DASHBOARD STYLES - MAIN STYLES BELOW */
+/* ================================================ */
+
 /* Admin Dashboard Layout */
 body {
     margin: 0;
@@ -162,7 +395,8 @@ body {
 .admin-container {
     display: flex;
     margin-top: 70px;
-    min-height: calc(100vh - 120px);
+    min-height: calc(100vh - 70px);
+    position: relative;
 }
 
 /* Sidebar */
@@ -219,9 +453,9 @@ body {
 /* Main Content */
 .admin-main {
     flex: 1;
-    padding: 30px;
+    padding: 20px 30px 30px 30px;
     overflow-y: auto;
-    margin-bottom: 50px;
+    min-height: calc(100vh - 70px);
 }
 
 .admin-section {
@@ -245,11 +479,12 @@ body {
     }
 }
 
+/* Section Header */
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -258,6 +493,7 @@ body {
     font-size: 2.2rem;
     color: #333;
     margin: 0;
+    padding: 0;
 }
 
 .header-actions,
@@ -289,7 +525,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 25px;
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
 }
 
 .stat-card {
@@ -487,6 +723,7 @@ body {
     background: #fff8e1;
     border-radius: 8px;
     font-size: 0.9rem;
+    cursor: pointer;
 }
 
 .pending-item.urgent {
@@ -588,6 +825,11 @@ body {
     color: #721c24;
 }
 
+.status-quoted {
+    background: #e2e3e5;
+    color: #495057;
+}
+
 .action-buttons {
     display: flex;
     gap: 8px;
@@ -676,6 +918,12 @@ body {
     margin-top: 15px;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.quote-amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #28a745;
 }
 
 /* Customer Grid */
@@ -1404,8 +1652,7 @@ body {
 
     .admin-main {
         order: 1;
-        padding: 20px;
-        margin-bottom: 60px;
+        padding: 15px 20px 20px 20px;
     }
 
     .admin-nav {
@@ -1431,6 +1678,11 @@ body {
     .section-header {
         flex-direction: column;
         align-items: flex-start;
+        margin: 5px 0 20px 0;
+    }
+
+    .section-header h1 {
+        font-size: 1.8rem;
     }
 
     .bookings-table-container {
@@ -1467,7 +1719,7 @@ body {
 
 @media (max-width: 480px) {
     .admin-main {
-        padding: 15px;
+        padding: 10px 15px 15px 15px;
     }
 
     .stats-grid {
