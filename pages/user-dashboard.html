@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dashboard - SealTech Engineering</title>
+    <title>Dashboard - SealTech Engineering</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/dashboard.css" rel="stylesheet">
 </head>
 
-<body class="user-dashboard">
+<body>
     <!-- Navigation -->
     <nav>
         <div class="logo">
@@ -23,18 +23,8 @@
             <li><a href="about.html">About Us</a></li>
             <li><a href="projects.html">Projects</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li class="user-menu">
-                <a href="#" class="user-trigger">
-                    <i class="fas fa-user"></i>
-                    <span id="userName">User</span>
-                    <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="user-dropdown">
-                    <a href="#" class="active">Dashboard</a>
-                    <a href="#" onclick="showProfileModal()">Profile</a>
-                    <a href="#" onclick="logout()">Logout</a>
-                </div>
-            </li>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
@@ -43,445 +33,195 @@
         </div>
     </nav>
 
-    <!-- Dashboard Container -->
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="dashboard-sidebar">
-            <div class="sidebar-header">
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="user-info">
-                    <h3 id="sidebarUserName">Loading...</h3>
-                    <p id="sidebarUserEmail">Loading...</p>
-                </div>
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="container">
+            <div class="welcome-section">
+                <h1>Welcome, <span id="userName">Customer</span>!</h1>
+                <p>Manage your waterproofing projects and requests</p>
             </div>
-
-            <nav class="sidebar-nav">
-                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#bookings" class="nav-item" onclick="showSection('bookings')">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>My Bookings</span>
-                    <span class="badge" id="bookingsBadge">0</span>
-                </a>
-                <a href="#quotes" class="nav-item" onclick="showSection('quotes')">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Quotes & Estimates</span>
-                </a>
-                <a href="#profile" class="nav-item" onclick="showSection('profile')">
-                    <i class="fas fa-user-edit"></i>
-                    <span>Profile Settings</span>
-                </a>
-                <a href="#support" class="nav-item" onclick="showSection('support')">
-                    <i class="fas fa-headset"></i>
-                    <span>Support</span>
-                </a>
-            </nav>
-
-            <div class="sidebar-footer">
-                <a href="booking.html" class="new-booking-btn">
+            <div class="quick-actions">
+                <a href="contact.html" class="action-btn primary">
                     <i class="fas fa-plus"></i>
-                    Book New Service
+                    New Quote Request
+                </a>
+                <a href="#" class="action-btn secondary">
+                    <i class="fas fa-phone"></i>
+                    Emergency Service
                 </a>
             </div>
-        </aside>
+        </div>
+    </section>
 
-        <!-- Main Content -->
-        <main class="dashboard-main">
-            <!-- Dashboard Overview Section -->
-            <section id="dashboard" class="dashboard-section active">
-                <div class="section-header">
-                    <h1>Dashboard Overview</h1>
-                    <p>Welcome back! Here's your account summary</p>
-                </div>
-
-                <!-- Stats Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar-check"></i>
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Overview Cards -->
+                <div class="overview-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-clipboard-list"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="totalBookings">0</h3>
-                            <p>Total Bookings</p>
+                        <div class="card-content">
+                            <h3>3</h3>
+                            <p>Active Projects</p>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="pendingBookings">0</h3>
-                            <p>Pending Bookings</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
+                    <div class="card">
+                        <div class="card-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="completedBookings">0</h3>
-                            <p>Completed Jobs</p>
+                        <div class="card-content">
+                            <h3>7</h3>
+                            <p>Completed Projects</p>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-dollar-sign"></i>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="totalSpent">LKR 0</h3>
-                            <p>Total Investment</p>
+                        <div class="card-content">
+                            <h3>2</h3>
+                            <p>Upcoming Appointments</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>5 Years</h3>
+                            <p>Warranty Remaining</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Activity -->
-                <div class="content-grid">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Recent Bookings</h2>
-                            <a href="#bookings" onclick="showSection('bookings')">View All</a>
-                        </div>
-                        <div class="card-content">
-                            <div id="recentBookings" class="activity-list">
-                                <div class="empty-state">
-                                    <i class="fas fa-calendar-plus"></i>
-                                    <p>No bookings yet</p>
-                                    <a href="booking.html" class="btn-primary">Book Your First Service</a>
-                                </div>
+                <!-- Recent Projects -->
+                <div class="dashboard-section">
+                    <h2>Recent Projects</h2>
+                    <div class="projects-list">
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h4>Roof Waterproofing - Main House</h4>
+                                <p>Started: Jan 15, 2025</p>
+                                <span class="status in-progress">In Progress</span>
+                            </div>
+                            <div class="project-actions">
+                                <button class="btn-small">View Details</button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Quick Actions</h2>
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h4>Bathroom Waterproofing</h4>
+                                <p>Completed: Dec 20, 2024</p>
+                                <span class="status completed">Completed</span>
+                            </div>
+                            <div class="project-actions">
+                                <button class="btn-small">View Details</button>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <div class="quick-actions">
-                                <a href="booking.html" class="action-btn">
-                                    <i class="fas fa-plus"></i>
-                                    <span>New Booking</span>
-                                </a>
-                                <a href="#support" onclick="showSection('support')" class="action-btn">
-                                    <i class="fas fa-headset"></i>
-                                    <span>Get Support</span>
-                                </a>
-                                <a href="services.html" class="action-btn">
-                                    <i class="fas fa-tools"></i>
-                                    <span>View Services</span>
-                                </a>
-                                <a href="#quotes" onclick="showSection('quotes')" class="action-btn">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <span>Request Quote</span>
-                                </a>
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h4>Foundation Sealing</h4>
+                                <p>Scheduled: Feb 1, 2025</p>
+                                <span class="status scheduled">Scheduled</span>
+                            </div>
+                            <div class="project-actions">
+                                <button class="btn-small">View Details</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Bookings Section -->
-            <section id="bookings" class="dashboard-section">
-                <div class="section-header">
-                    <h1>My Bookings</h1>
-                    <div class="section-actions">
-                        <div class="filter-buttons">
-                            <button class="filter-btn active" data-filter="all">All</button>
-                            <button class="filter-btn" data-filter="pending">Pending</button>
-                            <button class="filter-btn" data-filter="confirmed">Confirmed</button>
-                            <button class="filter-btn" data-filter="in-progress">In Progress</button>
-                            <button class="filter-btn" data-filter="completed">Completed</button>
+                <!-- Recent Quotes -->
+                <div class="dashboard-section">
+                    <h2>Quote Requests</h2>
+                    <div class="quotes-list">
+                        <div class="quote-item">
+                            <div class="quote-info">
+                                <h4>Wall Waterproofing Quote</h4>
+                                <p>Requested: Jan 10, 2025</p>
+                                <span class="status pending">Pending</span>
+                            </div>
+                            <div class="quote-actions">
+                                <button class="btn-small">View Quote</button>
+                            </div>
                         </div>
-                        <a href="booking.html" class="btn-primary">
-                            <i class="fas fa-plus"></i>
-                            New Booking
+                        <div class="quote-item">
+                            <div class="quote-info">
+                                <h4>Commercial Building Quote</h4>
+                                <p>Received: Jan 5, 2025</p>
+                                <span class="status received">Quote Ready</span>
+                            </div>
+                            <div class="quote-actions">
+                                <button class="btn-small">View Quote</button>
+                                <button class="btn-small primary">Accept</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Appointments -->
+                <div class="dashboard-section">
+                    <h2>Upcoming Appointments</h2>
+                    <div class="appointments-list">
+                        <div class="appointment-item">
+                            <div class="appointment-date">
+                                <div class="day">25</div>
+                                <div class="month">Jan</div>
+                            </div>
+                            <div class="appointment-info">
+                                <h4>Site Inspection</h4>
+                                <p>10:00 AM - 11:00 AM</p>
+                                <p>Main House - Roof Assessment</p>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="btn-small">Reschedule</button>
+                            </div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appointment-date">
+                                <div class="day">01</div>
+                                <div class="month">Feb</div>
+                            </div>
+                            <div class="appointment-info">
+                                <h4>Project Start</h4>
+                                <p>8:00 AM - 5:00 PM</p>
+                                <p>Foundation Waterproofing</p>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="btn-small">Contact Team</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="dashboard-section">
+                    <h2>Account Settings</h2>
+                    <div class="settings-grid">
+                        <a href="#" class="setting-item">
+                            <i class="fas fa-user"></i>
+                            <span>Edit Profile</span>
+                        </a>
+                        <a href="#" class="setting-item">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                        </a>
+                        <a href="#" class="setting-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Change Password</span>
+                        </a>
+                        <a href="#" class="setting-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Documents</span>
                         </a>
                     </div>
                 </div>
-
-                <div class="bookings-container" id="bookingsContainer">
-                    <!-- Bookings will be loaded here -->
-                </div>
-            </section>
-
-            <!-- Quotes Section -->
-            <section id="quotes" class="dashboard-section">
-                <div class="section-header">
-                    <h1>Quotes & Estimates</h1>
-                    <button class="btn-primary" onclick="requestNewQuote()">
-                        <i class="fas fa-plus"></i>
-                        Request New Quote
-                    </button>
-                </div>
-
-                <div class="quotes-container" id="quotesContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        <h3>No quotes yet</h3>
-                        <p>Request a quote for your waterproofing project</p>
-                        <button class="btn-primary" onclick="requestNewQuote()">Request Quote</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Profile Section -->
-            <section id="profile" class="dashboard-section">
-                <div class="section-header">
-                    <h1>Profile Settings</h1>
-                    <p>Manage your account information and preferences</p>
-                </div>
-
-                <div class="profile-container">
-                    <form id="profileForm" class="profile-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="text" id="profileFirstName" name="firstName" placeholder=" " required>
-                                <label for="profileFirstName">First Name</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="profileLastName" name="lastName" placeholder=" " required>
-                                <label for="profileLastName">Last Name</label>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="email" id="profileEmail" name="email" placeholder=" " required>
-                                <label for="profileEmail">Email Address</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="tel" id="profilePhone" name="phone" placeholder=" " required>
-                                <label for="profilePhone">Phone Number</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="profileAddress" name="address" placeholder=" " required></textarea>
-                            <label for="profileAddress">Address</label>
-                        </div>
-
-                        <div class="form-section">
-                            <h3>Preferences</h3>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="emailNotifications" name="emailNotifications">
-                                <label for="emailNotifications">Receive email notifications</label>
-                            </div>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="smsNotifications" name="smsNotifications">
-                                <label for="smsNotifications">Receive SMS notifications</label>
-                            </div>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="marketingEmails" name="marketingEmails">
-                                <label for="marketingEmails">Receive marketing emails</label>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" onclick="resetProfileForm()">Reset</button>
-                            <button type="submit" class="btn-primary">Save Changes</button>
-                        </div>
-                    </form>
-
-                    <div class="profile-actions">
-                        <h3>Account Actions</h3>
-                        <button class="btn-secondary" onclick="showChangePasswordModal()">
-                            <i class="fas fa-key"></i>
-                            Change Password
-                        </button>
-                        <button class="btn-danger" onclick="showDeleteAccountModal()">
-                            <i class="fas fa-trash"></i>
-                            Delete Account
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Support Section -->
-            <section id="support" class="dashboard-section">
-                <div class="section-header">
-                    <h1>Support & Help</h1>
-                    <p>Get help with your bookings and account</p>
-                </div>
-
-                <div class="support-container">
-                    <div class="support-options">
-                        <div class="support-card">
-                            <div class="support-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <h3>Phone Support</h3>
-                            <p>Call us for immediate assistance</p>
-                            <a href="tel:0776336464" class="btn-primary">077 633 6464</a>
-                        </div>
-
-                        <div class="support-card">
-                            <div class="support-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <h3>Email Support</h3>
-                            <p>Send us your questions via email</p>
-                            <a href="mailto:support@sealtechengineering.com" class="btn-primary">Send Email</a>
-                        </div>
-
-                        <div class="support-card">
-                            <div class="support-icon">
-                                <i class="fab fa-whatsapp"></i>
-                            </div>
-                            <h3>WhatsApp</h3>
-                            <p>Chat with us on WhatsApp</p>
-                            <a href="https://wa.me/94776336464" class="btn-primary">Start Chat</a>
-                        </div>
-                    </div>
-
-                    <div class="faq-section">
-                        <h3>Frequently Asked Questions</h3>
-                        <div class="faq-list">
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h4>How can I track my booking status?</h4>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>You can track your booking status in the "My Bookings" section of your dashboard. You'll receive updates via email and SMS as your booking progresses.</p>
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h4>Can I reschedule my appointment?</h4>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>Yes, you can reschedule your appointment up to 24 hours before the scheduled time. Contact our support team or use the reschedule option in your booking details.</p>
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h4>What payment methods do you accept?</h4>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>We accept cash, bank transfers, credit/debit cards, and mobile payment solutions like Frimi and PayPal. Payment is typically due after service completion.</p>
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleFaq(this)">
-                                    <h4>How long is the warranty on your work?</h4>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>We provide a comprehensive warranty on all our waterproofing work. The warranty period varies by service type, typically ranging from 5-15 years. Details are provided in your service agreement.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Modals -->
-    <!-- Change Password Modal -->
-    <div class="modal" id="changePasswordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Change Password</h2>
-                <button class="modal-close" onclick="closeModal('changePasswordModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="changePasswordForm" class="modal-body">
-                <div class="form-group">
-                    <input type="password" id="currentPassword" placeholder=" " required>
-                    <label for="currentPassword">Current Password</label>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="newPassword" placeholder=" " required>
-                    <label for="newPassword">New Password</label>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="confirmNewPassword" placeholder=" " required>
-                    <label for="confirmNewPassword">Confirm New Password</label>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('changePasswordModal')">Cancel</button>
-                <button class="btn-primary" onclick="changePassword()">Change Password</button>
             </div>
         </div>
-    </div>
-
-    <!-- Delete Account Modal -->
-    <div class="modal" id="deleteAccountModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Delete Account</h2>
-                <button class="modal-close" onclick="closeModal('deleteAccountModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="warning-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p><strong>Warning:</strong> This action cannot be undone. All your data, bookings, and account information will be permanently deleted.</p>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="deleteAccountPassword" placeholder=" " required>
-                    <label for="deleteAccountPassword">Enter your password to confirm</label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('deleteAccountModal')">Cancel</button>
-                <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Request Quote Modal -->
-    <div class="modal" id="requestQuoteModal">
-        <div class="modal-content large-modal">
-            <div class="modal-header">
-                <h2>Request New Quote</h2>
-                <button class="modal-close" onclick="closeModal('requestQuoteModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="quoteRequestForm" class="modal-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <select id="quoteServiceType" name="serviceType" required>
-                            <option value="">Select Service Type</option>
-                            <option value="roof">Roof Waterproofing</option>
-                            <option value="wall">Wall Waterproofing</option>
-                            <option value="foundation">Foundation Waterproofing</option>
-                            <option value="bathroom">Bathroom Waterproofing</option>
-                            <option value="basement">Basement Waterproofing</option>
-                            <option value="commercial">Commercial Waterproofing</option>
-                        </select>
-                        <label for="quoteServiceType">Service Type</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="quoteLocation" name="location" placeholder=" " required>
-                        <label for="quoteLocation">Project Location</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <textarea id="quoteDescription" name="description" placeholder=" " required></textarea>
-                    <label for="quoteDescription">Project Description</label>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('requestQuoteModal')">Cancel</button>
-                <button class="btn-primary" onclick="submitQuoteRequest()">Submit Request</button>
-            </div>
-        </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer>
@@ -490,50 +230,31 @@
                 <h3>SealTech Engineering</h3>
                 <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
                     with quality and reliability.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Our Services</h3>
-                <ul>
-                    <li><a href="../pages/services.html">Roof Waterproofing</a></li>
-                    <li><a href="../pages/services.html">Wall Waterproofing</a></li>
-                    <li><a href="../pages/services.html">Foundation Waterproofing</a></li>
-                    <li><a href="../pages/services.html">Bathroom Waterproofing</a></li>
-                    <li><a href="../pages/services.html">Building Restoration</a></li>
-                </ul>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#" class="active">About Us</a></li>
-                    <li><a href="../pages/services.html">Services</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
                     <li><a href="projects.html">Projects</a></li>
                     <li><a href="contact.html">Contact</a></li>
-                    <li><a href="../index.html">Get Quote</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Contact Info</h3>
                 <ul>
                     <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
-                    <li><i class="fas fa-envelope"></i> <a
-                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
-                    <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 SealTech Engineering. All Rights Reserved. | Designed by Lion CodeX Team</p>
+            <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
         </div>
     </footer>
-    
+
     <script src="../js/script.js"></script>
-    <!-- <script src="../js/dashboard.js"></script>  -->
+    <script src="../js/dashboard.js"></script>
 
 </body>
 
