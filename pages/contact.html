@@ -39,6 +39,9 @@
         </div>
     </section>
 
+    <!-- Authentication Required Section (will be populated by JavaScript) -->
+    <div id="auth-required-section"></div>
+
     <!-- Contact Methods -->
     <section class="contact-methods">
         <div class="container">
@@ -88,7 +91,10 @@
                     <p>Fill out the form below and we'll get back to you within 24 hours with a comprehensive quote for
                         your waterproofing needs.</p>
 
-                    <form class="contact-form" action="submit_form.php" method="POST" id="contactForm">
+                    <!-- Alert container for form feedback -->
+                    <div id="form-alerts"></div>
+
+                    <form class="contact-form" id="contactForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <input type="text" name="firstName" id="firstName" placeholder=" " required>
@@ -300,8 +306,7 @@
                 <h3>Contact Info</h3>
                 <ul>
                     <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
-                    <li><i class="fas fa-envelope"></i> <a
-                            href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    <li><a href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
                     <li><i class="fas fa-map-marker-alt"></i> No.280/4 D, Daluwakotuwa, Kochchikade, Negombo</li>
                 </ul>
             </div>
@@ -311,7 +316,9 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="../js/script.js"></script>
+    <script src="../js/session-manager.js"></script>
     <script src="../js/contact.js"></script>
 
 </body>
