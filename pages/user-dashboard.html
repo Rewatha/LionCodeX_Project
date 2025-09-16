@@ -11,251 +11,190 @@
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <img src="../images/logo.png" alt="Company Logo">
-            SealTech Engineering
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading Dashboard...</p>
         </div>
-        <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="#" class="active">Dashboard</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-        <div class="menu-toggle" id="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+    </div>
 
-    <!-- Dashboard Header -->
-    <section class="dashboard-header">
-        <div class="container">
-            <div class="welcome-section">
-                <h1>Welcome, <span id="userName">Customer</span>!</h1>
-                <p>Manage your waterproofing projects and requests</p>
-            </div>
-            <div class="quick-actions">
-                <a href="contact.html" class="action-btn primary">
-                    <i class="fas fa-plus"></i>
-                    New Quote Request
-                </a>
-                <a href="#" class="action-btn secondary">
-                    <i class="fas fa-phone"></i>
-                    Emergency Service
-                </a>
-            </div>
+    <!-- Access Denied Screen -->
+    <div id="access-denied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <i class="fas fa-lock"></i>
+            <h2>Access Denied</h2>
+            <p>You need to login to access your dashboard.</p>
+            <a href="auth.html" class="btn-primary">Login</a>
         </div>
-    </section>
+    </div>
 
-    <!-- Dashboard Content -->
-    <section class="dashboard-content">
-        <div class="container">
-            <div class="dashboard-grid">
-                <!-- Overview Cards -->
-                <div class="overview-cards">
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-clipboard-list"></i>
+    <!-- Main Dashboard Content -->
+    <div id="dashboard-content" style="display: none;">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">
+                <img src="../images/logo.png" alt="Company Logo">
+                SealTech Engineering
+            </div>
+            <ul class="nav-links">
+                <!-- Navigation will be populated by session manager -->
+            </ul>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Dashboard Header -->
+        <section class="dashboard-header">
+            <div class="container">
+                <div class="welcome-section">
+                    <h1>Welcome, <span id="userName">Customer</span>!</h1>
+                    <p>Manage your waterproofing projects and requests</p>
+                </div>
+                <div class="quick-actions">
+                    <a href="contact.html" class="action-btn primary">
+                        <i class="fas fa-plus"></i>
+                        New Quote Request
+                    </a>
+                    <a href="tel:0776336464" class="action-btn secondary">
+                        <i class="fas fa-phone"></i>
+                        Emergency Service
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Content -->
+        <section class="dashboard-content">
+            <div class="container">
+                <div class="dashboard-grid">
+                    <!-- Overview Cards -->
+                    <div class="overview-cards">
+                        <div class="card">
+                            <div class="card-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 id="activeProjectsCount">0</h3>
+                                <p>Active Projects</p>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <h3>3</h3>
-                            <p>Active Projects</p>
+                        <div class="card">
+                            <div class="card-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 id="completedProjectsCount">0</h3>
+                                <p>Completed Projects</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 id="upcomingAppointmentsCount">0</h3>
+                                <p>Upcoming Appointments</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 id="pendingInquiriesCount">0</h3>
+                                <p>Pending Inquiries</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>7</h3>
-                            <p>Completed Projects</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-calendar"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>2</h3>
-                            <p>Upcoming Appointments</p>
+
+                    <!-- Recent Projects -->
+                    <div class="dashboard-section">
+                        <h2>Recent Projects</h2>
+                        <div class="projects-list" id="projectsList">
+                            <!-- Projects will be loaded here -->
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-shield-alt"></i>
+
+                    <!-- Recent Quotes -->
+                    <div class="dashboard-section">
+                        <h2>Quote Requests</h2>
+                        <div class="quotes-list" id="quotesList">
+                            <!-- Quotes will be loaded here -->
                         </div>
-                        <div class="card-content">
-                            <h3>5 Years</h3>
-                            <p>Warranty Remaining</p>
+                    </div>
+
+                    <!-- Upcoming Appointments -->
+                    <div class="dashboard-section">
+                        <h2>Upcoming Appointments</h2>
+                        <div class="appointments-list" id="appointmentsList">
+                            <!-- Appointments will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="dashboard-section">
+                        <h2>Account Settings</h2>
+                        <div class="settings-grid">
+                            <a href="#" class="setting-item" onclick="openEditProfile()">
+                                <i class="fas fa-user"></i>
+                                <span>Edit Profile</span>
+                            </a>
+                            <a href="#" class="setting-item" onclick="openNotificationSettings()">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                            <a href="#" class="setting-item" onclick="openChangePassword()">
+                                <i class="fas fa-lock"></i>
+                                <span>Change Password</span>
+                            </a>
+                            <a href="#" class="setting-item" onclick="openDocuments()">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Documents</span>
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Recent Projects -->
-                <div class="dashboard-section">
-                    <h2>Recent Projects</h2>
-                    <div class="projects-list">
-                        <div class="project-item">
-                            <div class="project-info">
-                                <h4>Roof Waterproofing - Main House</h4>
-                                <p>Started: Jan 15, 2025</p>
-                                <span class="status in-progress">In Progress</span>
-                            </div>
-                            <div class="project-actions">
-                                <button class="btn-small">View Details</button>
-                            </div>
-                        </div>
-                        <div class="project-item">
-                            <div class="project-info">
-                                <h4>Bathroom Waterproofing</h4>
-                                <p>Completed: Dec 20, 2024</p>
-                                <span class="status completed">Completed</span>
-                            </div>
-                            <div class="project-actions">
-                                <button class="btn-small">View Details</button>
-                            </div>
-                        </div>
-                        <div class="project-item">
-                            <div class="project-info">
-                                <h4>Foundation Sealing</h4>
-                                <p>Scheduled: Feb 1, 2025</p>
-                                <span class="status scheduled">Scheduled</span>
-                            </div>
-                            <div class="project-actions">
-                                <button class="btn-small">View Details</button>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SealTech Engineering</h3>
+                    <p>Your trusted partner for professional waterproofing solutions.</p>
                 </div>
-
-                <!-- Recent Quotes -->
-                <div class="dashboard-section">
-                    <h2>Quote Requests</h2>
-                    <div class="quotes-list">
-                        <div class="quote-item">
-                            <div class="quote-info">
-                                <h4>Wall Waterproofing Quote</h4>
-                                <p>Requested: Jan 10, 2025</p>
-                                <span class="status pending">Pending</span>
-                            </div>
-                            <div class="quote-actions">
-                                <button class="btn-small">View Quote</button>
-                            </div>
-                        </div>
-                        <div class="quote-item">
-                            <div class="quote-info">
-                                <h4>Commercial Building Quote</h4>
-                                <p>Received: Jan 5, 2025</p>
-                                <span class="status received">Quote Ready</span>
-                            </div>
-                            <div class="quote-actions">
-                                <button class="btn-small">View Quote</button>
-                                <button class="btn-small primary">Accept</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
                 </div>
-
-                <!-- Upcoming Appointments -->
-                <div class="dashboard-section">
-                    <h2>Upcoming Appointments</h2>
-                    <div class="appointments-list">
-                        <div class="appointment-item">
-                            <div class="appointment-date">
-                                <div class="day">25</div>
-                                <div class="month">Jan</div>
-                            </div>
-                            <div class="appointment-info">
-                                <h4>Site Inspection</h4>
-                                <p>10:00 AM - 11:00 AM</p>
-                                <p>Main House - Roof Assessment</p>
-                            </div>
-                            <div class="appointment-actions">
-                                <button class="btn-small">Reschedule</button>
-                            </div>
-                        </div>
-                        <div class="appointment-item">
-                            <div class="appointment-date">
-                                <div class="day">01</div>
-                                <div class="month">Feb</div>
-                            </div>
-                            <div class="appointment-info">
-                                <h4>Project Start</h4>
-                                <p>8:00 AM - 5:00 PM</p>
-                                <p>Foundation Waterproofing</p>
-                            </div>
-                            <div class="appointment-actions">
-                                <button class="btn-small">Contact Team</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Account Settings -->
-                <div class="dashboard-section">
-                    <h2>Account Settings</h2>
-                    <div class="settings-grid">
-                        <a href="#" class="setting-item">
-                            <i class="fas fa-user"></i>
-                            <span>Edit Profile</span>
-                        </a>
-                        <a href="#" class="setting-item">
-                            <i class="fas fa-bell"></i>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="#" class="setting-item">
-                            <i class="fas fa-lock"></i>
-                            <span>Change Password</span>
-                        </a>
-                        <a href="#" class="setting-item">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Documents</span>
-                        </a>
-                    </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>SealTech Engineering</h3>
-                <p>Your trusted partner for professional waterproofing solutions. Protecting properties across Sri Lanka
-                    with quality and reliability.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="services.html">Services</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
-                    <li><i class="fas fa-envelope"></i> <a href="mailto:sealtechengineering@gmail.com">sealtechengineering@gmail.com</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
-        </div>
-    </footer>
-
+    <!-- Scripts -->
     <script src="../js/script.js"></script>
-    <script src="../js/dashboard.js"></script>
     <script src="../js/session-manager.js"></script>
+    <script src="../js/dashboard.js"></script>
 
 </body>
 
