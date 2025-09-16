@@ -41,4 +41,7 @@ const observer = new IntersectionObserver((entries) => {
     });
 });
 
-observer.observe(document.querySelector('.project-stats'));
+const projectStatsElement = document.querySelector('.project-stats');
+if (projectStatsElement) {
+    observer.observe(projectStatsElement);
+}   

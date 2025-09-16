@@ -45,7 +45,7 @@ function showAlert(message, type) {
     const alert = document.getElementById('alertMessage');
     alert.textContent = message;
     alert.className = `alert ${type} show`;
-    
+
     // Auto-hide after 5 seconds
     setTimeout(() => {
         hideAlert();
@@ -101,7 +101,7 @@ function addFieldValidation() {
     emailFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.addEventListener('blur', function() {
+            field.addEventListener('blur', function () {
                 if (this.value && !validateEmail(this.value)) {
                     this.style.borderColor = '#dc3545';
                 } else {
@@ -115,7 +115,7 @@ function addFieldValidation() {
     passwordFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.addEventListener('input', function() {
+            field.addEventListener('input', function () {
                 if (this.value && !validatePassword(this.value)) {
                     this.style.borderColor = '#ffc107';
                 } else if (this.value) {
@@ -131,7 +131,7 @@ function addFieldValidation() {
     nameFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.addEventListener('blur', function() {
+            field.addEventListener('blur', function () {
                 if (this.value && !validateName(this.value)) {
                     this.style.borderColor = '#dc3545';
                 } else {
@@ -144,7 +144,7 @@ function addFieldValidation() {
     // Phone validation
     const phoneFieldElement = document.getElementById(phoneField);
     if (phoneFieldElement) {
-        phoneFieldElement.addEventListener('blur', function() {
+        phoneFieldElement.addEventListener('blur', function () {
             if (this.value && !validatePhone(this.value)) {
                 this.style.borderColor = '#dc3545';
             } else {
@@ -156,7 +156,7 @@ function addFieldValidation() {
     // Confirm password validation
     const confirmPasswordField = document.getElementById('confirmPassword');
     if (confirmPasswordField) {
-        confirmPasswordField.addEventListener('input', function() {
+        confirmPasswordField.addEventListener('input', function () {
             const password = document.getElementById('registerPassword').value;
             if (this.value && this.value !== password) {
                 this.style.borderColor = '#dc3545';
@@ -171,52 +171,52 @@ function addFieldValidation() {
 
 // User data management
 const userData = {
-    save: function(user) {
+    save: function (user) {
         // In a real application, this would be sent to your backend API
         localStorage.setItem('currentUser', JSON.stringify(user));
     },
-    
-    get: function() {
+
+    get: function () {
         const user = localStorage.getItem('currentUser');
         return user ? JSON.parse(user) : null;
     },
-    
-    remove: function() {
+
+    remove: function () {
         localStorage.removeItem('currentUser');
     },
-    
-    authenticate: function(email, password) {
+
+    authenticate: function (email, password) {
         // In a real application, this would validate against your backend
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         return users.find(user => user.email === email && user.password === password);
     },
-    
-    register: function(user) {
+
+    register: function (user) {
         // In a real application, this would be sent to your backend API
         let users = JSON.parse(localStorage.getItem('users') || '[]');
-        
+
         // Check if user already exists
         if (users.find(u => u.email === user.email)) {
             return { success: false, message: 'Email already registered' };
         }
-        
+
         // Add user
         user.id = Date.now();
         user.createdAt = new Date().toISOString();
         user.verified = false;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
-        
+
         return { success: true, message: 'Registration successful' };
     }
 };
 
 // Login form submission
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
-    
+
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const email = document.getElementById('loginEmail').value.trim();
@@ -244,14 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 // Attempt to authenticate user
                 const user = userData.authenticate(email, password);
-                
+
                 if (user) {
                     userData.save(user);
                     showAlert('Login successful! Redirecting...', 'success');
-                    
+
                     setTimeout(() => {
                         // Redirect based on user type
-                        switch(user.userType) {
+                        switch (user.userType) {
                             case 'admin':
                                 window.location.href = 'admin-dashboard.html';
                                 break;
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     showAlert('Invalid email or password. Please try again.', 'error');
                 }
-                
+
                 // Reset button
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -275,10 +275,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Register form submission
     const registerForm = document.getElementById('registerForm');
-    
+
     if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
+        registerForm.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            // ADD THIS DEBUG CODE:
+            console.log('Registration form submitted!');
+            console.log('Form data:', {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email
+            });
+            alert('Form submission detected!');
+            // END DEBUG CODE
 
             const formData = {
                 firstName: document.getElementById('firstName').value.trim(),
@@ -348,13 +358,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Simulate API call
             setTimeout(() => {
                 const result = userData.register(formData);
-                
+
                 if (result.success) {
                     showAlert('Registration successful! Please check your email for verification.', 'success');
-                    
+
                     // Reset form
                     this.reset();
-                    
+
                     // Switch to login form after delay
                     setTimeout(() => {
                         switchForm('login');
@@ -363,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     showAlert(result.message, 'error');
                 }
-                
+
                 // Reset button
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -377,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Session management
 const sessionManager = {
-    init: function() {
+    init: function () {
         // Check if user is already logged in
         const currentUser = userData.get();
         if (currentUser && window.location.pathname.includes('auth.html')) {
@@ -385,9 +395,9 @@ const sessionManager = {
             this.redirectToDashboard(currentUser);
         }
     },
-    
-    redirectToDashboard: function(user) {
-        switch(user.userType) {
+
+    redirectToDashboard: function (user) {
+        switch (user.userType) {
             case 'admin':
                 window.location.href = 'admin-dashboard.html';
                 break;
@@ -398,8 +408,8 @@ const sessionManager = {
                 window.location.href = 'user-dashboard.html';
         }
     },
-    
-    logout: function() {
+
+    logout: function () {
         userData.remove();
         window.location.href = 'auth.html';
     }
@@ -410,35 +420,35 @@ sessionManager.init();
 
 // Auto-save form data (prevent data loss on refresh)
 const formAutoSave = {
-    save: function(formId) {
+    save: function (formId) {
         const form = document.getElementById(formId);
         if (!form) return;
-        
+
         const formData = new FormData(form);
         const data = {};
-        
+
         for (let [key, value] of formData.entries()) {
             if (key !== 'password' && key !== 'confirmPassword') { // Don't save passwords
                 data[key] = value;
             }
         }
-        
+
         sessionStorage.setItem(`${formId}_data`, JSON.stringify(data));
     },
-    
-    load: function(formId) {
+
+    load: function (formId) {
         const savedData = sessionStorage.getItem(`${formId}_data`);
         if (!savedData) return;
-        
+
         const data = JSON.parse(savedData);
         const form = document.getElementById(formId);
         if (!form) return;
-        
+
         Object.keys(data).forEach(key => {
             const field = form.querySelector(`[name="${key}"]`);
             if (field && field.type !== 'password') {
                 field.value = data[key];
-                
+
                 // Trigger label animation for non-empty fields
                 if (data[key] && field.nextElementSibling && field.nextElementSibling.tagName === 'LABEL') {
                     field.nextElementSibling.classList.add('active');
@@ -446,34 +456,34 @@ const formAutoSave = {
             }
         });
     },
-    
-    clear: function(formId) {
+
+    clear: function (formId) {
         sessionStorage.removeItem(`${formId}_data`);
     }
 };
 
 // Auto-save form data on input
-document.addEventListener('input', function(e) {
+document.addEventListener('input', function (e) {
     if (e.target.form && (e.target.form.id === 'loginForm' || e.target.form.id === 'registerForm')) {
         formAutoSave.save(e.target.form.id);
     }
 });
 
 // Load saved form data on page load
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     formAutoSave.load('loginForm');
     formAutoSave.load('registerForm');
 });
 
 // Clear saved data on successful submission
-document.addEventListener('submit', function(e) {
+document.addEventListener('submit', function (e) {
     if (e.target.id === 'loginForm' || e.target.id === 'registerForm') {
         formAutoSave.clear(e.target.id);
     }
 });
 
 // Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     // Ctrl/Cmd + Enter to submit active form
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         const activeForm = document.querySelector('.auth-form.active');
@@ -482,7 +492,7 @@ document.addEventListener('keydown', function(e) {
             activeForm.querySelector('.submit-btn').click();
         }
     }
-    
+
     // Escape to clear alerts
     if (e.key === 'Escape') {
         hideAlert();
@@ -490,19 +500,19 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Accessibility enhancements
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Add ARIA labels
     const forms = document.querySelectorAll('.auth-form');
     forms.forEach(form => {
         form.setAttribute('role', 'form');
         form.setAttribute('aria-labelledby', form.querySelector('.form-title').id || 'form-title');
     });
-    
+
     // Announce form switches to screen readers
     const originalSwitchForm = window.switchForm;
-    window.switchForm = function(formType) {
+    window.switchForm = function (formType) {
         originalSwitchForm(formType);
-        
+
         // Announce to screen readers
         const announcement = document.createElement('div');
         announcement.setAttribute('aria-live', 'polite');
@@ -511,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
         announcement.style.left = '-10000px';
         announcement.textContent = `Switched to ${formType} form`;
         document.body.appendChild(announcement);
-        
+
         setTimeout(() => {
             document.body.removeChild(announcement);
         }, 1000);

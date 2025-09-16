@@ -8,14 +8,14 @@ if (!defined('SEALTECH_APP')) {
 }
 
 // Environment settings
-define('ENVIRONMENT', 'development'); // 'development' or 'production'
+define('ENVIRONMENT', 'development');
 define('DEBUG_MODE', ENVIRONMENT === 'development');
 
 // Database Configuration
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'sealtech_db');
-define('DB_USER', 'your_db_username');
-define('DB_PASS', 'your_db_password');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 // Email Configuration
@@ -28,25 +28,25 @@ define('MAIL_FROM_NAME', 'SealTech Engineering');
 define('MAIL_TO_EMAIL', 'sealtechengineering@gmail.com');
 
 // Site Configuration
-define('SITE_URL', 'https://your-domain.com');
+define('SITE_URL', 'http://localhost/LionCodeX_Project');
 define('SITE_NAME', 'SealTech Engineering');
 define('ADMIN_EMAIL', 'admin@sealtechengineering.com');
 define('COMPANY_PHONE', '077 633 6464');
 define('COMPANY_ADDRESS', 'No.280/4 D, Daluwakotuwa, Kochchikade, Negombo');
 
 // Security Configuration
-define('SESSION_LIFETIME', 3600); // 1 hour in seconds
-define('REMEMBER_TOKEN_LIFETIME', 2592000); // 30 days in seconds
-define('PASSWORD_RESET_EXPIRY', 3600); // 1 hour in seconds
-define('EMAIL_VERIFICATION_EXPIRY', 86400); // 24 hours in seconds
+define('SESSION_LIFETIME', 3600);
+define('REMEMBER_TOKEN_LIFETIME', 2592000);
+define('PASSWORD_RESET_EXPIRY', 3600);
+define('EMAIL_VERIFICATION_EXPIRY', 86400);
 
 // Rate Limiting
-define('CONTACT_FORM_RATE_LIMIT', 5); // Max submissions per hour
-define('LOGIN_RATE_LIMIT', 10); // Max login attempts per hour
-define('PASSWORD_RESET_RATE_LIMIT', 3); // Max reset requests per hour
+define('CONTACT_FORM_RATE_LIMIT', 5);
+define('LOGIN_RATE_LIMIT', 10);
+define('PASSWORD_RESET_RATE_LIMIT', 3);
 
 // File Upload Configuration
-define('MAX_FILE_SIZE', 5242880); // 5MB in bytes
+define('MAX_FILE_SIZE', 5242880);
 define('ALLOWED_FILE_TYPES', ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx']);
 define('UPLOAD_DIR', 'uploads/');
 
@@ -79,7 +79,7 @@ if (DEBUG_MODE) {
     ini_set('error_log', LOGS_PATH . '/php_errors.log');
 }
 
-// Session Configuration
+// Session Configuration - BEFORE session_start()
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_secure', !DEBUG_MODE);
 ini_set('session.use_strict_mode', 1);
@@ -139,7 +139,6 @@ function validateEmail($email) {
 }
 
 function validatePhone($phone) {
-    // Sri Lankan phone number validation
     $phone = preg_replace('/[\s\-]/', '', $phone);
     return preg_match('/^(\+94|0)?[7][0-9]{8}$/', $phone);
 }
@@ -179,36 +178,6 @@ function sendEmail($to, $subject, $body, $isHTML = true) {
     return mail($to, $subject, $body, implode("\r\n", $headers));
 }
 
-function formatCurrency($amount, $currency = 'LKR') {
-    return $currency . ' ' . number_format($amount, 2);
-}
-
-function formatDate($date, $format = 'Y-m-d') {
-    if ($date instanceof DateTime) {
-        return $date->format($format);
-    }
-    return date($format, strtotime($date));
-}
-
-function formatDateTime($datetime, $format = 'Y-m-d H:i:s') {
-    if ($datetime instanceof DateTime) {
-        return $datetime->format($format);
-    }
-    return date($format, strtotime($datetime));
-}
-
-function isValidCSRFToken($token) {
-    return isset($_SESSION['csrf_token']) && 
-           hash_equals($_SESSION['csrf_token'], $token);
-}
-
-function generateCSRFToken() {
-    if (!isset($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = generateToken();
-    }
-    return $_SESSION['csrf_token'];
-}
-
 function checkRateLimit($identifier, $limit, $timeWindow = 3600) {
     $key = "rate_limit_" . md5($identifier);
     $current_time = time();
@@ -217,7 +186,6 @@ function checkRateLimit($identifier, $limit, $timeWindow = 3600) {
         $_SESSION[$key] = [];
     }
     
-    // Remove old entries
     $_SESSION[$key] = array_filter(
         $_SESSION[$key],
         function($timestamp) use ($current_time, $timeWindow) {
@@ -225,33 +193,16 @@ function checkRateLimit($identifier, $limit, $timeWindow = 3600) {
         }
     );
     
-    // Check if limit exceeded
     if (count($_SESSION[$key]) >= $limit) {
         return false;
     }
     
-    // Add current attempt
     $_SESSION[$key][] = $current_time;
     return true;
 }
 
 function isLoggedIn() {
     return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-}
-
-function requireLogin() {
-    if (!isLoggedIn()) {
-        header('Location: pages/auth.html');
-        exit;
-    }
-}
-
-function requireRole($requiredRole) {
-    requireLogin();
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== $requiredRole) {
-        http_response_code(403);
-        die('Access denied');
-    }
 }
 
 function getUserType() {
@@ -262,70 +213,12 @@ function getUserId() {
     return $_SESSION['user_id'] ?? null;
 }
 
-function getUserName() {
-    return $_SESSION['user_name'] ?? 'User';
+function generateCSRFToken() {
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = generateToken();
+    }
+    return $_SESSION['csrf_token'];
 }
-
-function redirectTo($url) {
-    header("Location: $url");
-    exit;
-}
-
-function jsonResponse($data, $statusCode = 200) {
-    http_response_code($statusCode);
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
-}
-
-function formatFileSize($bytes) {
-    $units = ['B', 'KB', 'MB', 'GB'];
-    $bytes = max($bytes, 0);
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
-    $bytes /= pow(1024, $pow);
-    return round($bytes, 2) . ' ' . $units[$pow];
-}
-
-function isValidFileType($filename) {
-    $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-    return in_array($extension, ALLOWED_FILE_TYPES);
-}
-
-function createSlug($string) {
-    $slug = strtolower($string);
-    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
-    $slug = trim($slug, '-');
-    return $slug;
-}
-
-// Service Status Constants
-define('SERVICE_STATUS_NEW', 'new');
-define('SERVICE_STATUS_CONTACTED', 'contacted');
-define('SERVICE_STATUS_QUOTED', 'quoted');
-define('SERVICE_STATUS_CONVERTED', 'converted');
-define('SERVICE_STATUS_CLOSED', 'closed');
-
-// Project Status Constants
-define('PROJECT_STATUS_PLANNING', 'planning');
-define('PROJECT_STATUS_SCHEDULED', 'scheduled');
-define('PROJECT_STATUS_IN_PROGRESS', 'in_progress');
-define('PROJECT_STATUS_ON_HOLD', 'on_hold');
-define('PROJECT_STATUS_COMPLETED', 'completed');
-define('PROJECT_STATUS_CANCELLED', 'cancelled');
-
-// Priority Constants
-define('PRIORITY_LOW', 'low');
-define('PRIORITY_MEDIUM', 'medium');
-define('PRIORITY_HIGH', 'high');
-define('PRIORITY_URGENT', 'urgent');
-
-// User Types
-define('USER_TYPE_INDIVIDUAL', 'individual');
-define('USER_TYPE_BUSINESS', 'business');
-define('USER_TYPE_CONTRACTOR', 'contractor');
-define('USER_TYPE_STAFF', 'staff');
-define('USER_TYPE_ADMIN', 'admin');
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
