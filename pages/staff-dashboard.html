@@ -11,368 +11,394 @@
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <img src="../images/logo.png" alt="Company Logo">
-            SealTech Engineering
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading Dashboard...</p>
         </div>
-        <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="#" class="active">Staff Panel</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-        <div class="menu-toggle" id="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+    </div>
 
-    <!-- Staff Header -->
-    <section class="staff-header">
-        <div class="container">
-            <div class="staff-welcome">
-                <h1>Welcome, <span id="staffName">Staff Member</span></h1>
-                <p>Manage your assigned projects and schedule</p>
+    <!-- Access Denied Screen -->
+    <div id="access-denied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <i class="fas fa-lock"></i>
+            <h2>Access Denied</h2>
+            <p>You need proper authorization to access this dashboard.</p>
+            <a href="auth.html" class="btn-primary">Login</a>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div id="dashboard-content" style="display: none;">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">
+                <img src="../images/logo.png" alt="Company Logo">
+                SealTech Engineering
             </div>
-            <div class="staff-status">
-                <div class="status-card">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <h3>8:30 AM</h3>
-                        <p>Clock In Time</p>
-                    </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#" class="active">Staff Panel</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Staff Header -->
+        <section class="staff-header">
+            <div class="container">
+                <div class="staff-welcome">
+                    <h1>Welcome, <span id="staffName">Staff Member</span></h1>
+                    <p>Manage your assigned projects and schedule</p>
                 </div>
-                <div class="status-card">
-                    <i class="fas fa-tasks"></i>
-                    <div>
-                        <h3>5</h3>
-                        <p>Today's Tasks</p>
+                <div class="staff-status">
+                    <div class="status-card">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>8:30 AM</h3>
+                            <p>Clock In Time</p>
+                        </div>
                     </div>
-                </div>
-                <div class="status-card active">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h3>On Site</h3>
-                        <p>Current Status</p>
+                    <div class="status-card">
+                        <i class="fas fa-tasks"></i>
+                        <div>
+                            <h3>5</h3>
+                            <p>Today's Tasks</p>
+                        </div>
+                    </div>
+                    <div class="status-card active">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>On Site</h3>
+                            <p>Current Status</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Staff Content -->
-    <section class="staff-content">
-        <div class="container">
-            <div class="staff-grid">
-                
-                <!-- Today's Schedule -->
-                <div class="staff-section">
-                    <h2>Today's Schedule</h2>
-                    <div class="schedule-list">
-                        <div class="schedule-item current">
-                            <div class="time">
-                                <span class="hour">9:00</span>
-                                <span class="period">AM</span>
+        <!-- Staff Content -->
+        <section class="staff-content">
+            <div class="container">
+                <div class="staff-grid">
+
+                    <!-- Today's Schedule -->
+                    <div class="staff-section">
+                        <h2>Today's Schedule</h2>
+                        <div class="schedule-list">
+                            <div class="schedule-item current">
+                                <div class="time">
+                                    <span class="hour">9:00</span>
+                                    <span class="period">AM</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>Site Inspection</h4>
+                                    <p>Villa Roof Assessment - Colombo 7</p>
+                                    <p class="customer">Customer: Mr. K. Rathnayake</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status in-progress">In Progress</span>
+                                    <button class="btn-small">Update</button>
+                                </div>
                             </div>
-                            <div class="task-info">
-                                <h4>Site Inspection</h4>
-                                <p>Villa Roof Assessment - Colombo 7</p>
-                                <p class="customer">Customer: Mr. K. Rathnayake</p>
+                            <div class="schedule-item">
+                                <div class="time">
+                                    <span class="hour">11:30</span>
+                                    <span class="period">AM</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>Material Pickup</h4>
+                                    <p>Collect waterproofing materials from warehouse</p>
+                                    <p class="customer">For: Office Building Project</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status pending">Pending</span>
+                                    <button class="btn-small">Start</button>
+                                </div>
                             </div>
-                            <div class="task-status">
-                                <span class="status in-progress">In Progress</span>
-                                <button class="btn-small">Update</button>
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="time">
-                                <span class="hour">11:30</span>
-                                <span class="period">AM</span>
-                            </div>
-                            <div class="task-info">
-                                <h4>Material Pickup</h4>
-                                <p>Collect waterproofing materials from warehouse</p>
-                                <p class="customer">For: Office Building Project</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status pending">Pending</span>
-                                <button class="btn-small">Start</button>
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="time">
-                                <span class="hour">2:00</span>
-                                <span class="period">PM</span>
-                            </div>
-                            <div class="task-info">
-                                <h4>Foundation Waterproofing</h4>
-                                <p>Continue foundation sealing work - Phase 2</p>
-                                <p class="customer">Customer: ABC Company Ltd</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status scheduled">Scheduled</span>
-                                <button class="btn-small">View Details</button>
+                            <div class="schedule-item">
+                                <div class="time">
+                                    <span class="hour">2:00</span>
+                                    <span class="period">PM</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>Foundation Waterproofing</h4>
+                                    <p>Continue foundation sealing work - Phase 2</p>
+                                    <p class="customer">Customer: ABC Company Ltd</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status scheduled">Scheduled</span>
+                                    <button class="btn-small">View Details</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Assigned Projects -->
-                <div class="staff-section">
-                    <h2>My Projects</h2>
-                    <div class="projects-list">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h4>Luxury Villa Waterproofing</h4>
-                                <span class="priority high">High Priority</span>
-                            </div>
-                            <div class="project-details">
-                                <p><strong>Customer:</strong> Mr. K. Rathnayake</p>
-                                <p><strong>Location:</strong> Colombo 7</p>
-                                <p><strong>Deadline:</strong> Jan 30, 2025</p>
-                                <div class="progress-section">
-                                    <label>Progress: 65%</label>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 65%"></div>
+                    <!-- Assigned Projects -->
+                    <div class="staff-section">
+                        <h2>My Projects</h2>
+                        <div class="projects-list">
+                            <div class="project-card">
+                                <div class="project-header">
+                                    <h4>Luxury Villa Waterproofing</h4>
+                                    <span class="priority high">High Priority</span>
+                                </div>
+                                <div class="project-details">
+                                    <p><strong>Customer:</strong> Mr. K. Rathnayake</p>
+                                    <p><strong>Location:</strong> Colombo 7</p>
+                                    <p><strong>Deadline:</strong> Jan 30, 2025</p>
+                                    <div class="progress-section">
+                                        <label>Progress: 65%</label>
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: 65%"></div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="project-actions">
+                                    <button class="btn-small">View Details</button>
+                                    <button class="btn-small primary">Update Progress</button>
+                                </div>
                             </div>
-                            <div class="project-actions">
-                                <button class="btn-small">View Details</button>
-                                <button class="btn-small primary">Update Progress</button>
-                            </div>
-                        </div>
 
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h4>Office Building Foundation</h4>
-                                <span class="priority medium">Medium Priority</span>
-                            </div>
-                            <div class="project-details">
-                                <p><strong>Customer:</strong> ABC Company Ltd</p>
-                                <p><strong>Location:</strong> Negombo</p>
-                                <p><strong>Deadline:</strong> Feb 15, 2025</p>
-                                <div class="progress-section">
-                                    <label>Progress: 30%</label>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 30%"></div>
+                            <div class="project-card">
+                                <div class="project-header">
+                                    <h4>Office Building Foundation</h4>
+                                    <span class="priority medium">Medium Priority</span>
+                                </div>
+                                <div class="project-details">
+                                    <p><strong>Customer:</strong> ABC Company Ltd</p>
+                                    <p><strong>Location:</strong> Negombo</p>
+                                    <p><strong>Deadline:</strong> Feb 15, 2025</p>
+                                    <div class="progress-section">
+                                        <label>Progress: 30%</label>
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: 30%"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="project-actions">
-                                <button class="btn-small">View Details</button>
-                                <button class="btn-small primary">Update Progress</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="staff-section">
-                    <h2>Quick Actions</h2>
-                    <div class="action-grid">
-                        <a href="#" class="action-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Clock In/Out</span>
-                        </a>
-                        <a href="#" class="action-item">
-                            <i class="fas fa-camera"></i>
-                            <span>Upload Photos</span>
-                        </a>
-                        <a href="#" class="action-item">
-                            <i class="fas fa-clipboard-check"></i>
-                            <span>Submit Report</span>
-                        </a>
-                        <a href="#" class="action-item">
-                            <i class="fas fa-tools"></i>
-                            <span>Request Materials</span>
-                        </a>
-                        <a href="#" class="action-item">
-                            <i class="fas fa-phone"></i>
-                            <span>Contact Supervisor</span>
-                        </a>
-                        <a href="#" class="action-item">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>Report Issue</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Task Progress -->
-                <div class="staff-section">
-                    <h2>Task Progress</h2>
-                    <div class="task-progress-list">
-                        <div class="task-item">
-                            <div class="task-info">
-                                <h4>Roof Surface Preparation</h4>
-                                <p>Clean and prepare roof surface for waterproofing</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status completed">Completed</span>
-                                <div class="completion-time">Completed at 10:30 AM</div>
-                            </div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-info">
-                                <h4>Primer Application</h4>
-                                <p>Apply waterproofing primer to prepared surface</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status in-progress">In Progress</span>
-                                <div class="progress-small">
-                                    <div class="progress" style="width: 70%"></div>
+                                <div class="project-actions">
+                                    <button class="btn-small">View Details</button>
+                                    <button class="btn-small primary">Update Progress</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="task-item">
-                            <div class="task-info">
-                                <h4>Membrane Installation</h4>
-                                <p>Install waterproofing membrane system</p>
-                            </div>
-                            <div class="task-status">
-                                <span class="status pending">Pending</span>
-                                <div class="estimated-time">Est. 2:00 PM</div>
-                            </div>
-                        </div>
                     </div>
-                </div>
 
-                <!-- Team Communication -->
-                <div class="staff-section">
-                    <h2>Team Messages</h2>
-                    <div class="messages-list">
-                        <div class="message-item">
-                            <div class="message-sender">
-                                <i class="fas fa-user-tie"></i>
-                                <strong>Supervisor</strong>
-                                <span class="time">10:15 AM</span>
-                            </div>
-                            <div class="message-content">
-                                <p>Great work on the roof preparation. Please ensure the surface is completely dry before applying primer.</p>
-                            </div>
-                        </div>
-                        <div class="message-item">
-                            <div class="message-sender">
-                                <i class="fas fa-user"></i>
-                                <strong>Priya (Team Lead)</strong>
-                                <span class="time">9:45 AM</span>
-                            </div>
-                            <div class="message-content">
-                                <p>Material delivery arrived on time. All equipment is ready for the foundation project this afternoon.</p>
-                            </div>
-                        </div>
-                        <div class="message-item">
-                            <div class="message-sender">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <strong>System Alert</strong>
-                                <span class="time">9:00 AM</span>
-                            </div>
-                            <div class="message-content">
-                                <p>Weather update: Clear skies expected all day. Perfect conditions for outdoor waterproofing work.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-input">
-                        <input type="text" placeholder="Type a message to your team...">
-                        <button class="btn-small primary">Send</button>
-                    </div>
-                </div>
-
-                <!-- Tools & Equipment -->
-                <div class="staff-section">
-                    <h2>Tools & Equipment</h2>
-                    <div class="equipment-grid">
-                        <div class="equipment-item">
-                            <i class="fas fa-tools"></i>
-                            <h4>Basic Tools</h4>
-                            <span class="status available">Available</span>
-                        </div>
-                        <div class="equipment-item">
-                            <i class="fas fa-spray-can"></i>
-                            <h4>Spray Equipment</h4>
-                            <span class="status in-use">In Use</span>
-                        </div>
-                        <div class="equipment-item">
-                            <i class="fas fa-hard-hat"></i>
-                            <h4>Safety Gear</h4>
-                            <span class="status available">Available</span>
-                        </div>
-                        <div class="equipment-item">
-                            <i class="fas fa-truck"></i>
-                            <h4>Service Vehicle</h4>
-                            <span class="status available">Available</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Performance Stats -->
-                <div class="staff-section">
-                    <h2>My Performance</h2>
-                    <div class="performance-stats">
-                        <div class="stat-item">
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>12</h3>
-                                <p>Projects Completed This Month</p>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>4.8</h3>
-                                <p>Customer Rating Average</p>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
+                    <!-- Quick Actions -->
+                    <div class="staff-section">
+                        <h2>Quick Actions</h2>
+                        <div class="action-grid">
+                            <a href="#" class="action-item">
                                 <i class="fas fa-clock"></i>
+                                <span>Clock In/Out</span>
+                            </a>
+                            <a href="#" class="action-item">
+                                <i class="fas fa-camera"></i>
+                                <span>Upload Photos</span>
+                            </a>
+                            <a href="#" class="action-item">
+                                <i class="fas fa-clipboard-check"></i>
+                                <span>Submit Report</span>
+                            </a>
+                            <a href="#" class="action-item">
+                                <i class="fas fa-tools"></i>
+                                <span>Request Materials</span>
+                            </a>
+                            <a href="#" class="action-item">
+                                <i class="fas fa-phone"></i>
+                                <span>Contact Supervisor</span>
+                            </a>
+                            <a href="#" class="action-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Report Issue</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Task Progress -->
+                    <div class="staff-section">
+                        <h2>Task Progress</h2>
+                        <div class="task-progress-list">
+                            <div class="task-item">
+                                <div class="task-info">
+                                    <h4>Roof Surface Preparation</h4>
+                                    <p>Clean and prepare roof surface for waterproofing</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status completed">Completed</span>
+                                    <div class="completion-time">Completed at 10:30 AM</div>
+                                </div>
                             </div>
-                            <div class="stat-info">
-                                <h3>95%</h3>
-                                <p>On-Time Completion Rate</p>
+                            <div class="task-item">
+                                <div class="task-info">
+                                    <h4>Primer Application</h4>
+                                    <p>Apply waterproofing primer to prepared surface</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status in-progress">In Progress</span>
+                                    <div class="progress-small">
+                                        <div class="progress" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-info">
+                                    <h4>Membrane Installation</h4>
+                                    <p>Install waterproofing membrane system</p>
+                                </div>
+                                <div class="task-status">
+                                    <span class="status pending">Pending</span>
+                                    <div class="estimated-time">Est. 2:00 PM</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Team Communication -->
+                    <div class="staff-section">
+                        <h2>Team Messages</h2>
+                        <div class="messages-list">
+                            <div class="message-item">
+                                <div class="message-sender">
+                                    <i class="fas fa-user-tie"></i>
+                                    <strong>Supervisor</strong>
+                                    <span class="time">10:15 AM</span>
+                                </div>
+                                <div class="message-content">
+                                    <p>Great work on the roof preparation. Please ensure the surface is completely dry
+                                        before applying primer.</p>
+                                </div>
+                            </div>
+                            <div class="message-item">
+                                <div class="message-sender">
+                                    <i class="fas fa-user"></i>
+                                    <strong>Priya (Team Lead)</strong>
+                                    <span class="time">9:45 AM</span>
+                                </div>
+                                <div class="message-content">
+                                    <p>Material delivery arrived on time. All equipment is ready for the foundation
+                                        project
+                                        this afternoon.</p>
+                                </div>
+                            </div>
+                            <div class="message-item">
+                                <div class="message-sender">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <strong>System Alert</strong>
+                                    <span class="time">9:00 AM</span>
+                                </div>
+                                <div class="message-content">
+                                    <p>Weather update: Clear skies expected all day. Perfect conditions for outdoor
+                                        waterproofing work.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-input">
+                            <input type="text" placeholder="Type a message to your team...">
+                            <button class="btn-small primary">Send</button>
+                        </div>
+                    </div>
+
+                    <!-- Tools & Equipment -->
+                    <div class="staff-section">
+                        <h2>Tools & Equipment</h2>
+                        <div class="equipment-grid">
+                            <div class="equipment-item">
+                                <i class="fas fa-tools"></i>
+                                <h4>Basic Tools</h4>
+                                <span class="status available">Available</span>
+                            </div>
+                            <div class="equipment-item">
+                                <i class="fas fa-spray-can"></i>
+                                <h4>Spray Equipment</h4>
+                                <span class="status in-use">In Use</span>
+                            </div>
+                            <div class="equipment-item">
+                                <i class="fas fa-hard-hat"></i>
+                                <h4>Safety Gear</h4>
+                                <span class="status available">Available</span>
+                            </div>
+                            <div class="equipment-item">
+                                <i class="fas fa-truck"></i>
+                                <h4>Service Vehicle</h4>
+                                <span class="status available">Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Stats -->
+                    <div class="staff-section">
+                        <h2>My Performance</h2>
+                        <div class="performance-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>12</h3>
+                                    <p>Projects Completed This Month</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>4.8</h3>
+                                    <p>Customer Rating Average</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>95%</h3>
+                                    <p>On-Time Completion Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+        </section>
 
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SealTech Engineering</h3>
+                    <p>Your trusted partner for professional waterproofing solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Staff Resources</h3>
+                    <ul>
+                        <li><a href="#">Safety Guidelines</a></li>
+                        <li><a href="#">Training Materials</a></li>
+                        <li><a href="#">Equipment Manual</a></li>
+                        <li><a href="#">Report an Issue</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                        <li><i class="fas fa-envelope"></i> <a
+                                href="mailto:staff@sealtechengineering.com">staff@sealtechengineering.com</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>SealTech Engineering</h3>
-                <p>Your trusted partner for professional waterproofing solutions.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
             </div>
-            <div class="footer-section">
-                <h3>Staff Resources</h3>
-                <ul>
-                    <li><a href="#">Safety Guidelines</a></li>
-                    <li><a href="#">Training Materials</a></li>
-                    <li><a href="#">Equipment Manual</a></li>
-                    <li><a href="#">Report an Issue</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul>
-                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
-                    <li><i class="fas fa-envelope"></i> <a href="mailto:staff@sealtechengineering.com">staff@sealtechengineering.com</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="../js/script.js"></script>
     <script src="../js/staff-dashboard.js"></script>

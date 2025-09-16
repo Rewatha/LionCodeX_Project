@@ -11,304 +11,325 @@
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <img src="../images/logo.png" alt="Company Logo">
-            SealTech Engineering
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading Dashboard...</p>
         </div>
-        <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="#" class="active">Admin Panel</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-        <div class="menu-toggle" id="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+    </div>
 
-    <!-- Admin Header -->
-    <section class="admin-header">
-        <div class="container">
-            <div class="admin-welcome">
-                <h1>Admin Dashboard</h1>
-                <p>Manage SealTech Engineering operations</p>
+    <!-- Access Denied Screen -->
+    <div id="access-denied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <i class="fas fa-lock"></i>
+            <h2>Access Denied</h2>
+            <p>You need proper authorization to access this dashboard.</p>
+            <a href="auth.html" class="btn-primary">Login</a>
+        </div>
+    </div>
+    <!-- Main Dashboard Content -->
+    <div id="dashboard-content" style="display: none;">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">
+                <img src="../images/logo.png" alt="Company Logo">
+                SealTech Engineering
             </div>
-            <div class="admin-stats">
-                <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div>
-                        <h3>45</h3>
-                        <p>Total Customers</p>
-                    </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#" class="active">Admin Panel</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Admin Header -->
+        <section class="admin-header">
+            <div class="container">
+                <div class="admin-welcome">
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage SealTech Engineering operations</p>
                 </div>
-                <div class="stat-card">
-                    <i class="fas fa-project-diagram"></i>
-                    <div>
-                        <h3>23</h3>
-                        <p>Active Projects</p>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>45</h3>
+                            <p>Total Customers</p>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h3>12</h3>
-                        <p>New Inquiries</p>
+                    <div class="stat-card">
+                        <i class="fas fa-project-diagram"></i>
+                        <div>
+                            <h3>23</h3>
+                            <p>Active Projects</p>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-dollar-sign"></i>
-                    <div>
-                        <h3>LKR 2.5M</h3>
-                        <p>Monthly Revenue</p>
+                    <div class="stat-card">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>12</h3>
+                            <p>New Inquiries</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div>
+                            <h3>LKR 2.5M</h3>
+                            <p>Monthly Revenue</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Admin Content -->
-    <section class="admin-content">
-        <div class="container">
-            <div class="admin-grid">
-                
-                <!-- Quick Actions -->
-                <div class="admin-section">
-                    <h2>Quick Actions</h2>
-                    <div class="action-grid">
-                        <a href="#" class="action-card">
-                            <i class="fas fa-plus"></i>
-                            <span>Add New Project</span>
-                        </a>
-                        <a href="#" class="action-card">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Add Customer</span>
-                        </a>
-                        <a href="#" class="action-card">
-                            <i class="fas fa-calendar-plus"></i>
-                            <span>Schedule Appointment</span>
-                        </a>
-                        <a href="#" class="action-card">
-                            <i class="fas fa-file-invoice"></i>
-                            <span>Generate Quote</span>
-                        </a>
-                    </div>
-                </div>
+        <!-- Admin Content -->
+        <section class="admin-content">
+            <div class="container">
+                <div class="admin-grid">
 
-                <!-- Recent Inquiries -->
-                <div class="admin-section">
-                    <h2>Recent Inquiries</h2>
-                    <div class="inquiries-table">
-                        <div class="table-header">
-                            <div>Customer</div>
-                            <div>Service</div>
-                            <div>Date</div>
-                            <div>Status</div>
-                            <div>Actions</div>
-                        </div>
-                        <div class="table-row">
-                            <div>John Silva</div>
-                            <div>Roof Waterproofing</div>
-                            <div>Jan 20, 2025</div>
-                            <div><span class="status new">New</span></div>
-                            <div>
-                                <button class="btn-small">View</button>
-                                <button class="btn-small primary">Respond</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div>Maria Fernando</div>
-                            <div>Foundation Sealing</div>
-                            <div>Jan 19, 2025</div>
-                            <div><span class="status responded">Responded</span></div>
-                            <div>
-                                <button class="btn-small">View</button>
-                                <button class="btn-small">Follow Up</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div>David Perera</div>
-                            <div>Commercial Building</div>
-                            <div>Jan 18, 2025</div>
-                            <div><span class="status quoted">Quoted</span></div>
-                            <div>
-                                <button class="btn-small">View</button>
-                                <button class="btn-small">Schedule</button>
-                            </div>
+                    <!-- Quick Actions -->
+                    <div class="admin-section">
+                        <h2>Quick Actions</h2>
+                        <div class="action-grid">
+                            <a href="#" class="action-card">
+                                <i class="fas fa-plus"></i>
+                                <span>Add New Project</span>
+                            </a>
+                            <a href="#" class="action-card">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Add Customer</span>
+                            </a>
+                            <a href="#" class="action-card">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Schedule Appointment</span>
+                            </a>
+                            <a href="#" class="action-card">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Generate Quote</span>
+                            </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- Active Projects -->
-                <div class="admin-section">
-                    <h2>Active Projects</h2>
-                    <div class="projects-table">
-                        <div class="table-header">
-                            <div>Project</div>
-                            <div>Customer</div>
-                            <div>Team</div>
-                            <div>Progress</div>
-                            <div>Deadline</div>
-                            <div>Actions</div>
-                        </div>
-                        <div class="table-row">
-                            <div>Villa Roof Waterproofing</div>
-                            <div>K. Rathnayake</div>
-                            <div>Team A</div>
-                            <div>
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: 65%"></div>
+                    <!-- Recent Inquiries -->
+                    <div class="admin-section">
+                        <h2>Recent Inquiries</h2>
+                        <div class="inquiries-table">
+                            <div class="table-header">
+                                <div>Customer</div>
+                                <div>Service</div>
+                                <div>Date</div>
+                                <div>Status</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="table-row">
+                                <div>John Silva</div>
+                                <div>Roof Waterproofing</div>
+                                <div>Jan 20, 2025</div>
+                                <div><span class="status new">New</span></div>
+                                <div>
+                                    <button class="btn-small">View</button>
+                                    <button class="btn-small primary">Respond</button>
                                 </div>
-                                <span>65%</span>
                             </div>
-                            <div>Jan 30, 2025</div>
-                            <div>
-                                <button class="btn-small">View</button>
-                                <button class="btn-small">Update</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div>Office Building Foundation</div>
-                            <div>ABC Company</div>
-                            <div>Team B</div>
-                            <div>
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: 30%"></div>
+                            <div class="table-row">
+                                <div>Maria Fernando</div>
+                                <div>Foundation Sealing</div>
+                                <div>Jan 19, 2025</div>
+                                <div><span class="status responded">Responded</span></div>
+                                <div>
+                                    <button class="btn-small">View</button>
+                                    <button class="btn-small">Follow Up</button>
                                 </div>
-                                <span>30%</span>
                             </div>
-                            <div>Feb 15, 2025</div>
-                            <div>
-                                <button class="btn-small">View</button>
-                                <button class="btn-small">Update</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Management -->
-                <div class="admin-section">
-                    <h2>Team Status</h2>
-                    <div class="team-grid">
-                        <div class="team-card">
-                            <div class="team-member">
-                                <i class="fas fa-user-hard-hat"></i>
-                                <h4>Sunil Bandara</h4>
-                                <p>Team Leader</p>
-                                <span class="status available">Available</span>
-                            </div>
-                        </div>
-                        <div class="team-card">
-                            <div class="team-member">
-                                <i class="fas fa-user-hard-hat"></i>
-                                <h4>Priya Jayawardena</h4>
-                                <p>Senior Technician</p>
-                                <span class="status on-site">On Site</span>
-                            </div>
-                        </div>
-                        <div class="team-card">
-                            <div class="team-member">
-                                <i class="fas fa-user-hard-hat"></i>
-                                <h4>Ravi Kumara</h4>
-                                <p>Technician</p>
-                                <span class="status available">Available</span>
-                            </div>
-                        </div>
-                        <div class="team-card">
-                            <div class="team-member">
-                                <i class="fas fa-user-hard-hat"></i>
-                                <h4>Nimal Silva</h4>
-                                <p>Technician</p>
-                                <span class="status on-leave">On Leave</span>
+                            <div class="table-row">
+                                <div>David Perera</div>
+                                <div>Commercial Building</div>
+                                <div>Jan 18, 2025</div>
+                                <div><span class="status quoted">Quoted</span></div>
+                                <div>
+                                    <button class="btn-small">View</button>
+                                    <button class="btn-small">Schedule</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Revenue Chart -->
-                <div class="admin-section">
-                    <h2>Monthly Revenue</h2>
-                    <div class="chart-container">
-                        <div class="revenue-chart">
-                            <div class="chart-bar" style="height: 60%">
-                                <span>Jan</span>
+                    <!-- Active Projects -->
+                    <div class="admin-section">
+                        <h2>Active Projects</h2>
+                        <div class="projects-table">
+                            <div class="table-header">
+                                <div>Project</div>
+                                <div>Customer</div>
+                                <div>Team</div>
+                                <div>Progress</div>
+                                <div>Deadline</div>
+                                <div>Actions</div>
                             </div>
-                            <div class="chart-bar" style="height: 80%">
-                                <span>Feb</span>
+                            <div class="table-row">
+                                <div>Villa Roof Waterproofing</div>
+                                <div>K. Rathnayake</div>
+                                <div>Team A</div>
+                                <div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 65%"></div>
+                                    </div>
+                                    <span>65%</span>
+                                </div>
+                                <div>Jan 30, 2025</div>
+                                <div>
+                                    <button class="btn-small">View</button>
+                                    <button class="btn-small">Update</button>
+                                </div>
                             </div>
-                            <div class="chart-bar" style="height: 45%">
-                                <span>Mar</span>
-                            </div>
-                            <div class="chart-bar" style="height: 90%">
-                                <span>Apr</span>
-                            </div>
-                            <div class="chart-bar" style="height: 70%">
-                                <span>May</span>
-                            </div>
-                            <div class="chart-bar" style="height: 85%">
-                                <span>Jun</span>
+                            <div class="table-row">
+                                <div>Office Building Foundation</div>
+                                <div>ABC Company</div>
+                                <div>Team B</div>
+                                <div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 30%"></div>
+                                    </div>
+                                    <span>30%</span>
+                                </div>
+                                <div>Feb 15, 2025</div>
+                                <div>
+                                    <button class="btn-small">View</button>
+                                    <button class="btn-small">Update</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- System Management -->
-                <div class="admin-section">
-                    <h2>System Management</h2>
-                    <div class="system-grid">
-                        <a href="#" class="system-card">
-                            <i class="fas fa-users-cog"></i>
-                            <span>User Management</span>
-                        </a>
-                        <a href="#" class="system-card">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Reports</span>
-                        </a>
-                        <a href="#" class="system-card">
-                            <i class="fas fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="#" class="system-card">
-                            <i class="fas fa-database"></i>
-                            <span>Backup</span>
-                        </a>
+                    <!-- Team Management -->
+                    <div class="admin-section">
+                        <h2>Team Status</h2>
+                        <div class="team-grid">
+                            <div class="team-card">
+                                <div class="team-member">
+                                    <i class="fas fa-user-hard-hat"></i>
+                                    <h4>Sunil Bandara</h4>
+                                    <p>Team Leader</p>
+                                    <span class="status available">Available</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-member">
+                                    <i class="fas fa-user-hard-hat"></i>
+                                    <h4>Priya Jayawardena</h4>
+                                    <p>Senior Technician</p>
+                                    <span class="status on-site">On Site</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-member">
+                                    <i class="fas fa-user-hard-hat"></i>
+                                    <h4>Ravi Kumara</h4>
+                                    <p>Technician</p>
+                                    <span class="status available">Available</span>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-member">
+                                    <i class="fas fa-user-hard-hat"></i>
+                                    <h4>Nimal Silva</h4>
+                                    <p>Technician</p>
+                                    <span class="status on-leave">On Leave</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Revenue Chart -->
+                    <div class="admin-section">
+                        <h2>Monthly Revenue</h2>
+                        <div class="chart-container">
+                            <div class="revenue-chart">
+                                <div class="chart-bar" style="height: 60%">
+                                    <span>Jan</span>
+                                </div>
+                                <div class="chart-bar" style="height: 80%">
+                                    <span>Feb</span>
+                                </div>
+                                <div class="chart-bar" style="height: 45%">
+                                    <span>Mar</span>
+                                </div>
+                                <div class="chart-bar" style="height: 90%">
+                                    <span>Apr</span>
+                                </div>
+                                <div class="chart-bar" style="height: 70%">
+                                    <span>May</span>
+                                </div>
+                                <div class="chart-bar" style="height: 85%">
+                                    <span>Jun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Management -->
+                    <div class="admin-section">
+                        <h2>System Management</h2>
+                        <div class="system-grid">
+                            <a href="#" class="system-card">
+                                <i class="fas fa-users-cog"></i>
+                                <span>User Management</span>
+                            </a>
+                            <a href="#" class="system-card">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="#" class="system-card">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="#" class="system-card">
+                                <i class="fas fa-database"></i>
+                                <span>Backup</span>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+        </section>
 
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SealTech Engineering</h3>
+                    <p>Your trusted partner for professional waterproofing solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Admin Links</h3>
+                    <ul>
+                        <li><a href="#">User Management</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="#">Backup</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
+                        <li><i class="fas fa-envelope"></i> <a
+                                href="mailto:admin@sealtechengineering.com">admin@sealtechengineering.com</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>SealTech Engineering</h3>
-                <p>Your trusted partner for professional waterproofing solutions.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
             </div>
-            <div class="footer-section">
-                <h3>Admin Links</h3>
-                <ul>
-                    <li><a href="#">User Management</a></li>
-                    <li><a href="#">Reports</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Backup</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li><i class="fas fa-phone"></i> <a href="tel:0776336464">077 633 6464</a></li>
-                    <li><i class="fas fa-envelope"></i> <a href="mailto:admin@sealtechengineering.com">admin@sealtechengineering.com</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 SealTech Engineering. All Rights Reserved.</p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="../js/script.js"></script>
     <script src="../js/admin-dashboard.js"></script>

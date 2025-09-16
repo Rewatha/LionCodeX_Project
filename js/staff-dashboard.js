@@ -1,580 +1,693 @@
-// Staff Dashboard functionality
-document.addEventListener('DOMContentLoaded', function() {
-    initializeStaffDashboard();
-    loadStaffData();
-    setupStaffEventListeners();
-});
+// Protected Staff Dashboard functionality with backend integration
 
-// Initialize staff dashboard
-function initializeStaffDashboard() {
-    // Verify staff access
-    const currentUser = getCurrentUser();
-    if (!currentUser || currentUser.userType !== 'staff') {
-        alert('Access denied. Staff privileges required.');
-        window.location.href = 'auth.html';
-        return;
+class StaffDashboardManager {
+    constructor() {
+        this.currentUser = null;
+        this.isLoading = true;
+        this.init();
     }
-    
-    // Set staff name
-    document.getElementById('staffName').textContent = currentUser.firstName || 'Staff Member';
-    
-    // Initialize staff components
-    initializeStaffComponents();
-    setupLocationTracking();
-}
 
-// Get current user from storage
-function getCurrentUser() {
-    try {
-        const user = localStorage.getItem('currentUser');
-        return user ? JSON.parse(user) : null;
-    } catch (error) {
-        console.error('Error loading user data:', error);
-        return null;
+    async init() {
+        // Show loading screen
+        this.showLoading();
+        
+        // Check authentication
+        if (!this.checkAuthentication()) {
+            this.showAccessDenied();
+            return;
+        }
+
+        // Verify staff access
+        if (!this.verifyStaffAccess()) {
+            this.redirectToCorrectDashboard();
+            return;
+        }
+
+        // Initialize dashboard
+        await this.initializeStaffDashboard();
     }
-}
 
-// Load staff-specific data
-function loadStaffData() {
-    loadTodaySchedule();
-    loadAssignedProjects();
-    loadTaskProgress();
-    loadTeamMessages();
-    loadEquipmentStatus();
-    loadPerformanceStats();
-}
-
-// Load today's schedule
-function loadTodaySchedule() {
-    const todaySchedule = [
-        {
-            id: 1,
-            time: '9:00 AM',
-            title: 'Site Inspection',
-            description: 'Villa Roof Assessment - Colombo 7',
-            customer: 'Mr. K. Rathnayake',
-            status: 'in-progress',
-            current: true
-        },
-        {
-            id: 2,
-            time: '11:30 AM',
-            title: 'Material Pickup',
-            description: 'Collect waterproofing materials from warehouse',
-            customer: 'For: Office Building Project',
-            status: 'pending'
-        },
-        {
-            id: 3,
-            time: '2:00 PM',
-            title: 'Foundation Waterproofing',
-            description: 'Continue foundation sealing work - Phase 2',
-            customer: 'Customer: ABC Company Ltd',
-            status: 'scheduled'
+    checkAuthentication() {
+        // Check session manager
+        if (!window.sessionManager || !window.sessionManager.isLoggedIn) {
+            return false;
         }
-    ];
-    
-    displaySchedule(todaySchedule);
-}
 
-// Display schedule items
-function displaySchedule(schedule) {
-    const scheduleList = document.querySelector('.schedule-list');
-    if (!scheduleList) return;
-    
-    scheduleList.innerHTML = schedule.map(item => `
-        <div class="schedule-item ${item.current ? 'current' : ''}" data-schedule-id="${item.id}">
-            <div class="time">
-                <span class="hour">${item.time.split(' ')[0]}</span>
-                <span class="period">${item.time.split(' ')[1]}</span>
-            </div>
-            <div class="task-info">
-                <h4>${item.title}</h4>
-                <p>${item.description}</p>
-                <p class="customer">${item.customer}</p>
-            </div>
-            <div class="task-status">
-                <span class="status ${item.status}">${formatStatus(item.status)}</span>
-                <button class="btn-small" onclick="updateTaskStatus(${item.id})">${getActionText(item.status)}</button>
-            </div>
-        </div>
-    `).join('');
-}
+        this.currentUser = window.sessionManager.currentUser;
+        return true;
+    }
 
-// Load assigned projects
-function loadAssignedProjects() {
-    const assignedProjects = [
-        {
-            id: 1,
-            title: 'Luxury Villa Waterproofing',
-            customer: 'Mr. K. Rathnayake',
-            location: 'Colombo 7',
-            deadline: '2025-01-30',
-            progress: 65,
-            priority: 'high'
-        },
-        {
-            id: 2,
-            title: 'Office Building Foundation',
-            customer: 'ABC Company Ltd',
-            location: 'Negombo',
-            deadline: '2025-02-15',
-            progress: 30,
-            priority: 'medium'
+    verifyStaffAccess() {
+        // Only allow staff user type
+        return this.currentUser.userType === 'staff';
+    }
+
+    redirectToCorrectDashboard() {
+        const dashboardUrls = {
+            'admin': 'admin-dashboard.html',
+            'individual': 'user-dashboard.html',
+            'business': 'user-dashboard.html',
+            'contractor': 'user-dashboard.html'
+        };
+
+        const correctDashboard = dashboardUrls[this.currentUser.userType];
+        if (correctDashboard) {
+            window.location.href = correctDashboard;
+        } else {
+            this.showAccessDenied();
         }
-    ];
-    
-    displayProjects(assignedProjects);
-}
+    }
 
-// Display assigned projects
-function displayProjects(projects) {
-    const projectsList = document.querySelector('.projects-list');
-    if (!projectsList) return;
-    
-    projectsList.innerHTML = projects.map(project => `
-        <div class="project-card" data-project-id="${project.id}">
-            <div class="project-header">
-                <h4>${project.title}</h4>
-                <span class="priority ${project.priority}">${formatPriority(project.priority)}</span>
-            </div>
-            <div class="project-details">
-                <p><strong>Customer:</strong> ${project.customer}</p>
-                <p><strong>Location:</strong> ${project.location}</p>
-                <p><strong>Deadline:</strong> ${formatDate(project.deadline)}</p>
-                <div class="progress-section">
-                    <label>Progress: ${project.progress}%</label>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: ${project.progress}%"></div>
+    async initializeStaffDashboard() {
+        try {
+            // Set staff name
+            document.getElementById('staffName').textContent = this.currentUser.firstName || 'Staff Member';
+
+            // Load dashboard data
+            await this.loadDashboardData();
+
+            // Setup event listeners
+            this.setupEventListeners();
+
+            // Hide loading and show dashboard
+            this.showDashboard();
+
+        } catch (error) {
+            console.error('Staff dashboard initialization error:', error);
+            this.showError('Failed to load dashboard. Please refresh the page.');
+        }
+    }
+
+    async loadDashboardData() {
+        try {
+            // Load data in parallel
+            await Promise.all([
+                this.loadTodaySchedule(),
+                this.loadAssignedProjects(),
+                this.loadTaskProgress(),
+                this.loadEquipmentStatus()
+            ]);
+        } catch (error) {
+            console.error('Error loading staff dashboard data:', error);
+            this.showFallbackData();
+        }
+    }
+
+    async loadTodaySchedule() {
+        try {
+            const response = await fetch(`staff-api.php?action=schedule`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displaySchedule(data.schedule || []);
+            } else {
+                throw new Error('Failed to load schedule');
+            }
+        } catch (error) {
+            console.error('Schedule loading error:', error);
+            this.displaySchedule([]);
+        }
+    }
+
+    async loadAssignedProjects() {
+        try {
+            const response = await fetch(`staff-api.php?action=projects`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayProjects(data.projects || []);
+            } else {
+                throw new Error('Failed to load projects');
+            }
+        } catch (error) {
+            console.error('Projects loading error:', error);
+            this.displayProjects([]);
+        }
+    }
+
+    async loadTaskProgress() {
+        try {
+            const response = await fetch(`staff-api.php?action=tasks`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayTaskProgress(data.tasks || []);
+            } else {
+                throw new Error('Failed to load tasks');
+            }
+        } catch (error) {
+            console.error('Tasks loading error:', error);
+            this.displayTaskProgress([]);
+        }
+    }
+
+    async loadEquipmentStatus() {
+        try {
+            const response = await fetch(`staff-api.php?action=equipment`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayEquipmentStatus(data.equipment || []);
+            } else {
+                throw new Error('Failed to load equipment');
+            }
+        } catch (error) {
+            console.error('Equipment loading error:', error);
+            this.displayEquipmentStatus([]);
+        }
+    }
+
+    displaySchedule(schedule) {
+        const scheduleList = document.querySelector('.schedule-list');
+        
+        if (schedule.length === 0) {
+            scheduleList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>No Schedule Today</h3>
+                    <p>You don't have any scheduled appointments for today.</p>
+                </div>
+            `;
+            return;
+        }
+
+        scheduleList.innerHTML = schedule.map(item => {
+            const appointmentTime = new Date(item.appointment_date);
+            const hour = appointmentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            const isCurrent = this.isCurrentAppointment(appointmentTime);
+
+            return `
+                <div class="schedule-item ${isCurrent ? 'current' : ''}" data-schedule-id="${item.id}">
+                    <div class="time">
+                        <span class="hour">${hour.split(' ')[0]}</span>
+                        <span class="period">${hour.split(' ')[1]}</span>
+                    </div>
+                    <div class="task-info">
+                        <h4>${item.appointment_type}</h4>
+                        <p>${item.description || 'No description'}</p>
+                        <p class="customer">Customer: ${item.customer_name}</p>
+                        ${item.project_name ? `<p class="project">Project: ${item.project_name}</p>` : ''}
+                    </div>
+                    <div class="task-status">
+                        <span class="status ${item.status}">${this.formatStatus(item.status)}</span>
+                        <button class="btn-small" onclick="staffDashboard.updateAppointmentStatus(${item.id})">${this.getActionText(item.status)}</button>
                     </div>
                 </div>
-            </div>
-            <div class="project-actions">
-                <button class="btn-small" onclick="viewProjectDetails(${project.id})">View Details</button>
-                <button class="btn-small primary" onclick="updateProgress(${project.id})">Update Progress</button>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Load task progress
-function loadTaskProgress() {
-    const tasks = [
-        {
-            id: 1,
-            title: 'Roof Surface Preparation',
-            description: 'Clean and prepare roof surface for waterproofing',
-            status: 'completed',
-            completedAt: '10:30 AM'
-        },
-        {
-            id: 2,
-            title: 'Primer Application',
-            description: 'Apply waterproofing primer to prepared surface',
-            status: 'in-progress',
-            progress: 70
-        },
-        {
-            id: 3,
-            title: 'Membrane Installation',
-            description: 'Install waterproofing membrane system',
-            status: 'pending',
-            estimatedTime: '2:00 PM'
-        }
-    ];
-    
-    displayTaskProgress(tasks);
-}
-
-// Display task progress
-function displayTaskProgress(tasks) {
-    const taskList = document.querySelector('.task-progress-list');
-    if (!taskList) return;
-    
-    taskList.innerHTML = tasks.map(task => `
-        <div class="task-item" data-task-id="${task.id}">
-            <div class="task-info">
-                <h4>${task.title}</h4>
-                <p>${task.description}</p>
-            </div>
-            <div class="task-status">
-                <span class="status ${task.status}">${formatStatus(task.status)}</span>
-                ${getTaskStatusContent(task)}
-            </div>
-        </div>
-    `).join('');
-}
-
-// Get task status content based on status
-function getTaskStatusContent(task) {
-    switch(task.status) {
-        case 'completed':
-            return `<div class="completion-time">Completed at ${task.completedAt}</div>`;
-        case 'in-progress':
-            return `<div class="progress-small"><div class="progress" style="width: ${task.progress}%"></div></div>`;
-        case 'pending':
-            return `<div class="estimated-time">Est. ${task.estimatedTime}</div>`;
-        default:
-            return '';
+            `;
+        }).join('');
     }
-}
 
-// Load team messages
-function loadTeamMessages() {
-    const messages = [
-        {
-            id: 1,
-            sender: 'Supervisor',
-            time: '10:15 AM',
-            content: 'Great work on the roof preparation. Please ensure the surface is completely dry before applying primer.',
-            type: 'supervisor'
-        },
-        {
-            id: 2,
-            sender: 'Priya (Team Lead)',
-            time: '9:45 AM',
-            content: 'Material delivery arrived on time. All equipment is ready for the foundation project this afternoon.',
-            type: 'team'
-        },
-        {
-            id: 3,
-            sender: 'System Alert',
-            time: '9:00 AM',
-            content: 'Weather update: Clear skies expected all day. Perfect conditions for outdoor waterproofing work.',
-            type: 'system'
+    displayProjects(projects) {
+        const projectsList = document.querySelector('.projects-list');
+        
+        if (projects.length === 0) {
+            projectsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>No Assigned Projects</h3>
+                    <p>You don't have any projects assigned to your team currently.</p>
+                </div>
+            `;
+            return;
         }
-    ];
-    
-    displayMessages(messages);
-}
 
-// Display team messages
-function displayMessages(messages) {
-    const messagesList = document.querySelector('.messages-list');
-    if (!messagesList) return;
-    
-    messagesList.innerHTML = messages.map(message => `
-        <div class="message-item" data-message-id="${message.id}">
+        projectsList.innerHTML = projects.map(project => `
+            <div class="project-card" data-project-id="${project.id}">
+                <div class="project-header">
+                    <h4>${project.project_name}</h4>
+                    <span class="priority ${project.priority}">${this.formatPriority(project.priority)}</span>
+                </div>
+                <div class="project-details">
+                    <p><strong>Customer:</strong> ${project.customer_name}</p>
+                    <p><strong>Location:</strong> ${project.location}</p>
+                    <p><strong>Deadline:</strong> ${this.formatDate(project.estimated_completion)}</p>
+                    <p><strong>Team:</strong> ${project.team_name || 'Not assigned'}</p>
+                    <div class="progress-section">
+                        <label>Progress: ${project.progress_percentage}%</label>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${project.progress_percentage}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <button class="btn-small" onclick="staffDashboard.viewProjectDetails(${project.id})">View Details</button>
+                    <button class="btn-small primary" onclick="staffDashboard.updateProgress(${project.id})">Update Progress</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    displayTaskProgress(tasks) {
+        const taskList = document.querySelector('.task-progress-list');
+        
+        if (tasks.length === 0) {
+            taskList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-tasks"></i>
+                    <h3>No Active Tasks</h3>
+                    <p>You don't have any active tasks assigned.</p>
+                </div>
+            `;
+            return;
+        }
+
+        taskList.innerHTML = tasks.map(task => `
+            <div class="task-item" data-task-id="${task.id}">
+                <div class="task-info">
+                    <h4>${task.task_name}</h4>
+                    <p>${task.description}</p>
+                    <p class="project-name"><strong>Project:</strong> ${task.project_name}</p>
+                </div>
+                <div class="task-status">
+                    <span class="status ${task.status}">${this.formatStatus(task.status)}</span>
+                    ${this.getTaskStatusContent(task)}
+                    <button class="btn-small primary" onclick="staffDashboard.updateTaskStatus(${task.id})">Update</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    displayEquipmentStatus(equipment) {
+        const equipmentGrid = document.querySelector('.equipment-grid');
+        
+        if (equipment.length === 0) {
+            equipmentGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-tools"></i>
+                    <h3>No Equipment Assigned</h3>
+                    <p>No equipment is currently assigned to you.</p>
+                </div>
+            `;
+            return;
+        }
+
+        equipmentGrid.innerHTML = equipment.map(item => `
+            <div class="equipment-item">
+                <i class="fas ${this.getEquipmentIcon(item.equipment_type)}"></i>
+                <h4>${item.equipment_name}</h4>
+                <span class="status ${item.status}">${this.formatStatus(item.status)}</span>
+            </div>
+        `).join('');
+    }
+
+    setupEventListeners() {
+        // Setup quick actions
+        this.setupQuickActions();
+        
+        // Setup message input
+        this.setupMessageInput();
+        
+        // Add any other event listeners
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('status-card')) {
+                this.handleStatusCardClick(e.target);
+            }
+        });
+    }
+
+    setupQuickActions() {
+        const actionItems = document.querySelectorAll('.action-item');
+        actionItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const actionText = item.textContent.trim();
+                this.handleQuickAction(actionText);
+            });
+        });
+    }
+
+    setupMessageInput() {
+        const messageInput = document.querySelector('.message-input input');
+        const sendButton = document.querySelector('.message-input .btn-small');
+        
+        if (messageInput && sendButton) {
+            sendButton.addEventListener('click', () => this.sendMessage());
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.sendMessage();
+                }
+            });
+        }
+    }
+
+    async updateAppointmentStatus(appointmentId) {
+        const newStatus = prompt('Update appointment status (scheduled/in_progress/completed):');
+        if (!newStatus) return;
+
+        try {
+            // This would typically call an API endpoint
+            alert(`Appointment ${appointmentId} status updated to: ${newStatus}`);
+            // Reload schedule to reflect changes
+            await this.loadTodaySchedule();
+        } catch (error) {
+            console.error('Error updating appointment:', error);
+            this.showError('Failed to update appointment status');
+        }
+    }
+
+    async updateProgress(projectId) {
+        const newProgress = prompt('Enter new progress percentage (0-100):');
+        if (!newProgress || isNaN(newProgress) || newProgress < 0 || newProgress > 100) {
+            if (newProgress !== null) {
+                alert('Please enter a valid number between 0 and 100');
+            }
+            return;
+        }
+
+        const notes = prompt('Add any notes about this progress update (optional):') || '';
+
+        try {
+            const formData = new FormData();
+            formData.append('project_id', projectId);
+            formData.append('progress', newProgress);
+            formData.append('notes', notes);
+
+            const response = await fetch('staff-api.php?action=update-progress', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Progress updated successfully!');
+                await this.loadAssignedProjects();
+            } else {
+                alert(data.error || 'Failed to update progress');
+            }
+        } catch (error) {
+            console.error('Error updating progress:', error);
+            this.showError('Failed to update progress');
+        }
+    }
+
+    async updateTaskStatus(taskId) {
+        const newStatus = prompt('Update task status (pending/in_progress/completed):');
+        if (!newStatus) return;
+
+        const hours = newStatus === 'completed' ? prompt('Enter hours worked on this task:') : null;
+
+        try {
+            const formData = new FormData();
+            formData.append('task_id', taskId);
+            formData.append('status', newStatus);
+            if (hours) formData.append('hours', hours);
+
+            const response = await fetch('staff-api.php?action=update-task', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Task updated successfully!');
+                await this.loadTaskProgress();
+            } else {
+                alert(data.error || 'Failed to update task');
+            }
+        } catch (error) {
+            console.error('Error updating task:', error);
+            this.showError('Failed to update task');
+        }
+    }
+
+    viewProjectDetails(projectId) {
+        // This would open a modal with project details
+        alert(`Project details for project ${projectId} would be shown here`);
+    }
+
+    handleQuickAction(actionText) {
+        switch(actionText) {
+            case 'Clock In/Out':
+                this.handleClockInOut();
+                break;
+            case 'Upload Photos':
+                this.openPhotoUpload();
+                break;
+            case 'Submit Report':
+                this.openReportForm();
+                break;
+            case 'Request Materials':
+                this.openMaterialRequest();
+                break;
+            case 'Contact Supervisor':
+                this.contactSupervisor();
+                break;
+            case 'Report Issue':
+                this.openIssueReport();
+                break;
+            default:
+                console.log('Quick action:', actionText);
+        }
+    }
+
+    sendMessage() {
+        const messageInput = document.querySelector('.message-input input');
+        if (!messageInput || !messageInput.value.trim()) return;
+        
+        const message = messageInput.value.trim();
+        messageInput.value = '';
+        
+        // Add message to the list (simulate sending)
+        this.addMessageToList({
+            sender: 'You',
+            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            content: message,
+            type: 'user'
+        });
+        
+        alert('Message sent to team!');
+    }
+
+    addMessageToList(message) {
+        const messagesList = document.querySelector('.messages-list');
+        if (!messagesList) return;
+        
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message-item';
+        messageElement.innerHTML = `
             <div class="message-sender">
-                <i class="fas ${getMessageIcon(message.type)}"></i>
+                <i class="fas fa-user"></i>
                 <strong>${message.sender}</strong>
                 <span class="time">${message.time}</span>
             </div>
             <div class="message-content">
                 <p>${message.content}</p>
             </div>
-        </div>
-    `).join('');
-}
-
-// Get message icon based on type
-function getMessageIcon(type) {
-    const icons = {
-        supervisor: 'fa-user-tie',
-        team: 'fa-user',
-        system: 'fa-exclamation-circle'
-    };
-    return icons[type] || 'fa-user';
-}
-
-// Load equipment status
-function loadEquipmentStatus() {
-    const equipment = [
-        { name: 'Basic Tools', icon: 'fa-tools', status: 'available' },
-        { name: 'Spray Equipment', icon: 'fa-spray-can', status: 'in-use' },
-        { name: 'Safety Gear', icon: 'fa-hard-hat', status: 'available' },
-        { name: 'Service Vehicle', icon: 'fa-truck', status: 'available' }
-    ];
-    
-    displayEquipmentStatus(equipment);
-}
-
-// Display equipment status
-function displayEquipmentStatus(equipment) {
-    const equipmentGrid = document.querySelector('.equipment-grid');
-    if (!equipmentGrid) return;
-    
-    equipmentGrid.innerHTML = equipment.map(item => `
-        <div class="equipment-item">
-            <i class="fas ${item.icon}"></i>
-            <h4>${item.name}</h4>
-            <span class="status ${item.status}">${formatStatus(item.status)}</span>
-        </div>
-    `).join('');
-}
-
-// Load performance statistics
-function loadPerformanceStats() {
-    const stats = {
-        projectsCompleted: 12,
-        customerRating: 4.8,
-        onTimeRate: 95
-    };
-    
-    updatePerformanceStats(stats);
-}
-
-// Update performance statistics
-function updatePerformanceStats(stats) {
-    const statItems = document.querySelectorAll('.stat-item');
-    const values = [stats.projectsCompleted, stats.customerRating, `${stats.onTimeRate}%`];
-    
-    statItems.forEach((item, index) => {
-        const h3 = item.querySelector('h3');
-        if (h3 && values[index] !== undefined) {
-            h3.textContent = values[index];
-        }
-    });
-}
-
-// Setup staff event listeners
-function setupStaffEventListeners() {
-    setupQuickActions();
-    setupMessageInput();
-    setupClockInOut();
-    setupPhotoUpload();
-}
-
-// Setup quick actions
-function setupQuickActions() {
-    const actionItems = document.querySelectorAll('.action-item');
-    actionItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const actionText = this.textContent.trim();
-            handleQuickAction(actionText);
-        });
-    });
-}
-
-// Handle quick action clicks
-function handleQuickAction(actionText) {
-    switch(actionText) {
-        case 'Clock In/Out':
-            handleClockInOut();
-            break;
-        case 'Upload Photos':
-            openPhotoUpload();
-            break;
-        case 'Submit Report':
-            openReportForm();
-            break;
-        case 'Request Materials':
-            openMaterialRequest();
-            break;
-        case 'Contact Supervisor':
-            contactSupervisor();
-            break;
-        case 'Report Issue':
-            openIssueReport();
-            break;
-        default:
-            console.log('Quick action:', actionText);
+        `;
+        
+        messagesList.appendChild(messageElement);
+        messagesList.scrollTop = messagesList.scrollHeight;
     }
-}
 
-// Setup message input
-function setupMessageInput() {
-    const messageInput = document.querySelector('.message-input input');
-    const sendButton = document.querySelector('.message-input .btn-small');
-    
-    if (messageInput && sendButton) {
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
+    showFallbackData() {
+        this.displaySchedule([]);
+        this.displayProjects([]);
+        this.displayTaskProgress([]);
+        this.displayEquipmentStatus([]);
+    }
+
+    showLoading() {
+        document.getElementById('loading-screen').style.display = 'flex';
+        document.getElementById('dashboard-content').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'none';
+    }
+
+    showAccessDenied() {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'flex';
+    }
+
+    showDashboard() {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'block';
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()">×</button>
+        `;
+        document.body.appendChild(errorDiv);
+
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Utility functions
+    formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+    }
+
+    formatStatus(status) {
+        const statusMap = {
+            'scheduled': 'Scheduled',
+            'in_progress': 'In Progress',
+            'completed': 'Completed',
+            'pending': 'Pending',
+            'confirmed': 'Confirmed',
+            'available': 'Available',
+            'in_use': 'In Use',
+            'maintenance': 'Maintenance',
+            'on_hold': 'On Hold'
+        };
+        return statusMap[status] || status;
+    }
+
+    formatPriority(priority) {
+        const priorityMap = {
+            'high': 'High Priority',
+            'medium': 'Medium Priority',
+            'low': 'Low Priority',
+            'urgent': 'Urgent'
+        };
+        return priorityMap[priority] || priority;
+    }
+
+    getActionText(status) {
+        const actionMap = {
+            'scheduled': 'Start',
+            'in_progress': 'Update',
+            'confirmed': 'Start',
+            'pending': 'Review'
+        };
+        return actionMap[status] || 'Update';
+    }
+
+    getTaskStatusContent(task) {
+        switch(task.status) {
+            case 'completed':
+                return `<div class="completion-time">Completed: ${this.formatDate(task.completed_date)}</div>`;
+            case 'in_progress':
+                const progress = task.actual_hours && task.estimated_hours ? 
+                    Math.min(100, (task.actual_hours / task.estimated_hours) * 100) : 0;
+                return `<div class="progress-small"><div class="progress" style="width: ${progress}%"></div></div>`;
+            case 'pending':
+                return task.due_date ? `<div class="estimated-time">Due: ${this.formatDate(task.due_date)}</div>` : '';
+            default:
+                return '';
+        }
+    }
+
+    getEquipmentIcon(equipmentType) {
+        const iconMap = {
+            'tools': 'fa-tools',
+            'spray': 'fa-spray-can',
+            'safety': 'fa-hard-hat',
+            'vehicle': 'fa-truck',
+            'machinery': 'fa-cogs',
+            'measurement': 'fa-ruler'
+        };
+        return iconMap[equipmentType] || 'fa-tools';
+    }
+
+    isCurrentAppointment(appointmentTime) {
+        const now = new Date();
+        const diffMinutes = Math.abs(now - appointmentTime) / (1000 * 60);
+        return diffMinutes <= 30; // Within 30 minutes
+    }
+
+    handleStatusCardClick(card) {
+        card.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            card.style.transform = '';
+        }, 150);
+    }
+
+    // Quick action implementations
+    handleClockInOut() {
+        const isClocked = localStorage.getItem('clockedIn') === 'true';
+        const action = isClocked ? 'Clock Out' : 'Clock In';
+        
+        if (confirm(`Are you sure you want to ${action}?`)) {
+            localStorage.setItem('clockedIn', !isClocked);
+            alert(`Successfully ${action.toLowerCase()}ed at ${new Date().toLocaleTimeString()}`);
+            // Update status card if exists
+            this.updateClockStatus(!isClocked);
+        }
+    }
+
+    updateClockStatus(clockedIn) {
+        const statusCards = document.querySelectorAll('.status-card');
+        statusCards.forEach(card => {
+            const cardText = card.textContent;
+            if (cardText.includes('Clock') || cardText.includes('Time')) {
+                const h3 = card.querySelector('h3');
+                const p = card.querySelector('p');
+                if (h3 && p) {
+                    if (clockedIn) {
+                        h3.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        p.textContent = 'Clock In Time';
+                        card.classList.add('active');
+                    } else {
+                        h3.textContent = '--:--';
+                        p.textContent = 'Clocked Out';
+                        card.classList.remove('active');
+                    }
+                }
             }
         });
     }
-}
 
-// Send message to team
-function sendMessage() {
-    const messageInput = document.querySelector('.message-input input');
-    if (!messageInput || !messageInput.value.trim()) return;
-    
-    const message = messageInput.value.trim();
-    messageInput.value = '';
-    
-    // Add message to the list (simulate sending)
-    addMessageToList({
-        sender: 'You',
-        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-        content: message,
-        type: 'user'
-    });
-    
-    alert('Message sent to team!');
-}
+    openPhotoUpload() {
+        alert('Photo upload functionality would open here. Staff can document work progress with photos.');
+    }
 
-// Add message to message list
-function addMessageToList(message) {
-    const messagesList = document.querySelector('.messages-list');
-    if (!messagesList) return;
-    
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message-item';
-    messageElement.innerHTML = `
-        <div class="message-sender">
-            <i class="fas fa-user"></i>
-            <strong>${message.sender}</strong>
-            <span class="time">${message.time}</span>
-        </div>
-        <div class="message-content">
-            <p>${message.content}</p>
-        </div>
-    `;
-    
-    messagesList.appendChild(messageElement);
-    messagesList.scrollTop = messagesList.scrollHeight;
-}
+    openReportForm() {
+        alert('Daily report form would open here for submitting work summaries.');
+    }
 
-// Initialize staff components
-function initializeStaffComponents() {
-    setupGPSTracking();
-    initializeNotifications();
-    setupOfflineMode();
-}
+    openMaterialRequest() {
+        alert('Material request form would open here for requesting additional supplies.');
+    }
 
-// Setup GPS tracking (mock)
-function setupGPSTracking() {
-    console.log('GPS tracking initialized');
-}
+    contactSupervisor() {
+        if (confirm('Contact supervisor via phone?')) {
+            window.open('tel:' + COMPANY_PHONE);
+        }
+    }
 
-// Setup location tracking
-function setupLocationTracking() {
-    // In a real app, this would track staff location for job assignments
-    console.log('Location tracking setup');
-}
-
-// Initialize notifications for staff
-function initializeNotifications() {
-    // Check for new assignments, messages, etc.
-    checkStaffNotifications();
-}
-
-// Check for staff-specific notifications
-function checkStaffNotifications() {
-    console.log('Checking staff notifications...');
-}
-
-// Setup offline mode support
-function setupOfflineMode() {
-    // Enable offline functionality for field workers
-    console.log('Offline mode support enabled');
-}
-
-// Setup clock in/out functionality
-function setupClockInOut() {
-    // Initialize clock in/out tracking
-    console.log('Clock in/out system initialized');
-}
-
-// Setup photo upload functionality
-function setupPhotoUpload() {
-    // Initialize photo upload for progress documentation
-    console.log('Photo upload system initialized');
-}
-
-// Utility functions
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-    });
-}
-
-function formatStatus(status) {
-    const statusMap = {
-        'in-progress': 'In Progress',
-        'pending': 'Pending',
-        'scheduled': 'Scheduled',
-        'completed': 'Completed',
-        'available': 'Available',
-        'in-use': 'In Use'
-    };
-    return statusMap[status] || status;
-}
-
-function formatPriority(priority) {
-    const priorityMap = {
-        'high': 'High Priority',
-        'medium': 'Medium Priority',
-        'low': 'Low Priority'
-    };
-    return priorityMap[priority] || priority;
-}
-
-function getActionText(status) {
-    const actionMap = {
-        'in-progress': 'Update',
-        'pending': 'Start',
-        'scheduled': 'View Details'
-    };
-    return actionMap[status] || 'Update';
-}
-
-// Action functions
-function updateTaskStatus(scheduleId) {
-    alert(`Updating status for task ${scheduleId}`);
-}
-
-function viewProjectDetails(projectId) {
-    alert(`Viewing project details for project ${projectId}`);
-}
-
-function updateProgress(projectId) {
-    const newProgress = prompt('Enter new progress percentage (0-100):');
-    if (newProgress && !isNaN(newProgress) && newProgress >= 0 && newProgress <= 100) {
-        alert(`Progress updated to ${newProgress}% for project ${projectId}`);
-        // Update the UI
-        updateProjectProgress(projectId, newProgress);
+    openIssueReport() {
+        alert('Issue reporting form would open here for reporting problems or safety concerns.');
     }
 }
 
-function updateProjectProgress(projectId, progress) {
-    const projectCard = document.querySelector(`[data-project-id="${projectId}"]`);
-    if (projectCard) {
-        const progressBar = projectCard.querySelector('.progress');
-        const progressLabel = projectCard.querySelector('.progress-section label');
-        
-        if (progressBar) progressBar.style.width = progress + '%';
-        if (progressLabel) progressLabel.textContent = `Progress: ${progress}%`;
-    }
-}
-
-// Quick action functions
-function handleClockInOut() {
-    const isClocked = localStorage.getItem('clockedIn') === 'true';
-    const action = isClocked ? 'Clock Out' : 'Clock In';
-    
-    if (confirm(`Are you sure you want to ${action}?`)) {
-        localStorage.setItem('clockedIn', !isClocked);
-        alert(`Successfully ${action.toLowerCase()}ed at ${new Date().toLocaleTimeString()}`);
-    }
-}
-
-function openPhotoUpload() {
-    alert('Photo upload functionality would open here. Staff can document work progress.');
-}
-
-function openReportForm() {
-    alert('Daily report form would open here.');
-}
-
-function openMaterialRequest() {
-    alert('Material request form would open here.');
-}
-
-function contactSupervisor() {
-    alert('Contacting supervisor via phone: 077 633 6464');
-}
-
-function openIssueReport() {
-    alert('Issue reporting form would open here.');
-}
+// Initialize staff dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for session manager to initialize
+    setTimeout(() => {
+        window.staffDashboard = new StaffDashboardManager();
+    }, 100);
+});
 
 // Logout function (global)
 function logout() {

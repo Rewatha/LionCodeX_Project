@@ -1,491 +1,686 @@
-// Admin Dashboard functionality
+// Protected Admin Dashboard functionality with backend integration
+// File: js/admin-dashboard.js
+
+class AdminDashboardManager {
+    constructor() {
+        this.currentUser = null;
+        this.isLoading = true;
+        this.init();
+    }
+
+    async init() {
+        // Show loading screen
+        this.showLoading();
+        
+        // Check authentication
+        if (!this.checkAuthentication()) {
+            this.showAccessDenied();
+            return;
+        }
+
+        // Verify admin access
+        if (!this.verifyAdminAccess()) {
+            this.redirectToCorrectDashboard();
+            return;
+        }
+
+        // Initialize dashboard
+        await this.initializeAdminDashboard();
+    }
+
+    checkAuthentication() {
+        // Check session manager
+        if (!window.sessionManager || !window.sessionManager.isLoggedIn) {
+            return false;
+        }
+
+        this.currentUser = window.sessionManager.currentUser;
+        return true;
+    }
+
+    verifyAdminAccess() {
+        // Only allow admin user type
+        return this.currentUser.userType === 'admin';
+    }
+
+    redirectToCorrectDashboard() {
+        const dashboardUrls = {
+            'staff': 'staff-dashboard.html',
+            'individual': 'user-dashboard.html',
+            'business': 'user-dashboard.html',
+            'contractor': 'user-dashboard.html'
+        };
+
+        const correctDashboard = dashboardUrls[this.currentUser.userType];
+        if (correctDashboard) {
+            window.location.href = correctDashboard;
+        } else {
+            this.showAccessDenied();
+        }
+    }
+
+    async initializeAdminDashboard() {
+        try {
+            // Load dashboard data
+            await this.loadDashboardData();
+
+            // Setup event listeners
+            this.setupEventListeners();
+
+            // Setup real-time updates
+            this.setupRealTimeUpdates();
+
+            // Hide loading and show dashboard
+            this.showDashboard();
+
+        } catch (error) {
+            console.error('Admin dashboard initialization error:', error);
+            this.showError('Failed to load dashboard. Please refresh the page.');
+        }
+    }
+
+    async loadDashboardData() {
+        try {
+            // Load data in parallel
+            await Promise.all([
+                this.loadOverviewStats(),
+                this.loadRecentInquiries(),
+                this.loadActiveProjects(),
+                this.loadTeamStatus(),
+                this.loadRevenueData()
+            ]);
+        } catch (error) {
+            console.error('Error loading admin dashboard data:', error);
+            this.showFallbackData();
+        }
+    }
+
+    async loadOverviewStats() {
+        try {
+            const response = await fetch(`admin-api.php?action=overview`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.updateStatCards(data);
+            } else {
+                throw new Error('Failed to load overview stats');
+            }
+        } catch (error) {
+            console.error('Overview stats error:', error);
+            this.updateStatCards({
+                totalCustomers: 0,
+                activeProjects: 0,
+                newInquiries: 0,
+                monthlyRevenue: 'LKR 0'
+            });
+        }
+    }
+
+    async loadRecentInquiries() {
+        try {
+            const response = await fetch(`admin-api.php?action=inquiries`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayInquiries(data.inquiries || []);
+            } else {
+                throw new Error('Failed to load inquiries');
+            }
+        } catch (error) {
+            console.error('Inquiries loading error:', error);
+            this.displayInquiries([]);
+        }
+    }
+
+    async loadActiveProjects() {
+        try {
+            const response = await fetch(`admin-api.php?action=projects`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayProjects(data.projects || []);
+            } else {
+                throw new Error('Failed to load projects');
+            }
+        } catch (error) {
+            console.error('Projects loading error:', error);
+            this.displayProjects([]);
+        }
+    }
+
+    async loadTeamStatus() {
+        try {
+            const response = await fetch(`admin-api.php?action=team-status`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.displayTeamStatus(data.team_members || []);
+            } else {
+                throw new Error('Failed to load team status');
+            }
+        } catch (error) {
+            console.error('Team status loading error:', error);
+            this.displayTeamStatus([]);
+        }
+    }
+
+    async loadRevenueData() {
+        try {
+            const response = await fetch(`admin-api.php?action=revenue`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.updateRevenueChart(data.revenue_data || []);
+            } else {
+                throw new Error('Failed to load revenue data');
+            }
+        } catch (error) {
+            console.error('Revenue data loading error:', error);
+            this.updateRevenueChart([]);
+        }
+    }
+
+    updateStatCards(stats) {
+        const statCards = document.querySelectorAll('.stat-card');
+        const values = [
+            stats.totalCustomers,
+            stats.activeProjects,
+            stats.newInquiries,
+            stats.monthlyRevenue
+        ];
+
+        statCards.forEach((card, index) => {
+            const h3 = card.querySelector('h3');
+            if (h3 && values[index] !== undefined) {
+                h3.textContent = values[index];
+            }
+        });
+    }
+
+    displayInquiries(inquiries) {
+        const inquiriesTable = document.querySelector('.inquiries-table');
+        if (!inquiriesTable) return;
+
+        // Clear existing rows (keep header)
+        const existingRows = inquiriesTable.querySelectorAll('.table-row');
+        existingRows.forEach(row => row.remove());
+
+        if (inquiries.length === 0) {
+            const emptyRow = document.createElement('div');
+            emptyRow.className = 'table-row';
+            emptyRow.innerHTML = `
+                <div colspan="5" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Recent Inquiries</h3>
+                    <p>No new customer inquiries to display.</p>
+                </div>
+            `;
+            inquiriesTable.appendChild(emptyRow);
+            return;
+        }
+
+        // Add new rows
+        inquiries.forEach(inquiry => {
+            const row = this.createInquiryRow(inquiry);
+            inquiriesTable.appendChild(row);
+        });
+    }
+
+    createInquiryRow(inquiry) {
+        const row = document.createElement('div');
+        row.className = 'table-row';
+        row.innerHTML = `
+            <div>${inquiry.name}</div>
+            <div>${inquiry.service_type || 'General Inquiry'}</div>
+            <div>${this.formatDate(inquiry.created_at)}</div>
+            <div><span class="status ${inquiry.status}">${this.formatStatus(inquiry.status)}</span></div>
+            <div>
+                <button class="btn-small" onclick="adminDashboard.viewInquiry(${inquiry.id})">View</button>
+                <button class="btn-small primary" onclick="adminDashboard.respondToInquiry(${inquiry.id})">Respond</button>
+            </div>
+        `;
+        return row;
+    }
+
+    displayProjects(projects) {
+        const projectsTable = document.querySelector('.projects-table');
+        if (!projectsTable) return;
+
+        // Clear existing rows (keep header)
+        const existingRows = projectsTable.querySelectorAll('.table-row');
+        existingRows.forEach(row => row.remove());
+
+        if (projects.length === 0) {
+            const emptyRow = document.createElement('div');
+            emptyRow.className = 'table-row';
+            emptyRow.innerHTML = `
+                <div colspan="6" class="empty-state">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>No Active Projects</h3>
+                    <p>No active projects to display.</p>
+                </div>
+            `;
+            projectsTable.appendChild(emptyRow);
+            return;
+        }
+
+        // Add new rows
+        projects.forEach(project => {
+            const row = this.createProjectRow(project);
+            projectsTable.appendChild(row);
+        });
+    }
+
+    createProjectRow(project) {
+        const row = document.createElement('div');
+        row.className = 'table-row';
+        row.innerHTML = `
+            <div>${project.project_name}</div>
+            <div>${project.customer_name}</div>
+            <div>${project.team_name || 'Unassigned'}</div>
+            <div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${project.progress_percentage}%"></div>
+                </div>
+                <span>${project.progress_percentage}%</span>
+            </div>
+            <div>${this.formatDate(project.estimated_completion)}</div>
+            <div>
+                <button class="btn-small" onclick="adminDashboard.viewProject(${project.id})">View</button>
+                <button class="btn-small" onclick="adminDashboard.updateProject(${project.id})">Update</button>
+            </div>
+        `;
+        return row;
+    }
+
+    displayTeamStatus(teamMembers) {
+        const teamGrid = document.querySelector('.team-grid');
+        if (!teamGrid) return;
+
+        if (teamMembers.length === 0) {
+            teamGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>No Team Members</h3>
+                    <p>No active team members found.</p>
+                </div>
+            `;
+            return;
+        }
+
+        teamGrid.innerHTML = teamMembers.map(member => `
+            <div class="team-card">
+                <div class="team-member">
+                    <i class="fas fa-user-hard-hat"></i>
+                    <h4>${member.first_name} ${member.last_name}</h4>
+                    <p>${member.role || 'Team Member'}</p>
+                    <p class="team-name">${member.team_name || 'No Team'}</p>
+                    <span class="status ${member.status}">${this.formatStatus(member.status)}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    updateRevenueChart(revenueData) {
+        const chartBars = document.querySelectorAll('.chart-bar');
+        
+        if (revenueData.length === 0) {
+            chartBars.forEach(bar => {
+                bar.style.height = '10%';
+                const span = bar.querySelector('span');
+                if (span) span.textContent = 'No Data';
+            });
+            return;
+        }
+
+        chartBars.forEach((bar, index) => {
+            if (revenueData[index]) {
+                bar.style.height = Math.max(revenueData[index].percentage, 5) + '%';
+                const span = bar.querySelector('span');
+                if (span) span.textContent = revenueData[index].month;
+                bar.title = `${revenueData[index].month}: LKR ${revenueData[index].revenue.toLocaleString()}`;
+            } else {
+                bar.style.height = '5%';
+                const span = bar.querySelector('span');
+                if (span) span.textContent = '';
+            }
+        });
+    }
+
+    setupEventListeners() {
+        this.setupQuickActions();
+        this.setupTableInteractions();
+        this.setupSystemManagement();
+        this.setupKeyboardShortcuts();
+    }
+
+    setupQuickActions() {
+        const actionCards = document.querySelectorAll('.action-card');
+        actionCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const actionText = card.textContent.trim();
+                this.handleQuickAction(actionText);
+            });
+        });
+    }
+
+    setupTableInteractions() {
+        const tableRows = document.querySelectorAll('.table-row');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+            });
+        });
+    }
+
+    setupSystemManagement() {
+        const systemCards = document.querySelectorAll('.system-card');
+        systemCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const systemText = card.textContent.trim();
+                this.handleSystemAction(systemText);
+            });
+        });
+    }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'n':
+                        e.preventDefault();
+                        this.openNewProjectForm();
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        this.openUserManagement();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        this.openReports();
+                        break;
+                }
+            }
+        });
+    }
+
+    setupRealTimeUpdates() {
+        // Refresh dashboard data every 30 seconds
+        setInterval(() => {
+            this.refreshDashboardData();
+        }, 30000);
+    }
+
+    async refreshDashboardData() {
+        try {
+            await this.loadOverviewStats();
+            await this.loadRecentInquiries();
+        } catch (error) {
+            console.error('Error refreshing dashboard data:', error);
+        }
+    }
+
+    handleQuickAction(actionText) {
+        switch(actionText) {
+            case 'Add New Project':
+                this.openNewProjectForm();
+                break;
+            case 'Add Customer':
+                this.openNewCustomerForm();
+                break;
+            case 'Schedule Appointment':
+                this.openAppointmentScheduler();
+                break;
+            case 'Generate Quote':
+                this.openQuoteGenerator();
+                break;
+            default:
+                console.log('Quick action:', actionText);
+        }
+    }
+
+    handleSystemAction(actionText) {
+        switch(actionText) {
+            case 'User Management':
+                this.openUserManagement();
+                break;
+            case 'Reports':
+                this.openReports();
+                break;
+            case 'Settings':
+                this.openSystemSettings();
+                break;
+            case 'Backup':
+                this.initiateBackup();
+                break;
+            default:
+                console.log('System action:', actionText);
+        }
+    }
+
+    async viewInquiry(inquiryId) {
+        try {
+            // This would typically show a modal with inquiry details
+            const inquiry = await this.getInquiryDetails(inquiryId);
+            this.showInquiryModal(inquiry);
+        } catch (error) {
+            console.error('Error viewing inquiry:', error);
+            alert('Unable to load inquiry details.');
+        }
+    }
+
+    async respondToInquiry(inquiryId) {
+        const response = prompt('Enter your response to this inquiry:');
+        if (!response) return;
+
+        try {
+            const formData = new FormData();
+            formData.append('inquiry_id', inquiryId);
+            formData.append('status', 'contacted');
+            formData.append('response', response);
+
+            const result = await fetch('admin-api.php?action=assign-inquiry', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await result.json();
+            
+            if (data.success) {
+                alert('Response sent successfully!');
+                await this.loadRecentInquiries();
+            } else {
+                alert(data.error || 'Failed to send response');
+            }
+        } catch (error) {
+            console.error('Error responding to inquiry:', error);
+            this.showError('Failed to send response');
+        }
+    }
+
+    async viewProject(projectId) {
+        try {
+            // This would show project details in a modal
+            alert(`Project details for project ${projectId} would be shown here`);
+        } catch (error) {
+            console.error('Error viewing project:', error);
+            alert('Unable to load project details.');
+        }
+    }
+
+    async updateProject(projectId) {
+        const newStatus = prompt('Update project status (planning/scheduled/in_progress/completed):');
+        if (!newStatus) return;
+
+        try {
+            const formData = new FormData();
+            formData.append('project_id', projectId);
+            formData.append('status', newStatus);
+
+            const response = await fetch('admin-api.php?action=update-project', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Project updated successfully!');
+                await this.loadActiveProjects();
+            } else {
+                alert(data.error || 'Failed to update project');
+            }
+        } catch (error) {
+            console.error('Error updating project:', error);
+            this.showError('Failed to update project');
+        }
+    }
+
+    showFallbackData() {
+        this.updateStatCards({
+            totalCustomers: 0,
+            activeProjects: 0,
+            newInquiries: 0,
+            monthlyRevenue: 'LKR 0'
+        });
+        
+        this.displayInquiries([]);
+        this.displayProjects([]);
+        this.displayTeamStatus([]);
+        this.updateRevenueChart([]);
+    }
+
+    showLoading() {
+        document.getElementById('loading-screen').style.display = 'flex';
+        document.getElementById('dashboard-content').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'none';
+    }
+
+    showAccessDenied() {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'flex';
+    }
+
+    showDashboard() {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('access-denied').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'block';
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()">×</button>
+        `;
+        document.body.appendChild(errorDiv);
+
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Utility functions
+    formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+    }
+
+    formatStatus(status) {
+        const statusMap = {
+            'new': 'New',
+            'contacted': 'Contacted',
+            'quoted': 'Quoted',
+            'converted': 'Converted',
+            'planning': 'Planning',
+            'scheduled': 'Scheduled',
+            'in_progress': 'In Progress',
+            'completed': 'Completed',
+            'available': 'Available',
+            'on-site': 'On Site',
+            'on-leave': 'On Leave'
+        };
+        return statusMap[status] || status;
+    }
+
+    // Quick action implementations
+    openNewProjectForm() {
+        alert('New Project form would open here');
+    }
+
+    openNewCustomerForm() {
+        alert('New Customer form would open here');
+    }
+
+    openAppointmentScheduler() {
+        alert('Appointment Scheduler would open here');
+    }
+
+    openQuoteGenerator() {
+        alert('Quote Generator would open here');
+    }
+
+    openUserManagement() {
+        alert('User Management system would open here');
+    }
+
+    openReports() {
+        alert('Reports system would open here');
+    }
+
+    openSystemSettings() {
+        alert('System Settings would open here');
+    }
+
+    initiateBackup() {
+        if (confirm('Are you sure you want to initiate a system backup?')) {
+            alert('Backup process initiated...');
+        }
+    }
+}
+
+// Initialize admin dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initializeAdminDashboard();
-    loadAdminData();
-    setupAdminEventListeners();
+    // Wait for session manager to initialize
+    setTimeout(() => {
+        window.adminDashboard = new AdminDashboardManager();
+    }, 100);
 });
 
-// Initialize admin dashboard
-function initializeAdminDashboard() {
-    // Verify admin access
-    const currentUser = getCurrentUser();
-    if (!currentUser || currentUser.userType !== 'admin') {
-        alert('Access denied. Admin privileges required.');
-        window.location.href = 'auth.html';
-        return;
-    }
-    
-    // Initialize admin components
-    initializeAdminComponents();
-    setupRealTimeUpdates();
-}
-
-// Get current user from storage
-function getCurrentUser() {
-    try {
-        const user = localStorage.getItem('currentUser');
-        return user ? JSON.parse(user) : null;
-    } catch (error) {
-        console.error('Error loading user data:', error);
-        return null;
-    }
-}
-
-// Load admin-specific data
-function loadAdminData() {
-    loadDashboardStats();
-    loadRecentInquiries();
-    loadActiveProjects();
-    loadTeamStatus();
-    loadRevenueData();
-}
-
-// Load dashboard statistics
-function loadDashboardStats() {
-    // In a real application, this would fetch from your backend API
-    const stats = {
-        totalCustomers: 45,
-        activeProjects: 23,
-        newInquiries: 12,
-        monthlyRevenue: 'LKR 2.5M'
-    };
-    
-    updateStatCards(stats);
-}
-
-// Update stat cards with current data
-function updateStatCards(stats) {
-    const statCards = document.querySelectorAll('.stat-card');
-    const statValues = [stats.totalCustomers, stats.activeProjects, stats.newInquiries, stats.monthlyRevenue];
-    
-    statCards.forEach((card, index) => {
-        const h3 = card.querySelector('h3');
-        if (h3 && statValues[index] !== undefined) {
-            h3.textContent = statValues[index];
-        }
-    });
-}
-
-// Load recent inquiries
-function loadRecentInquiries() {
-    const sampleInquiries = [
-        {
-            id: 1,
-            customer: 'John Silva',
-            service: 'Roof Waterproofing',
-            date: '2025-01-20',
-            status: 'new'
-        },
-        {
-            id: 2,
-            customer: 'Maria Fernando',
-            service: 'Foundation Sealing',
-            date: '2025-01-19',
-            status: 'responded'
-        },
-        {
-            id: 3,
-            customer: 'David Perera',
-            service: 'Commercial Building',
-            date: '2025-01-18',
-            status: 'quoted'
-        }
-    ];
-    
-    displayInquiries(sampleInquiries);
-}
-
-// Display inquiries in the table
-function displayInquiries(inquiries) {
-    const inquiriesTable = document.querySelector('.inquiries-table');
-    if (!inquiriesTable) return;
-    
-    // Clear existing rows (keep header)
-    const existingRows = inquiriesTable.querySelectorAll('.table-row');
-    existingRows.forEach(row => row.remove());
-    
-    // Add new rows
-    inquiries.forEach(inquiry => {
-        const row = createInquiryRow(inquiry);
-        inquiriesTable.appendChild(row);
-    });
-}
-
-// Create inquiry table row
-function createInquiryRow(inquiry) {
-    const row = document.createElement('div');
-    row.className = 'table-row';
-    row.innerHTML = `
-        <div>${inquiry.customer}</div>
-        <div>${inquiry.service}</div>
-        <div>${formatDate(inquiry.date)}</div>
-        <div><span class="status ${inquiry.status}">${formatStatus(inquiry.status)}</span></div>
-        <div>
-            <button class="btn-small" onclick="viewInquiry(${inquiry.id})">View</button>
-            <button class="btn-small primary" onclick="respondToInquiry(${inquiry.id})">Respond</button>
-        </div>
-    `;
-    return row;
-}
-
-// Load active projects
-function loadActiveProjects() {
-    const sampleProjects = [
-        {
-            id: 1,
-            name: 'Villa Roof Waterproofing',
-            customer: 'K. Rathnayake',
-            team: 'Team A',
-            progress: 65,
-            deadline: '2025-01-30'
-        },
-        {
-            id: 2,
-            name: 'Office Building Foundation',
-            customer: 'ABC Company',
-            team: 'Team B',
-            progress: 30,
-            deadline: '2025-02-15'
-        }
-    ];
-    
-    displayProjects(sampleProjects);
-}
-
-// Display projects in the table
-function displayProjects(projects) {
-    const projectsTable = document.querySelector('.projects-table');
-    if (!projectsTable) return;
-    
-    // Clear existing rows (keep header)
-    const existingRows = projectsTable.querySelectorAll('.table-row');
-    existingRows.forEach(row => row.remove());
-    
-    // Add new rows
-    projects.forEach(project => {
-        const row = createProjectRow(project);
-        projectsTable.appendChild(row);
-    });
-}
-
-// Create project table row
-function createProjectRow(project) {
-    const row = document.createElement('div');
-    row.className = 'table-row';
-    row.innerHTML = `
-        <div>${project.name}</div>
-        <div>${project.customer}</div>
-        <div>${project.team}</div>
-        <div>
-            <div class="progress-bar">
-                <div class="progress" style="width: ${project.progress}%"></div>
-            </div>
-            <span>${project.progress}%</span>
-        </div>
-        <div>${formatDate(project.deadline)}</div>
-        <div>
-            <button class="btn-small" onclick="viewProject(${project.id})">View</button>
-            <button class="btn-small" onclick="updateProject(${project.id})">Update</button>
-        </div>
-    `;
-    return row;
-}
-
-// Load team status
-function loadTeamStatus() {
-    const teamMembers = [
-        { name: 'Sunil Bandara', role: 'Team Leader', status: 'available' },
-        { name: 'Priya Jayawardena', role: 'Senior Technician', status: 'on-site' },
-        { name: 'Ravi Kumara', role: 'Technician', status: 'available' },
-        { name: 'Nimal Silva', role: 'Technician', status: 'on-leave' }
-    ];
-    
-    displayTeamStatus(teamMembers);
-}
-
-// Display team status
-function displayTeamStatus(teamMembers) {
-    const teamGrid = document.querySelector('.team-grid');
-    if (!teamGrid) return;
-    
-    teamGrid.innerHTML = teamMembers.map(member => `
-        <div class="team-card">
-            <div class="team-member">
-                <i class="fas fa-user-hard-hat"></i>
-                <h4>${member.name}</h4>
-                <p>${member.role}</p>
-                <span class="status ${member.status}">${formatStatus(member.status)}</span>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Load revenue data
-function loadRevenueData() {
-    // Sample revenue data for chart
-    const revenueData = [60, 80, 45, 90, 70, 85]; // percentages for chart bars
-    
-    updateRevenueChart(revenueData);
-}
-
-// Update revenue chart
-function updateRevenueChart(data) {
-    const chartBars = document.querySelectorAll('.chart-bar');
-    chartBars.forEach((bar, index) => {
-        if (data[index] !== undefined) {
-            bar.style.height = data[index] + '%';
-        }
-    });
-}
-
-// Setup admin event listeners
-function setupAdminEventListeners() {
-    setupQuickActions();
-    setupTableInteractions();
-    setupSystemManagement();
-    setupRealTimeFeatures();
-}
-
-// Setup quick actions
-function setupQuickActions() {
-    const actionCards = document.querySelectorAll('.action-card');
-    actionCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            e.preventDefault();
-            const actionText = this.textContent.trim();
-            handleQuickAction(actionText);
-        });
-    });
-}
-
-// Handle quick action clicks
-function handleQuickAction(actionText) {
-    switch(actionText) {
-        case 'Add New Project':
-            openNewProjectForm();
-            break;
-        case 'Add Customer':
-            openNewCustomerForm();
-            break;
-        case 'Schedule Appointment':
-            openAppointmentScheduler();
-            break;
-        case 'Generate Quote':
-            openQuoteGenerator();
-            break;
-        default:
-            console.log('Quick action:', actionText);
-    }
-}
-
-// Setup table interactions
-function setupTableInteractions() {
-    // Add hover effects to table rows
-    const tableRows = document.querySelectorAll('.table-row');
-    tableRows.forEach(row => {
-        row.addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#f8f9fa';
-        });
-        
-        row.addEventListener('mouseleave', function() {
-            this.style.backgroundColor = '';
-        });
-    });
-}
-
-// Setup system management
-function setupSystemManagement() {
-    const systemCards = document.querySelectorAll('.system-card');
-    systemCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            e.preventDefault();
-            const systemText = this.textContent.trim();
-            handleSystemAction(systemText);
-        });
-    });
-}
-
-// Handle system management actions
-function handleSystemAction(actionText) {
-    switch(actionText) {
-        case 'User Management':
-            openUserManagement();
-            break;
-        case 'Reports':
-            openReports();
-            break;
-        case 'Settings':
-            openSystemSettings();
-            break;
-        case 'Backup':
-            initiateBackup();
-            break;
-        default:
-            console.log('System action:', actionText);
-    }
-}
-
-// Setup real-time features
-function setupRealTimeFeatures() {
-    // Setup periodic data refresh
-    setInterval(refreshDashboardData, 30000); // Refresh every 30 seconds
-    
-    // Setup notification system
-    initializeNotifications();
-}
-
-// Initialize admin components
-function initializeAdminComponents() {
-    // Initialize date pickers, charts, etc.
-    initializeCharts();
-    initializeFilters();
-    setupKeyboardShortcuts();
-}
-
-// Initialize charts
-function initializeCharts() {
-    // Initialize any chart libraries here
-    console.log('Initializing charts...');
-}
-
-// Initialize filters
-function initializeFilters() {
-    // Add filtering capabilities to tables
-    addTableFilters();
-}
-
-// Add table filters
-function addTableFilters() {
-    // This would add search/filter functionality to tables
-    console.log('Adding table filters...');
-}
-
-// Setup keyboard shortcuts for admin
-function setupKeyboardShortcuts() {
-    document.addEventListener('keydown', function(e) {
-        // Ctrl+N for new project
-        if (e.ctrlKey && e.key === 'n') {
-            e.preventDefault();
-            openNewProjectForm();
-        }
-        
-        // Ctrl+U for user management
-        if (e.ctrlKey && e.key === 'u') {
-            e.preventDefault();
-            openUserManagement();
-        }
-        
-        // Ctrl+R for reports
-        if (e.ctrlKey && e.key === 'r') {
-            e.preventDefault();
-            openReports();
-        }
-    });
-}
-
-// Setup real-time updates
-function setupRealTimeUpdates() {
-    // In a real application, this would setup WebSocket connections
-    // or periodic polling for real-time data updates
-    console.log('Setting up real-time updates...');
-}
-
-// Refresh dashboard data
-function refreshDashboardData() {
-    loadDashboardStats();
-    loadRecentInquiries();
-    loadActiveProjects();
-    loadTeamStatus();
-}
-
-// Initialize notifications
-function initializeNotifications() {
-    // Check for new notifications
-    checkNewNotifications();
-}
-
-// Check for new notifications
-function checkNewNotifications() {
-    // This would check for new inquiries, urgent projects, etc.
-    console.log('Checking for new notifications...');
-}
-
-// Utility functions
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-    });
-}
-
-function formatStatus(status) {
-    const statusMap = {
-        'new': 'New',
-        'responded': 'Responded',
-        'quoted': 'Quoted',
-        'available': 'Available',
-        'on-site': 'On Site',
-        'on-leave': 'On Leave'
-    };
-    return statusMap[status] || status;
-}
-
-// Action functions called by buttons
-function viewInquiry(inquiryId) {
-    alert(`Viewing inquiry ${inquiryId}`);
-}
-
-function respondToInquiry(inquiryId) {
-    alert(`Opening response form for inquiry ${inquiryId}`);
-}
-
-function viewProject(projectId) {
-    alert(`Viewing project details for project ${projectId}`);
-}
-
-function updateProject(projectId) {
-    alert(`Opening update form for project ${projectId}`);
-}
-
-// Quick action functions
-function openNewProjectForm() {
-    alert('New Project form would open here');
-}
-
-function openNewCustomerForm() {
-    alert('New Customer form would open here');
-}
-
-function openAppointmentScheduler() {
-    alert('Appointment Scheduler would open here');
-}
-
-function openQuoteGenerator() {
-    alert('Quote Generator would open here');
-}
-
-// System management functions
-function openUserManagement() {
-    alert('User Management system would open here');
-}
-
-function openReports() {
-    alert('Reports system would open here');
-}
-
-function openSystemSettings() {
-    alert('System Settings would open here');
-}
-
-function initiateBackup() {
-    if (confirm('Are you sure you want to initiate a system backup?')) {
-        alert('Backup process initiated...');
-    }
-}
-
-// Logout function (global)
+// Global logout function
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
         // Clear user data
