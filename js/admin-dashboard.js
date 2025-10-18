@@ -97,7 +97,7 @@ class AdminDashboardManager {
 
     async loadOverviewStats() {
         try {
-            const response = await fetch(`../backend/admin-api.php?action=overview`, {
+            const response = await fetch('../backend/admin-api.php?action=overview', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -121,11 +121,10 @@ class AdminDashboardManager {
 
     async loadRecentInquiries() {
         try {
-            const response = await fetch(`../backend/admin-api.php?action=inquiries`, {
+            const response = await fetch('../backend/admin-api.php?action=inquiries', {
                 method: 'GET',
                 credentials: 'include'
             });
-
             if (response.ok) {
                 const data = await response.json();
                 this.displayInquiries(data.inquiries || []);
@@ -140,11 +139,10 @@ class AdminDashboardManager {
 
     async loadActiveProjects() {
         try {
-            const response = await fetch(`../backend/admin-api.php?action=projects`, {
+            const response = await fetch('../backend/admin-api.php?action=projects', {
                 method: 'GET',
                 credentials: 'include'
             });
-
             if (response.ok) {
                 const data = await response.json();
                 this.displayProjects(data.projects || []);
@@ -157,22 +155,21 @@ class AdminDashboardManager {
         }
     }
 
-    async loadTeamStatus() {
+    async loadRevenueData() {
         try {
-            const response = await fetch(`../backend/admin-api.php?action=team-status`, {
+            const response = await fetch('../backend/admin-api.php?action=revenue', {
                 method: 'GET',
                 credentials: 'include'
             });
-
             if (response.ok) {
                 const data = await response.json();
-                this.displayTeamStatus(data.team_members || []);
+                this.updateRevenueChart(data.revenue_data || []);
             } else {
-                throw new Error('Failed to load team status');
+                throw new Error('Failed to load revenue data');
             }
         } catch (error) {
-            console.error('Team status loading error:', error);
-            this.displayTeamStatus([]);
+            console.error('Revenue data loading error:', error);
+            this.updateRevenueChart([]);
         }
     }
 
@@ -481,7 +478,6 @@ class AdminDashboardManager {
 
     async viewInquiry(inquiryId) {
         try {
-            // Fetch inquiry details from backend
             const response = await fetch(`../backend/admin-api.php?action=inquiry-details&inquiry_id=${inquiryId}`, {
                 method: 'GET',
                 credentials: 'include'
@@ -499,7 +495,6 @@ class AdminDashboardManager {
             }
         } catch (error) {
             console.error('Error viewing inquiry:', error);
-            alert('Unable to load inquiry details: ' + error.message);
         }
     }
 
@@ -533,14 +528,13 @@ class AdminDashboardManager {
     async respondToInquiry(inquiryId) {
         const response = prompt('Enter your response to this inquiry:');
         if (!response) return;
-
         try {
             const formData = new FormData();
             formData.append('inquiry_id', inquiryId);
             formData.append('status', 'contacted');
             formData.append('response', response);
 
-            const result = await fetch(`../backend/admin-api.php?action=assign-inquiry`, {
+            const result = await fetch('../backend/admin-api.php?action=assign-inquiry', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -556,7 +550,6 @@ class AdminDashboardManager {
             }
         } catch (error) {
             console.error('Error responding to inquiry:', error);
-            this.showError('Failed to send response');
         }
     }
 
@@ -573,13 +566,12 @@ class AdminDashboardManager {
     async updateProject(projectId) {
         const newStatus = prompt('Update project status (planning/scheduled/in_progress/completed):');
         if (!newStatus) return;
-
         try {
             const formData = new FormData();
             formData.append('project_id', projectId);
             formData.append('status', newStatus);
 
-            const response = await fetch(`../backend/admin-api.php?action=update-project`, {
+            const response = await fetch('../backend/admin-api.php?action=update-project', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -595,7 +587,6 @@ class AdminDashboardManager {
             }
         } catch (error) {
             console.error('Error updating project:', error);
-            this.showError('Failed to update project');
         }
     }
 
@@ -678,36 +669,36 @@ class AdminDashboardManager {
 
     // Quick action implementations
     openNewProjectForm() {
-        alert('New Project form would open here');
+        window.location.href = 'add-project.html';
     }
 
     openNewCustomerForm() {
-        alert('New Customer form would open here');
+        window.location.href = 'add-customer.html';
     }
 
     openAppointmentScheduler() {
-        alert('Appointment Scheduler would open here');
+        window.location.href = 'schedule-appointment.html';
     }
 
     openQuoteGenerator() {
-        alert('Quote Generator would open here');
+        window.location.href = 'generate-quote.html';
     }
 
     openUserManagement() {
-        alert('User Management system would open here');
+        window.location.href = 'user-management.html';
     }
 
     openReports() {
-        alert('Reports system would open here');
+        window.location.href = 'reports.html';
     }
 
     openSystemSettings() {
-        alert('System Settings would open here');
+        window.location.href = 'settings.html';
     }
 
     initiateBackup() {
         if (confirm('Are you sure you want to initiate a system backup?')) {
-            alert('Backup process initiated...');
+            window.location.href = 'backup.html';
         }
     }
 }

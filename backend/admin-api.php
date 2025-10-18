@@ -54,6 +54,18 @@ switch ($action) {
         handleUpdateProject();
         break;
 
+    case 'get-customers':
+        handleGetCustomers();
+        break;
+
+    case 'get-teams':
+        handleGetTeams();
+        break;
+
+    case 'create-project':
+        handleCreateProject();
+        break;
+
     default:
         Response::error('Invalid action', 400);
 }
@@ -350,5 +362,111 @@ function handleInquiryDetails()
     }
 }
 
+// ============================================
+// GET CUSTOMERS LIST
+// ============================================
+function handleGetCustomers()
+{
+    global $db;
+
+    try {
+        $customers = $db->fetchAll(
+            "SELECT id, first_name, last_name, email 
+             FROM users 
+             WHERE user_type IN ('individual', 'business', 'contractor') 
+             AND status = 'active'
+             ORDER BY first_name, last_name"
+        );
+
+        Response::success('Customers retrieved', ['customers' => $customers]);
+
+    } catch (Exception $e) {
+        error_log("Get Customers Error: " . $e->getMessage());
+        Response::serverError('Failed to load customers');
+    }
+}
+
+// ============================================
+// GET TEAMS LIST
+// ============================================
+function handleGetTeams()
+{
+    global $db;
+
+    try {
+        $teams = $db->fetchAll(
+            "SELECT id, team_name 
+             FROM teams 
+             WHERE status = 'active'
+             ORDER BY team_name"
+        );
+
+        Response::success('Teams retrieved', ['teams' => $teams]);
+
+    } catch (Exception $e) {
+        error_log("Get Teams Error: " . $e->getMessage());
+        Response::serverError('Failed to load teams');
+    }
+}
+
+// ============================================
+// CREATE PROJECT
+// ============================================
+function handleCreateProject()
+{
+    global $db;
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        Response::error('Method not allowed', 405);
+    }
+
+    // Get form data
+    $projectName = isset($_POST['projectName']) ? trim($_POST['projectName']) : '';
+    $customerId = isset($_POST['customerId']) ? (int) $_POST['customerId'] : 0;
+    $projectType = isset($_POST['projectType']) ? trim($_POST['projectType']) : '';
+    $location = isset($_POST['location']) ? trim($_POST['location']) : '';
+    $teamId = isset($_POST['teamId']) ? (int) $_POST['teamId'] : null;
+    $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : null;
+    $estimatedCompletion = isset($_POST['estimatedCompletion']) ? $_POST['estimatedCompletion'] : null;
+    $estimatedCost = isset($_POST['estimatedCost']) ? (float) $_POST['estimatedCost'] : null;
+    $status = isset($_POST['status']) ? $_POST['status'] : 'planning';
+    $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+
+    // Validate required fields
+    if (empty($projectName) || !$customerId || empty($projectType) || empty($location) || empty($startDate)) {
+        Response::error('Please fill in all required fields');
+    }
+
+    try {
+        // Insert project
+        $db->execute(
+            "INSERT INTO projects (
+                project_name, user_id, project_type, location, team_id,
+                start_date, estimated_completion, estimated_cost, status,
+                description, progress_percentage, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW())",
+            [
+                $projectName,
+                $customerId,
+                $projectType,
+                $location,
+                $teamId,
+                $startDate,
+                $estimatedCompletion,
+                $estimatedCost,
+                $status,
+                $description
+            ]
+        );
+
+        Response::success('Project created successfully', [
+            'project_id' => $db->getConnection()->insert_id
+        ]);
+
+    } catch (Exception $e) {
+        error_log("Create Project Error: " . $e->getMessage());
+        Response::serverError('Failed to create project: ' . $e->getMessage());
+    }
+}
 
 ?>
