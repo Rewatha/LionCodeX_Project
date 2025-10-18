@@ -437,6 +437,21 @@ function handleCreateProject()
         Response::error('Please fill in all required fields');
     }
 
+    // If teamId is 0 or empty, set to NULL
+    if (empty($teamId)) {
+        $teamId = null;
+    }
+
+    // If estimatedCompletion is empty, set to NULL
+    if (empty($estimatedCompletion)) {
+        $estimatedCompletion = null;
+    }
+
+    // If estimatedCost is empty or 0, set to NULL
+    if (empty($estimatedCost)) {
+        $estimatedCost = null;
+    }
+
     try {
         // Insert project
         $db->execute(
@@ -459,8 +474,11 @@ function handleCreateProject()
             ]
         );
 
+        // Get the inserted project ID using PDO method
+        $projectId = $db->getConnection()->lastInsertId();
+
         Response::success('Project created successfully', [
-            'project_id' => $db->getConnection()->insert_id
+            'project_id' => (int) $projectId
         ]);
 
     } catch (Exception $e) {
