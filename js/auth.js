@@ -240,36 +240,55 @@ document.addEventListener('DOMContentLoaded', function () {
             submitBtn.textContent = 'Signing In...';
             submitBtn.disabled = true;
 
-            // Simulate API call
-            setTimeout(() => {
-                // Attempt to authenticate user
-                const user = userData.authenticate(email, password);
+            // CALL REAL BACKEND API
+            fetch('../backend/auth.php?action=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Save user data
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
 
-                if (user) {
-                    userData.save(user);
-                    showAlert('Login successful! Redirecting...', 'success');
+                        showAlert('Login successful! Redirecting...', 'success');
 
-                    setTimeout(() => {
-                        // Redirect based on user type
-                        switch (user.userType) {
-                            case 'admin':
-                                window.location.href = 'admin-dashboard.html';
-                                break;
-                            case 'staff':
-                                window.location.href = 'staff-dashboard.html';
-                                break;
-                            default:
-                                window.location.href = 'user-dashboard.html';
+                        // Update session manager
+                        if (window.sessionManager) {
+                            window.sessionManager.updateSession(data.user);
                         }
-                    }, 1500);
-                } else {
-                    showAlert('Invalid email or password. Please try again.', 'error');
-                }
 
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
+                        setTimeout(() => {
+                            // Redirect based on user type
+                            switch (data.user.userType) {
+                                case 'admin':
+                                    window.location.href = 'admin-dashboard.html';
+                                    break;
+                                case 'staff':
+                                    window.location.href = 'staff-dashboard.html';
+                                    break;
+                                default:
+                                    window.location.href = 'user-dashboard.html';
+                            }
+                        }, 1000);
+                    } else {
+                        showAlert(data.error || 'Invalid email or password.', 'error');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                    showAlert('Login failed. Please try again.', 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
         });
     }
 
@@ -279,16 +298,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (registerForm) {
         registerForm.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            // ADD THIS DEBUG CODE:
-            console.log('Registration form submitted!');
-            console.log('Form data:', {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                email: formData.email
-            });
-            alert('Form submission detected!');
-            // END DEBUG CODE
 
             const formData = {
                 firstName: document.getElementById('firstName').value.trim(),
@@ -355,29 +364,55 @@ document.addEventListener('DOMContentLoaded', function () {
             submitBtn.textContent = 'Creating Account...';
             submitBtn.disabled = true;
 
-            // Simulate API call
-            setTimeout(() => {
-                const result = userData.register(formData);
+            // CALL REAL BACKEND API
+            fetch('../backend/auth.php?action=register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Save user data
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
 
-                if (result.success) {
-                    showAlert('Registration successful! Please check your email for verification.', 'success');
+                        showAlert('Registration successful! Redirecting to dashboard...', 'success');
 
-                    // Reset form
-                    this.reset();
+                        // Update session manager
+                        if (window.sessionManager) {
+                            window.sessionManager.updateSession(data.user);
+                        }
 
-                    // Switch to login form after delay
-                    setTimeout(() => {
-                        switchForm('login');
-                        showAlert('Account created! You can now sign in.', 'success');
-                    }, 2000);
-                } else {
-                    showAlert(result.message, 'error');
-                }
+                        // Reset form
+                        registerForm.reset();
 
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
+                        setTimeout(() => {
+                            // Redirect based on user type
+                            switch (data.user.userType) {
+                                case 'admin':
+                                    window.location.href = 'admin-dashboard.html';
+                                    break;
+                                case 'staff':
+                                    window.location.href = 'staff-dashboard.html';
+                                    break;
+                                default:
+                                    window.location.href = 'user-dashboard.html';
+                            }
+                        }, 1000);
+                    } else {
+                        showAlert(data.error || 'Registration failed. Please try again.', 'error');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Registration error:', error);
+                    showAlert('Registration failed. Please try again.', 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
         });
     }
 

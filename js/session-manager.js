@@ -268,7 +268,7 @@ class SessionManager {
         if (confirm('Are you sure you want to logout?')) {
             try {
                 // Call server logout if available
-                await fetch('auth.php?action=logout', {
+                await fetch('../backend/auth.php?action=logout', {
                     method: 'POST',
                     credentials: 'include'
                 }).catch(() => {

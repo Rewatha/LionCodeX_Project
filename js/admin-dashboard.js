@@ -11,7 +11,7 @@ class AdminDashboardManager {
     async init() {
         // Show loading screen
         this.showLoading();
-        
+
         // Check authentication
         if (!this.checkAuthentication()) {
             this.showAccessDenied();
@@ -97,7 +97,7 @@ class AdminDashboardManager {
 
     async loadOverviewStats() {
         try {
-            const response = await fetch(`admin-api.php?action=overview`, {
+            const response = await fetch(`../backend/admin-api.php?action=overview`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -121,7 +121,7 @@ class AdminDashboardManager {
 
     async loadRecentInquiries() {
         try {
-            const response = await fetch(`admin-api.php?action=inquiries`, {
+            const response = await fetch(`../backend/admin-api.php?action=inquiries`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -140,7 +140,7 @@ class AdminDashboardManager {
 
     async loadActiveProjects() {
         try {
-            const response = await fetch(`admin-api.php?action=projects`, {
+            const response = await fetch(`../backend/admin-api.php?action=projects`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -159,7 +159,7 @@ class AdminDashboardManager {
 
     async loadTeamStatus() {
         try {
-            const response = await fetch(`admin-api.php?action=team-status`, {
+            const response = await fetch(`../backend/admin-api.php?action=team-status`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -178,7 +178,7 @@ class AdminDashboardManager {
 
     async loadRevenueData() {
         try {
-            const response = await fetch(`admin-api.php?action=revenue`, {
+            const response = await fetch(`../backend/admin-api.php?action=revenue`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -338,7 +338,7 @@ class AdminDashboardManager {
 
     updateRevenueChart(revenueData) {
         const chartBars = document.querySelectorAll('.chart-bar');
-        
+
         if (revenueData.length === 0) {
             chartBars.forEach(bar => {
                 bar.style.height = '10%';
@@ -383,11 +383,11 @@ class AdminDashboardManager {
     setupTableInteractions() {
         const tableRows = document.querySelectorAll('.table-row');
         tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function() {
+            row.addEventListener('mouseenter', function () {
                 this.style.backgroundColor = '#f8f9fa';
             });
-            
-            row.addEventListener('mouseleave', function() {
+
+            row.addEventListener('mouseleave', function () {
                 this.style.backgroundColor = '';
             });
         });
@@ -407,7 +407,7 @@ class AdminDashboardManager {
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
-                switch(e.key) {
+                switch (e.key) {
                     case 'n':
                         e.preventDefault();
                         this.openNewProjectForm();
@@ -442,7 +442,7 @@ class AdminDashboardManager {
     }
 
     handleQuickAction(actionText) {
-        switch(actionText) {
+        switch (actionText) {
             case 'Add New Project':
                 this.openNewProjectForm();
                 break;
@@ -461,7 +461,7 @@ class AdminDashboardManager {
     }
 
     handleSystemAction(actionText) {
-        switch(actionText) {
+        switch (actionText) {
             case 'User Management':
                 this.openUserManagement();
                 break;
@@ -481,13 +481,53 @@ class AdminDashboardManager {
 
     async viewInquiry(inquiryId) {
         try {
-            // This would typically show a modal with inquiry details
-            const inquiry = await this.getInquiryDetails(inquiryId);
-            this.showInquiryModal(inquiry);
+            // Fetch inquiry details from backend
+            const response = await fetch(`../backend/admin-api.php?action=inquiry-details&inquiry_id=${inquiryId}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.inquiry) {
+                    this.showInquiryModal(data.inquiry);
+                } else {
+                    alert('Unable to load inquiry details.');
+                }
+            } else {
+                throw new Error('Failed to fetch inquiry details');
+            }
         } catch (error) {
             console.error('Error viewing inquiry:', error);
-            alert('Unable to load inquiry details.');
+            alert('Unable to load inquiry details: ' + error.message);
         }
+    }
+
+    showInquiryModal(inquiry) {
+        // Create and show inquiry details modal
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Inquiry Details - ${inquiry.first_name} ${inquiry.last_name}</h3>
+                <button onclick="this.closest('.modal-overlay').remove()">×</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Customer:</strong> ${inquiry.first_name} ${inquiry.last_name}</p>
+                <p><strong>Email:</strong> ${inquiry.email}</p>
+                <p><strong>Phone:</strong> ${inquiry.phone}</p>
+                <p><strong>Service Type:</strong> ${inquiry.service_type || 'General Inquiry'}</p>
+                <p><strong>Location:</strong> ${inquiry.location || 'N/A'}</p>
+                <p><strong>Status:</strong> ${this.formatStatus(inquiry.status)}</p>
+                <p><strong>Message:</strong></p>
+                <p style="background: #f8f9fa; padding: 15px; border-radius: 8px;">${inquiry.message}</p>
+                <p><strong>Submitted:</strong> ${this.formatDate(inquiry.created_at)}</p>
+                ${inquiry.response ? `<p><strong>Response:</strong> ${inquiry.response}</p>` : ''}
+            </div>
+        </div>
+    `;
+        document.body.appendChild(modal);
     }
 
     async respondToInquiry(inquiryId) {
@@ -500,14 +540,14 @@ class AdminDashboardManager {
             formData.append('status', 'contacted');
             formData.append('response', response);
 
-            const result = await fetch('admin-api.php?action=assign-inquiry', {
+            const result = await fetch(`../backend/admin-api.php?action=assign-inquiry`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
             });
 
             const data = await result.json();
-            
+
             if (data.success) {
                 alert('Response sent successfully!');
                 await this.loadRecentInquiries();
@@ -539,14 +579,14 @@ class AdminDashboardManager {
             formData.append('project_id', projectId);
             formData.append('status', newStatus);
 
-            const response = await fetch('admin-api.php?action=update-project', {
+            const response = await fetch(`../backend/admin-api.php?action=update-project`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 alert('Project updated successfully!');
                 await this.loadActiveProjects();
@@ -566,7 +606,7 @@ class AdminDashboardManager {
             newInquiries: 0,
             monthlyRevenue: 'LKR 0'
         });
-        
+
         this.displayInquiries([]);
         this.displayProjects([]);
         this.displayTeamStatus([]);
@@ -612,10 +652,10 @@ class AdminDashboardManager {
     formatDate(dateString) {
         if (!dateString) return 'N/A';
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
         });
     }
 
@@ -673,7 +713,7 @@ class AdminDashboardManager {
 }
 
 // Initialize admin dashboard when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Wait for session manager to initialize
     setTimeout(() => {
         window.adminDashboard = new AdminDashboardManager();
@@ -686,7 +726,7 @@ function logout() {
         // Clear user data
         localStorage.removeItem('currentUser');
         sessionStorage.clear();
-        
+
         // Redirect to login
         window.location.href = 'auth.html';
     }

@@ -96,7 +96,7 @@ class DashboardManager {
 
     async loadOverviewStats() {
         try {
-            const response = await fetch(`dashboard-api.php?action=overview&user_id=${this.currentUser.id}`, {
+            const response = await fetch(`../backend/dashboard-api.php?action=overview&user_id=${this.currentUser.id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -121,7 +121,7 @@ class DashboardManager {
 
     async loadRecentProjects() {
         try {
-            const response = await fetch(`dashboard-api.php?action=projects&user_id=${this.currentUser.id}`, {
+            const response = await fetch(`../backend/dashboard-api.php?action=projects&user_id=${this.currentUser.id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -140,7 +140,7 @@ class DashboardManager {
 
     async loadQuoteRequests() {
         try {
-            const response = await fetch(`dashboard-api.php?action=quotes&user_id=${this.currentUser.id}`, {
+            const response = await fetch(`../backend/dashboard-api.php?action=quotes&user_id=${this.currentUser.id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -159,7 +159,7 @@ class DashboardManager {
 
     async loadUpcomingAppointments() {
         try {
-            const response = await fetch(`dashboard-api.php?action=appointments&user_id=${this.currentUser.id}`, {
+            const response = await fetch(`../backend/dashboard-api.php?action=appointments&user_id=${this.currentUser.id}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -382,7 +382,7 @@ class DashboardManager {
 // Action functions called by buttons
 async function viewProjectDetails(projectId) {
     try {
-        const response = await fetch(`dashboard-api.php?action=project-details&project_id=${projectId}`, {
+        const response = await fetch(`../backend/dashboard-api.php?action=project-details&project_id=${projectId}`, {
             credentials: 'include'
         });
         
@@ -400,7 +400,7 @@ async function viewProjectDetails(projectId) {
 
 async function viewQuoteDetails(quoteId) {
     try {
-        const response = await fetch(`dashboard-api.php?action=quote-details&quote_id=${quoteId}`, {
+        const response = await fetch(`../backend/dashboard-api.php?action=quote-details&quote_id=${quoteId}`, {
             credentials: 'include'
         });
         
@@ -422,7 +422,7 @@ async function acceptQuote(quoteId) {
     }
 
     try {
-        const response = await fetch(`dashboard-api.php?action=accept-quote&quote_id=${quoteId}`, {
+        const response = await fetch(`../backend/dashboard-api.php?action=accept-quote&quote_id=${quoteId}`, {
             method: 'POST',
             credentials: 'include'
         });

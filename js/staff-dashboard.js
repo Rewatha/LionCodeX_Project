@@ -95,7 +95,7 @@ class StaffDashboardManager {
 
     async loadTodaySchedule() {
         try {
-            const response = await fetch(`staff-api.php?action=schedule`, {
+            const response = await fetch(`../backend/staff-api.php?action=schedule`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -114,7 +114,7 @@ class StaffDashboardManager {
 
     async loadAssignedProjects() {
         try {
-            const response = await fetch(`staff-api.php?action=projects`, {
+            const response = await fetch(`../backend/staff-api.php?action=projects`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -133,7 +133,7 @@ class StaffDashboardManager {
 
     async loadTaskProgress() {
         try {
-            const response = await fetch(`staff-api.php?action=tasks`, {
+            const response = await fetch(`../backend/staff-api.php?action=tasks`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -152,7 +152,7 @@ class StaffDashboardManager {
 
     async loadEquipmentStatus() {
         try {
-            const response = await fetch(`staff-api.php?action=equipment`, {
+            const response = await fetch(`../backend/staff-api.php?action=equipment`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -374,7 +374,7 @@ class StaffDashboardManager {
             formData.append('progress', newProgress);
             formData.append('notes', notes);
 
-            const response = await fetch('staff-api.php?action=update-progress', {
+            const response = await fetch('../backend/staff-api.php?action=update-progress', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -406,7 +406,7 @@ class StaffDashboardManager {
             formData.append('status', newStatus);
             if (hours) formData.append('hours', hours);
 
-            const response = await fetch('staff-api.php?action=update-task', {
+            const response = await fetch('../backend/staff-api.php?action=update-task', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData

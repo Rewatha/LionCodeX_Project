@@ -25,31 +25,35 @@ switch ($action) {
     case 'overview':
         handleOverview();
         break;
-        
+
     case 'inquiries':
         handleInquiries();
         break;
-        
+
+    case 'inquiry-details':
+        handleInquiryDetails();
+        break;
+
     case 'projects':
         handleProjects();
         break;
-        
+
     case 'team-status':
         handleTeamStatus();
         break;
-        
+
     case 'revenue':
         handleRevenue();
         break;
-        
+
     case 'assign-inquiry':
         handleAssignInquiry();
         break;
-        
+
     case 'update-project':
         handleUpdateProject();
         break;
-        
+
     default:
         Response::error('Invalid action', 400);
 }
@@ -57,25 +61,26 @@ switch ($action) {
 // ============================================
 // ADMIN OVERVIEW
 // ============================================
-function handleOverview() {
+function handleOverview()
+{
     global $db;
-    
+
     try {
         // Total customers
         $totalCustomers = $db->fetchOne(
             "SELECT COUNT(*) as count FROM users WHERE user_type IN ('individual', 'business', 'contractor')"
         )['count'];
-        
+
         // Active projects
         $activeProjects = $db->fetchOne(
             "SELECT COUNT(*) as count FROM projects WHERE status IN ('scheduled', 'in_progress')"
         )['count'];
-        
+
         // New inquiries
         $newInquiries = $db->fetchOne(
             "SELECT COUNT(*) as count FROM inquiries WHERE status = 'new'"
         )['count'];
-        
+
         // Monthly revenue (current month)
         $monthlyRevenue = $db->fetchOne(
             "SELECT COALESCE(SUM(actual_cost), 0) as total 
@@ -84,14 +89,14 @@ function handleOverview() {
              AND MONTH(completion_date) = MONTH(CURRENT_DATE())
              AND YEAR(completion_date) = YEAR(CURRENT_DATE())"
         )['total'];
-        
+
         Response::success('Admin overview retrieved', [
-            'totalCustomers' => (int)$totalCustomers,
-            'activeProjects' => (int)$activeProjects,
-            'newInquiries' => (int)$newInquiries,
+            'totalCustomers' => (int) $totalCustomers,
+            'activeProjects' => (int) $activeProjects,
+            'newInquiries' => (int) $newInquiries,
             'monthlyRevenue' => 'LKR ' . number_format($monthlyRevenue, 2)
         ]);
-        
+
     } catch (Exception $e) {
         error_log("Admin Overview Error: " . $e->getMessage());
         Response::serverError('Failed to load overview data');
@@ -101,9 +106,10 @@ function handleOverview() {
 // ============================================
 // INQUIRIES LIST
 // ============================================
-function handleInquiries() {
+function handleInquiries()
+{
     global $db;
-    
+
     try {
         $inquiries = $db->fetchAll(
             "SELECT 
@@ -123,9 +129,9 @@ function handleInquiries() {
              ORDER BY i.created_at DESC 
              LIMIT 20"
         );
-        
+
         Response::success('Inquiries retrieved', ['inquiries' => $inquiries]);
-        
+
     } catch (Exception $e) {
         error_log("Admin Inquiries Error: " . $e->getMessage());
         Response::serverError('Failed to load inquiries');
@@ -135,9 +141,10 @@ function handleInquiries() {
 // ============================================
 // PROJECTS LIST
 // ============================================
-function handleProjects() {
+function handleProjects()
+{
     global $db;
-    
+
     try {
         $projects = $db->fetchAll(
             "SELECT 
@@ -155,9 +162,9 @@ function handleProjects() {
              ORDER BY p.created_at DESC 
              LIMIT 20"
         );
-        
+
         Response::success('Projects retrieved', ['projects' => $projects]);
-        
+
     } catch (Exception $e) {
         error_log("Admin Projects Error: " . $e->getMessage());
         Response::serverError('Failed to load projects');
@@ -167,9 +174,10 @@ function handleProjects() {
 // ============================================
 // TEAM STATUS
 // ============================================
-function handleTeamStatus() {
+function handleTeamStatus()
+{
     global $db;
-    
+
     try {
         $teamMembers = $db->fetchAll(
             "SELECT 
@@ -190,9 +198,9 @@ function handleTeamStatus() {
              GROUP BY u.id
              ORDER BY u.first_name"
         );
-        
+
         Response::success('Team status retrieved', ['team_members' => $teamMembers]);
-        
+
     } catch (Exception $e) {
         error_log("Team Status Error: " . $e->getMessage());
         Response::serverError('Failed to load team status');
@@ -202,9 +210,10 @@ function handleTeamStatus() {
 // ============================================
 // REVENUE DATA
 // ============================================
-function handleRevenue() {
+function handleRevenue()
+{
     global $db;
-    
+
     try {
         // Get last 6 months revenue
         $revenueData = $db->fetchAll(
@@ -217,7 +226,7 @@ function handleRevenue() {
              GROUP BY YEAR(completion_date), MONTH(completion_date)
              ORDER BY completion_date ASC"
         );
-        
+
         // Calculate percentages for chart
         $maxRevenue = 0;
         foreach ($revenueData as $data) {
@@ -225,14 +234,14 @@ function handleRevenue() {
                 $maxRevenue = $data['revenue'];
             }
         }
-        
+
         foreach ($revenueData as &$data) {
             $data['percentage'] = $maxRevenue > 0 ? ($data['revenue'] / $maxRevenue) * 100 : 0;
-            $data['revenue'] = (float)$data['revenue'];
+            $data['revenue'] = (float) $data['revenue'];
         }
-        
+
         Response::success('Revenue data retrieved', ['revenue_data' => $revenueData]);
-        
+
     } catch (Exception $e) {
         error_log("Revenue Error: " . $e->getMessage());
         Response::serverError('Failed to load revenue data');
@@ -242,29 +251,30 @@ function handleRevenue() {
 // ============================================
 // ASSIGN/RESPOND TO INQUIRY
 // ============================================
-function handleAssignInquiry() {
+function handleAssignInquiry()
+{
     global $db;
-    
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         Response::error('Method not allowed', 405);
     }
-    
-    $inquiryId = isset($_POST['inquiry_id']) ? (int)$_POST['inquiry_id'] : 0;
+
+    $inquiryId = isset($_POST['inquiry_id']) ? (int) $_POST['inquiry_id'] : 0;
     $status = isset($_POST['status']) ? $_POST['status'] : 'contacted';
     $response = isset($_POST['response']) ? trim($_POST['response']) : '';
-    
+
     if (!$inquiryId) {
         Response::error('Inquiry ID is required');
     }
-    
+
     try {
         $db->execute(
             "UPDATE inquiries SET status = ?, response = ?, updated_at = NOW() WHERE id = ?",
             [$status, $response, $inquiryId]
         );
-        
+
         Response::success('Inquiry updated successfully');
-        
+
     } catch (Exception $e) {
         error_log("Assign Inquiry Error: " . $e->getMessage());
         Response::serverError('Failed to update inquiry');
@@ -274,31 +284,71 @@ function handleAssignInquiry() {
 // ============================================
 // UPDATE PROJECT
 // ============================================
-function handleUpdateProject() {
+function handleUpdateProject()
+{
     global $db;
-    
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         Response::error('Method not allowed', 405);
     }
-    
-    $projectId = isset($_POST['project_id']) ? (int)$_POST['project_id'] : 0;
+
+    $projectId = isset($_POST['project_id']) ? (int) $_POST['project_id'] : 0;
     $status = isset($_POST['status']) ? $_POST['status'] : '';
-    
+
     if (!$projectId || !$status) {
         Response::error('Project ID and status are required');
     }
-    
+
     try {
         $db->execute(
             "UPDATE projects SET status = ?, updated_at = NOW() WHERE id = ?",
             [$status, $projectId]
         );
-        
+
         Response::success('Project updated successfully');
-        
+
     } catch (Exception $e) {
         error_log("Update Project Error: " . $e->getMessage());
         Response::serverError('Failed to update project');
     }
 }
+
+// ============================================
+// INQUIRY DETAILS
+// ============================================
+function handleInquiryDetails()
+{
+    global $db;
+
+    $inquiryId = isset($_GET['inquiry_id']) ? (int) $_GET['inquiry_id'] : 0;
+
+    if (!$inquiryId) {
+        Response::error('Inquiry ID is required');
+    }
+
+    try {
+        $inquiry = $db->fetchOne(
+            "SELECT 
+                i.*,
+                CONCAT(i.first_name, ' ', i.last_name) as name,
+                u.email as user_email
+             FROM inquiries i
+             LEFT JOIN users u ON i.user_id = u.id
+             WHERE i.id = ?",
+            [$inquiryId]
+        );
+
+        if (!$inquiry) {
+            Response::notFound('Inquiry not found');
+        }
+
+        Response::success('Inquiry details retrieved', ['inquiry' => $inquiry]);
+
+    } catch (Exception $e) {
+        error_log("Inquiry Details Error: " . $e->getMessage());
+        Response::serverError('Failed to load inquiry details');
+    }
+}
+
+
 ?>
