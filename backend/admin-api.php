@@ -485,6 +485,6 @@ function handleCreateProject()
         error_log("Create Project Error: " . $e->getMessage());
         Response::serverError('Failed to create project: ' . $e->getMessage());
     }
-} //
+} 
 
 ?>
