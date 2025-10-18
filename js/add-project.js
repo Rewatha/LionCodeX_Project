@@ -2,8 +2,11 @@
 // File: js/add-project.js
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Add Project page loaded');
+    
     // Check if user is admin
     if (!window.sessionManager || !window.sessionManager.isLoggedIn) {
+        console.log('User not logged in, redirecting...');
         window.location.href = 'auth.html';
         return;
     }
@@ -14,35 +17,59 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    console.log('User authenticated as admin');
+
     // Load customers and teams
     loadCustomers();
     loadTeams();
 
     // Set default start date to today
-    document.getElementById('startDate').valueAsDate = new Date();
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDate').value = today;
 
     // Handle form submission
     document.getElementById('addProjectForm').addEventListener('submit', handleSubmit);
 });
 
 async function loadCustomers() {
+    console.log('Loading customers...');
+    
     try {
         const response = await fetch('../backend/admin-api.php?action=get-customers', {
-            credentials: 'include'
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
         });
 
-        if (response.ok) {
-            const data = await response.json();
+        console.log('Customers response status:', response.status);
+        
+        const text = await response.text();
+        console.log('Customers response text:', text.substring(0, 200));
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Failed to parse JSON:', e);
+            console.error('Response was:', text);
+            return;
+        }
+
+        if (data.success && data.customers) {
             const select = document.getElementById('customerId');
             
-            if (data.success && data.customers) {
-                data.customers.forEach(customer => {
-                    const option = document.createElement('option');
-                    option.value = customer.id;
-                    option.textContent = `${customer.first_name} ${customer.last_name} (${customer.email})`;
-                    select.appendChild(option);
-                });
-            }
+            data.customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = `${customer.first_name} ${customer.last_name} (${customer.email})`;
+                select.appendChild(option);
+            });
+            
+            console.log('Loaded', data.customers.length, 'customers');
+        } else {
+            console.error('Invalid response:', data);
         }
     } catch (error) {
         console.error('Error loading customers:', error);
@@ -50,23 +77,44 @@ async function loadCustomers() {
 }
 
 async function loadTeams() {
+    console.log('Loading teams...');
+    
     try {
         const response = await fetch('../backend/admin-api.php?action=get-teams', {
-            credentials: 'include'
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
         });
 
-        if (response.ok) {
-            const data = await response.json();
+        console.log('Teams response status:', response.status);
+        
+        const text = await response.text();
+        console.log('Teams response text:', text.substring(0, 200));
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Failed to parse JSON:', e);
+            console.error('Response was:', text);
+            return;
+        }
+
+        if (data.success && data.teams) {
             const select = document.getElementById('teamId');
             
-            if (data.success && data.teams) {
-                data.teams.forEach(team => {
-                    const option = document.createElement('option');
-                    option.value = team.id;
-                    option.textContent = team.team_name;
-                    select.appendChild(option);
-                });
-            }
+            data.teams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team.id;
+                option.textContent = team.team_name;
+                select.appendChild(option);
+            });
+            
+            console.log('Loaded', data.teams.length, 'teams');
+        } else {
+            console.error('Invalid response:', data);
         }
     } catch (error) {
         console.error('Error loading teams:', error);
@@ -75,6 +123,8 @@ async function loadTeams() {
 
 async function handleSubmit(e) {
     e.preventDefault();
+    
+    console.log('Form submitted');
 
     // Hide alerts
     document.getElementById('alert-success').style.display = 'none';
@@ -82,6 +132,11 @@ async function handleSubmit(e) {
 
     // Get form data
     const formData = new FormData(e.target);
+    
+    // Log form data for debugging
+    for (let [key, value] of formData.entries()) {
+        console.log(key + ':', value);
+    }
 
     // Disable submit button
     const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -95,7 +150,18 @@ async function handleSubmit(e) {
             body: formData
         });
 
-        const data = await response.json();
+        console.log('Create project response status:', response.status);
+        
+        const text = await response.text();
+        console.log('Response text:', text.substring(0, 500));
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseError) {
+            console.error('Failed to parse response:', parseError);
+            throw new Error('Server returned invalid response: ' + text.substring(0, 100));
+        }
 
         if (data.success) {
             // Show success message
@@ -103,7 +169,8 @@ async function handleSubmit(e) {
             
             // Reset form
             e.target.reset();
-            document.getElementById('startDate').valueAsDate = new Date();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
             
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
