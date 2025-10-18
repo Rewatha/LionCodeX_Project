@@ -509,11 +509,7 @@ function handleCreateCustomer()
     $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
     $userType = isset($_POST['userType']) ? $_POST['userType'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 'active';
-    $address = isset($_POST['address']) ? trim($_POST['address']) : '';
-    $city = isset($_POST['city']) ? trim($_POST['city']) : '';
-    $postalCode = isset($_POST['postalCode']) ? trim($_POST['postalCode']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
-    $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
 
     // Validate required fields
     if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($userType) || empty($password)) {
@@ -548,13 +544,12 @@ function handleCreateCustomer()
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     try {
-        // Insert customer
+        // Insert customer with only the core fields
         $db->execute(
             "INSERT INTO users (
                 first_name, last_name, email, phone, password_hash, 
-                user_type, status, address, city, postal_code, 
-                notes, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())",
+                user_type, status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())",
             [
                 $firstName,
                 $lastName,
@@ -562,11 +557,7 @@ function handleCreateCustomer()
                 $phone,
                 $passwordHash,
                 $userType,
-                $status,
-                $address,
-                $city,
-                $postalCode,
-                $notes
+                $status
             ]
         );
 
@@ -574,12 +565,13 @@ function handleCreateCustomer()
         $customerId = $db->getConnection()->lastInsertId();
 
         Response::success('Customer created successfully', [
-            'customer_id' => (int) $customerId,
+            'customer_id' => (int)$customerId,
             'email' => $email
         ]);
 
     } catch (Exception $e) {
         error_log("Create Customer Error: " . $e->getMessage());
+        error_log("SQL Error Details: " . print_r($e, true));
         Response::serverError('Failed to create customer: ' . $e->getMessage());
     }
 }
