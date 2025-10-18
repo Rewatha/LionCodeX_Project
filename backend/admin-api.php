@@ -66,6 +66,10 @@ switch ($action) {
         handleCreateProject();
         break;
 
+    case 'create-customer':
+        handleCreateCustomer();
+        break;
+
     default:
         Response::error('Invalid action', 400);
 }
@@ -484,6 +488,91 @@ function handleCreateProject()
     } catch (Exception $e) {
         error_log("Create Project Error: " . $e->getMessage());
         Response::serverError('Failed to create project: ' . $e->getMessage());
+    }
+}
+
+// ============================================
+// CREATE CUSTOMER
+// ============================================
+function handleCreateCustomer()
+{
+    global $db;
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        Response::error('Method not allowed', 405);
+    }
+
+    // Get form data
+    $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
+    $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    $userType = isset($_POST['userType']) ? $_POST['userType'] : '';
+    $status = isset($_POST['status']) ? $_POST['status'] : 'active';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+
+    // Validate required fields
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($userType) || empty($password)) {
+        Response::error('Please fill in all required fields');
+    }
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        Response::error('Invalid email format');
+    }
+
+    // Validate password strength
+    if (strlen($password) < 8) {
+        Response::error('Password must be at least 8 characters long');
+    }
+
+    // Check if email already exists
+    try {
+        $existingUser = $db->fetchOne(
+            "SELECT id FROM users WHERE email = ?",
+            [$email]
+        );
+
+        if ($existingUser) {
+            Response::error('Email address already registered');
+        }
+    } catch (Exception $e) {
+        error_log("Email check error: " . $e->getMessage());
+    }
+
+    // Hash password
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+    try {
+        // Insert customer with only the core fields
+        $db->execute(
+            "INSERT INTO users (
+                first_name, last_name, email, phone, password_hash, 
+                user_type, status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())",
+            [
+                $firstName,
+                $lastName,
+                $email,
+                $phone,
+                $passwordHash,
+                $userType,
+                $status
+            ]
+        );
+
+        // Get the inserted customer ID
+        $customerId = $db->getConnection()->lastInsertId();
+
+        Response::success('Customer created successfully', [
+            'customer_id' => (int)$customerId,
+            'email' => $email
+        ]);
+
+    } catch (Exception $e) {
+        error_log("Create Customer Error: " . $e->getMessage());
+        error_log("SQL Error Details: " . print_r($e, true));
+        Response::serverError('Failed to create customer: ' . $e->getMessage());
     }
 }
 
