@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('serviceType', 'General Inquiry');
             
             // Send to backend
-            fetch('../backend/simple_contact.php', {
+            fetch('../backend/submit_form.php', {
                 method: 'POST',
                 body: formData
             })
