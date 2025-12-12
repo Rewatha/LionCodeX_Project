@@ -5,19 +5,18 @@
 define('INCLUDED', true);
 require_once __DIR__ . '/config.php';
 
-// Check if user is logged in
-if (!User::isLoggedIn()) {
-    Response::unauthorized('Please login to submit contact form');
-}
-
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     Response::error('Method not allowed', 405);
 }
 
-// Get current user
-$currentUser = User::getCurrentUser();
-$userId = $currentUser['id'];
+// FIX: Allow public users (Guest) to submit forms
+// We check if they are logged in, but we don't STOP them if they aren't.
+$userId = null;
+if (User::isLoggedIn()) {
+    $currentUser = User::getCurrentUser();
+    $userId = $currentUser['id'];
+}
 
 // Get form data
 $firstName = isset($_POST['firstName']) ? Response::sanitize($_POST['firstName']) : '';
@@ -37,10 +36,6 @@ if (empty($firstName)) {
     $errors['firstName'] = 'First name is required';
 }
 
-if (empty($lastName)) {
-    $errors['lastName'] = 'Last name is required';
-}
-
 if (empty($email)) {
     $errors['email'] = 'Email is required';
 } elseif (!Response::validateEmail($email)) {
@@ -49,12 +44,6 @@ if (empty($email)) {
 
 if (empty($phone)) {
     $errors['phone'] = 'Phone number is required';
-} elseif (!Response::validatePhone($phone)) {
-    $errors['phone'] = 'Invalid phone number format';
-}
-
-if (empty($serviceType)) {
-    $errors['serviceType'] = 'Service type is required';
 }
 
 if (empty($message)) {
@@ -71,7 +60,8 @@ try {
     $sql = "INSERT INTO inquiries 
             (user_id, first_name, last_name, email, phone, service_type, location, message, budget, timeline, status, created_at) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', NOW())";
-    
+
+    // Note: $userId will be NULL if the user is a guest, which is allowed by your database
     $inquiryId = $db->insert($sql, [
         $userId,
         $firstName,
@@ -84,26 +74,14 @@ try {
         $budget,
         $timeline
     ]);
-    
-    // TODO: Send email notification to admin (optional)
-    // sendEmailNotification($inquiryId, $email, $firstName, $lastName, $serviceType, $message);
-    
+
     Response::success('Your inquiry has been submitted successfully!', [
         'inquiry_id' => $inquiryId,
         'message' => 'Thank you for contacting SealTech Engineering. We will respond to your inquiry within 24 hours.'
     ], 201);
-    
+
 } catch (Exception $e) {
     error_log("Contact Form Error: " . $e->getMessage());
     Response::serverError('Failed to submit inquiry. Please try again.');
-}
-
-// ============================================
-// EMAIL NOTIFICATION FUNCTION (Optional)
-// ============================================
-function sendEmailNotification($inquiryId, $email, $firstName, $lastName, $serviceType, $message) {
-    // TODO: Implement email sending using PHPMailer
-    // For now, just log it
-    error_log("New Inquiry #$inquiryId from $firstName $lastName ($email) - Service: $serviceType");
 }
 ?>
